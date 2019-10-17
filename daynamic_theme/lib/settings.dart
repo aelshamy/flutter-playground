@@ -1,5 +1,6 @@
-import 'package:daynamic_theme/theme.dart';
 import 'package:daynamic_theme/theme_notifier.dart';
+import 'package:daynamic_theme/themes/dark_theme.dart';
+import 'package:daynamic_theme/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

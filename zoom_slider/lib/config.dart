@@ -1,0 +1,3 @@
+const SCALE_FRACTION = 0.7;
+const FULL_SCALE = 1.0;
+const PAGER_HEIGHT = 200.0;

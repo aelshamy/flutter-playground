@@ -1,4 +1,4 @@
-name: flutter_bloc_example
+name: handle_error
 description: A new Flutter project.
 
 # The following defines the version and build number for your application.
@@ -14,13 +14,13 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.1.0 <3.0.0'
+  sdk: '>=2.6.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_bloc: ^2.0.0
-  equatable: ^1.0.0
+  provider: ^3.2.0
+  dartz: ^0.8.9
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

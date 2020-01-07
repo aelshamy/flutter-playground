@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:socialmedia/model/post.dart';
 import 'package:socialmedia/model/user.dart';
 import 'package:socialmedia/widgets/header.dart';
+import 'package:socialmedia/widgets/post_tile.dart';
 import 'package:socialmedia/widgets/progress.dart';
 
 import 'edit_profile.dart';
@@ -17,6 +20,16 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final String currentUserId = currentUser?.id;
+  bool isLoading = false;
+  int postCount = 0;
+  List<Post> posts;
+
+  @override
+  void initState() {
+    super.initState();
+    getProfilePost();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +37,55 @@ class _ProfileState extends State<Profile> {
       body: ListView(
         children: <Widget>[
           buildProfileHeader(),
+          Divider(height: 0.0),
+          // buildTogglePostOrientation(),
+          Container(
+            height: 200,
+            child: Flex(
+              direction: Axis.vertical,
+              children: <Widget>[
+                DefaultTabController(
+                  length: 2,
+                  child: Container(
+                    height: 200,
+                    child: Flex(
+                      direction: Axis.vertical,
+                      children: <Widget>[
+                        TabBar(
+                          labelColor: Theme.of(context).primaryColor,
+                          unselectedLabelColor: Colors.grey,
+                          indicatorColor: Colors.transparent,
+                          labelPadding: EdgeInsets.all(5),
+                          tabs: <Widget>[
+                            Icon(Icons.grid_on),
+                            Icon(Icons.list),
+                          ],
+                        ),
+                        Divider(height: 0.0),
+                        Expanded(
+                          flex: 1,
+                          child: TabBarView(
+                            physics: NeverScrollableScrollPhysics(),
+                            children: <Widget>[
+                              buildProfilePost(),
+                              buildProfilePost(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // TabBarView(
+          //   children: <Widget>[
+          //     buildProfilePost(),
+          //     buildProfilePost(),
+          //   ],
+          // ),
         ],
       ),
     );
@@ -78,7 +140,7 @@ class _ProfileState extends State<Profile> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
-                                      buildCountColumn("posts", 0),
+                                      buildCountColumn("posts", postCount),
                                       buildCountColumn("followers", 0),
                                       buildCountColumn("following", 0),
                                     ],
@@ -168,4 +230,55 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
+  buildProfilePost() {
+    if (isLoading) {
+      return CircularProgress();
+    }
+    List<GridTile> gridTiles = posts
+        .map((post) => GridTile(
+              child: PostTile(
+                post: post,
+              ),
+            ))
+        .toList();
+
+    return GridView.count(
+      crossAxisCount: 3,
+      childAspectRatio: 1.0,
+      mainAxisSpacing: 1.5,
+      crossAxisSpacing: 1.5,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: gridTiles,
+    );
+    // return Column(
+    //   children: posts
+    //       .map(
+    //         (post) => PostItem(
+    //           post: post,
+    //         ),
+    //       )
+    //       .toList(),
+    // );
+  }
+
+  void getProfilePost() async {
+    setState(() {
+      isLoading = true;
+    });
+    QuerySnapshot snapshot = await postRef
+        .document(widget.profileId)
+        .collection("userPosts")
+        .orderBy("timestamp", descending: true)
+        .getDocuments();
+    print(snapshot.documents.length);
+    setState(() {
+      isLoading = false;
+      postCount = snapshot.documents.length;
+      posts = snapshot.documents.map((doc) => Post.fromDocument(doc)).toList();
+    });
+  }
+
+  buildTogglePostOrientation() {}
 }

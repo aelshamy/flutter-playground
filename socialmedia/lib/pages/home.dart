@@ -16,7 +16,14 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 final StorageReference storageRef = FirebaseStorage.instance.ref();
 final CollectionReference usersRef = Firestore.instance.collection('users');
 final CollectionReference postRef = Firestore.instance.collection('posts');
-User currentUser;
+User currentUser = User(
+  bio: "This is my bio that is being updated from the form it is not so long",
+  displayName: "Amr Elshamy",
+  email: "ajmoroo@gmail.com",
+  id: "100010084932745351120",
+  photoUrl: "https://lh3.googleusercontent.com/a-/AAuE7mDvyKENUGeec3O4qguQqEtmKfPoQRYdHg8u4IS4=s96-c",
+  username: "ajmoro",
+);
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
@@ -35,11 +42,13 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     pageController = PageController(initialPage: pageIndex);
-    googleSignIn.onCurrentUserChanged.listen(handleSignIn, onError: handleSignInError);
+    try {
+      googleSignIn.onCurrentUserChanged.listen(handleSignIn, onError: handleSignInError);
 
-    googleSignIn
-        .signInSilently(suppressErrors: false)
-        .then(handleSignIn, onError: handleSignInError);
+      googleSignIn.signInSilently(suppressErrors: false).then(handleSignIn, onError: handleSignInError);
+    } catch (e) {
+      print(e);
+    }
   }
 
   handleSignInError(err) {
@@ -65,7 +74,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return isAuth ? builAuthScreen() : buildUnAuthScreen();
+    // return isAuth ? builAuthScreen() : buildUnAuthScreen();
+    return builAuthScreen();
   }
 
   onTap(int index) {

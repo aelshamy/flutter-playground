@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/Users/elshaa1/Desktop/Projects/flutter/fluttersdk"
-export "FLUTTER_APPLICATION_PATH=/Users/elshaa1/Desktop/Projects/flutter/flutter-playground/zoom_slider"
+export "FLUTTER_APPLICATION_PATH=/Users/elshaa1/Desktop/Projects/flutter/flutter-playground/bmi_calculator"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "SYMROOT=${SOURCE_ROOT}/../build/ios"

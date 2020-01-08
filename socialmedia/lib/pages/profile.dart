@@ -20,8 +20,9 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   final String currentUserId = currentUser?.id;
+  TabController _controller;
   bool isLoading = false;
   int postCount = 0;
   List<Post> posts = [];
@@ -29,69 +30,56 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
+    _controller = TabController(length: 2, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Header(title: "Profile"),
-      body: ListView(
+      body: Column(
         children: <Widget>[
           buildProfileHeader(),
           Divider(height: 0.0),
-          Container(
-            height: 1600,
-            child: Flex(
-              direction: Axis.vertical,
+          Expanded(
+            child: Column(
               children: <Widget>[
-                DefaultTabController(
-                  length: 2,
-                  child: Container(
-                    height: 1600,
-                    child: Flex(
-                      direction: Axis.vertical,
-                      children: <Widget>[
-                        TabBar(
-                          labelColor: Theme.of(context).primaryColor,
-                          unselectedLabelColor: Colors.grey,
-                          indicatorColor: Colors.transparent,
-                          labelPadding: EdgeInsets.all(5),
-                          tabs: <Widget>[
-                            Icon(Icons.grid_on),
-                            Icon(Icons.list),
-                          ],
-                        ),
-                        Divider(height: 0.0),
-                        Expanded(
-                          flex: 1,
-                          child: StreamBuilder(
-                            stream: getProfilePost(),
-                            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                              if (!snapshot.hasData) {
-                                return CircularProgress();
-                              }
+                TabBar(
+                  controller: _controller,
+                  labelColor: Theme.of(context).primaryColor,
+                  unselectedLabelColor: Colors.grey,
+                  indicatorColor: Colors.transparent,
+                  labelPadding: EdgeInsets.all(5),
+                  tabs: <Widget>[
+                    Icon(Icons.grid_on),
+                    Icon(Icons.list),
+                  ],
+                ),
+                Divider(height: 0.0),
+                Expanded(
+                  child: StreamBuilder(
+                    stream: getProfilePost(),
+                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (!snapshot.hasData) {
+                        return CircularProgress();
+                      }
 
-                              List<Post> posts = snapshot.data.documents
-                                  .map((doc) => Post.fromDocument(doc))
-                                  .toList();
+                      List<Post> posts = snapshot.data.documents.map((doc) => Post.fromDocument(doc)).toList();
 
-                              postCount = snapshot.data.documents.length;
+                      postCount = snapshot.data.documents.length;
 
-                              if (posts.isEmpty) {
-                                return buildSplashScreen(context);
-                              }
-                              return TabBarView(
-                                physics: NeverScrollableScrollPhysics(),
-                                children: <Widget>[
-                                  buildProfileColumnPost(posts),
-                                  buildProfileGridPost(posts),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                      if (posts.isEmpty) {
+                        return buildSplashScreen(context);
+                      }
+                      return TabBarView(
+                        controller: _controller,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: <Widget>[
+                          buildProfileColumnPost(posts),
+                          buildProfileGridPost(posts),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ],
@@ -276,11 +264,7 @@ class _ProfileState extends State<Profile> {
   }
 
   Stream<QuerySnapshot> getProfilePost() {
-    return postRef
-        .document(widget.profileId)
-        .collection("userPosts")
-        .orderBy("timestamp", descending: true)
-        .snapshots();
+    return postRef.document(widget.profileId).collection("userPosts").orderBy("timestamp", descending: true).snapshots();
   }
 
   buildSplashScreen(context) {

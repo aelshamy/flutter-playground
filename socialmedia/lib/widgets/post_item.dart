@@ -44,7 +44,7 @@ class PostItem extends StatelessWidget {
           },
         ),
         GestureDetector(
-          onDoubleTap: () => print('Liking Post'),
+          onDoubleTap: handleLikePost,
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
@@ -57,6 +57,36 @@ class PostItem extends StatelessWidget {
                 ),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
+              post.isLikedByCurrentUser()
+                  ? TweenAnimationBuilder(
+                      duration: Duration(milliseconds: 300),
+                      tween: Tween(begin: 0.5, end: 1.5),
+                      builder: (context, value, child) => Transform.scale(
+                        //TODO: fix animation
+                        scale: value,
+                        child: Icon(
+                          Icons.favorite,
+                          size: 80,
+                          color: Colors.red,
+                        ),
+                      ),
+                    )
+                  // Animator(
+                  //     resetAnimationOnRebuild: true,
+                  //     duration: Duration(milliseconds: 300),
+                  //     tween: Tween(begin: 0.5, end: 1.5),
+                  //     curve: Curves.elasticOut,
+                  //     cycles: 0,
+                  //     builder: (anim) => Transform.scale(
+                  //       scale: anim.value,
+                  //       child: Icon(
+                  //         Icons.favorite,
+                  //         size: 80,
+                  //         color: Colors.red,
+                  //       ),
+                  //     ),
+                  //   )
+                  : SizedBox(),
             ],
           ),
         ),
@@ -66,9 +96,9 @@ class PostItem extends StatelessWidget {
             children: <Widget>[
               SizedBox(height: 40),
               GestureDetector(
-                onTap: () => print('Liking Post'),
+                onTap: handleLikePost,
                 child: Icon(
-                  Icons.favorite_border,
+                  post.isLikedByCurrentUser() ? Icons.favorite : Icons.favorite_border,
                   size: 28,
                   color: Colors.pink,
                 ),
@@ -114,5 +144,9 @@ class PostItem extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  handleLikePost() {
+    post.likePost();
   }
 }

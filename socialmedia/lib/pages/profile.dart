@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:socialmedia/model/post.dart';
 import 'package:socialmedia/model/user.dart';
 import 'package:socialmedia/widgets/header.dart';
+import 'package:socialmedia/widgets/post_item.dart';
 import 'package:socialmedia/widgets/post_tile.dart';
 import 'package:socialmedia/widgets/progress.dart';
 
@@ -22,12 +24,11 @@ class _ProfileState extends State<Profile> {
   final String currentUserId = currentUser?.id;
   bool isLoading = false;
   int postCount = 0;
-  List<Post> posts;
+  List<Post> posts = [];
 
   @override
   void initState() {
     super.initState();
-    getProfilePost();
   }
 
   @override
@@ -38,16 +39,15 @@ class _ProfileState extends State<Profile> {
         children: <Widget>[
           buildProfileHeader(),
           Divider(height: 0.0),
-          // buildTogglePostOrientation(),
           Container(
-            height: 200,
+            height: 1600,
             child: Flex(
               direction: Axis.vertical,
               children: <Widget>[
                 DefaultTabController(
                   length: 2,
                   child: Container(
-                    height: 200,
+                    height: 1600,
                     child: Flex(
                       direction: Axis.vertical,
                       children: <Widget>[
@@ -64,12 +64,30 @@ class _ProfileState extends State<Profile> {
                         Divider(height: 0.0),
                         Expanded(
                           flex: 1,
-                          child: TabBarView(
-                            physics: NeverScrollableScrollPhysics(),
-                            children: <Widget>[
-                              buildProfilePost(),
-                              buildProfilePost(),
-                            ],
+                          child: StreamBuilder(
+                            stream: getProfilePost(),
+                            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (!snapshot.hasData) {
+                                return CircularProgress();
+                              }
+
+                              List<Post> posts = snapshot.data.documents
+                                  .map((doc) => Post.fromDocument(doc))
+                                  .toList();
+
+                              postCount = snapshot.data.documents.length;
+
+                              if (posts.isEmpty) {
+                                return buildSplashScreen(context);
+                              }
+                              return TabBarView(
+                                physics: NeverScrollableScrollPhysics(),
+                                children: <Widget>[
+                                  buildProfileColumnPost(posts),
+                                  buildProfileGridPost(posts),
+                                ],
+                              );
+                            },
                           ),
                         ),
                       ],
@@ -231,10 +249,13 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  buildProfilePost() {
-    if (isLoading) {
-      return CircularProgress();
-    }
+  buildProfileColumnPost(List<Post> posts) {
+    return Column(
+      children: posts.map((post) => PostItem(post: post)).toList(),
+    );
+  }
+
+  buildProfileGridPost(List<Post> posts) {
     List<GridTile> gridTiles = posts
         .map((post) => GridTile(
               child: PostTile(
@@ -252,33 +273,31 @@ class _ProfileState extends State<Profile> {
       physics: NeverScrollableScrollPhysics(),
       children: gridTiles,
     );
-    // return Column(
-    //   children: posts
-    //       .map(
-    //         (post) => PostItem(
-    //           post: post,
-    //         ),
-    //       )
-    //       .toList(),
-    // );
   }
 
-  void getProfilePost() async {
-    setState(() {
-      isLoading = true;
-    });
-    QuerySnapshot snapshot = await postRef
+  Stream<QuerySnapshot> getProfilePost() {
+    return postRef
         .document(widget.profileId)
         .collection("userPosts")
         .orderBy("timestamp", descending: true)
-        .getDocuments();
-    print(snapshot.documents.length);
-    setState(() {
-      isLoading = false;
-      postCount = snapshot.documents.length;
-      posts = snapshot.documents.map((doc) => Post.fromDocument(doc)).toList();
-    });
+        .snapshots();
   }
 
-  buildTogglePostOrientation() {}
+  buildSplashScreen(context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SvgPicture.asset('assets/images/no_content.svg', height: 200),
+        SizedBox(height: 10),
+        Text(
+          'No Posts',
+          style: TextStyle(
+            color: Colors.redAccent,
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+          ),
+        )
+      ],
+    );
+  }
 }

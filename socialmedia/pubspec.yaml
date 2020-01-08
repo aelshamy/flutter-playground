@@ -24,8 +24,7 @@ dependencies:
   image: ^2.1.4
   uuid: ^2.0.4
   geolocator: ^5.1.5
-
-  animator: 0.1.4
+  # animator: 0.1.4
   firebase_messaging: ^4.0.0+1
   timeago: 2.0.17
   cached_network_image:

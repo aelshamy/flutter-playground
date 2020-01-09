@@ -22,7 +22,6 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   final String currentUserId = currentUser?.id;
-  TabController _controller;
   bool isLoading = false;
   int postCount = 0;
   List<Post> posts = [];
@@ -30,69 +29,62 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _controller = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Header(title: "Profile"),
-      body: Column(
-        children: <Widget>[
-          buildProfileHeader(),
-          Divider(height: 0.0),
-          Expanded(
-            child: Column(
-              children: <Widget>[
-                TabBar(
-                  controller: _controller,
-                  labelColor: Theme.of(context).primaryColor,
-                  unselectedLabelColor: Colors.grey,
-                  indicatorColor: Colors.transparent,
-                  labelPadding: EdgeInsets.all(5),
-                  tabs: <Widget>[
-                    Icon(Icons.grid_on),
-                    Icon(Icons.list),
-                  ],
-                ),
-                Divider(height: 0.0),
-                Expanded(
-                  child: StreamBuilder(
-                    stream: getProfilePost(),
-                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (!snapshot.hasData) {
-                        return CircularProgress();
-                      }
-
-                      List<Post> posts = snapshot.data.documents.map((doc) => Post.fromDocument(doc)).toList();
-
-                      postCount = snapshot.data.documents.length;
-
-                      if (posts.isEmpty) {
-                        return buildSplashScreen(context);
-                      }
-                      return TabBarView(
-                        controller: _controller,
-                        physics: NeverScrollableScrollPhysics(),
-                        children: <Widget>[
-                          buildProfileColumnPost(posts),
-                          buildProfileGridPost(posts),
-                        ],
-                      );
-                    },
-                  ),
-                ),
+      body: DefaultTabController(
+        length: 2,
+        child: Column(
+          // physics: ClampingScrollPhysics(),
+          children: <Widget>[
+            buildProfileHeader(),
+            Divider(height: 0.0),
+            TabBar(
+              labelColor: Theme.of(context).primaryColor,
+              unselectedLabelColor: Colors.grey,
+              indicatorColor: Colors.transparent,
+              labelPadding: EdgeInsets.all(5),
+              tabs: <Widget>[
+                Icon(Icons.grid_on),
+                Icon(Icons.list),
               ],
             ),
-          ),
+            Divider(height: 0.0),
+            Expanded(
+              child: StreamBuilder(
+                stream: getProfilePost(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return CircularProgress();
+                  }
 
-          // TabBarView(
-          //   children: <Widget>[
-          //     buildProfilePost(),
-          //     buildProfilePost(),
-          //   ],
-          // ),
-        ],
+                  List<Post> posts = snapshot.data.documents.map((doc) => Post.fromDocument(doc)).toList();
+
+                  postCount = snapshot.data.documents.length;
+
+                  if (posts.isEmpty) {
+                    return buildSplashScreen(context);
+                  }
+                  return TabBarView(
+                    physics: NeverScrollableScrollPhysics(),
+                    children: <Widget>[
+                      buildProfileGridPost(posts),
+                      buildProfileColumnPost(posts),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -238,7 +230,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   buildProfileColumnPost(List<Post> posts) {
-    return Column(
+    return ListView(
       children: posts.map((post) => PostItem(post: post)).toList(),
     );
   }

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:socialmedia/model/post.dart';
 import 'package:socialmedia/model/user.dart';
+import 'package:socialmedia/pages/comments.dart';
 import 'package:socialmedia/pages/home.dart';
 import 'package:socialmedia/widgets/progress.dart';
 
@@ -105,7 +106,7 @@ class PostItem extends StatelessWidget {
               ),
               SizedBox(width: 20),
               GestureDetector(
-                onTap: () => print('Showing Comments'),
+                onTap: () => showComments(context),
                 child: Icon(
                   Icons.chat,
                   size: 28,
@@ -148,5 +149,9 @@ class PostItem extends StatelessWidget {
 
   handleLikePost() {
     post.likePost();
+  }
+
+  void showComments(context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Comments(post: post)));
   }
 }

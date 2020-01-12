@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialmedia/login/bloc/bloc.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({Key key}) : super(key: key);
@@ -8,8 +10,15 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  String username;
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +34,7 @@ class _CreateAccountState extends State<CreateAccount> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 TextFormField(
-                  onSaved: (val) => username = val,
+                  controller: _controller,
                   validator: (val) {
                     if (val.trim().length < 3 || val.isEmpty) {
                       return "Username too short";
@@ -46,8 +55,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   colorBrightness: Brightness.dark,
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save();
-                      Navigator.pop(context, username);
+                      BlocProvider.of<LoginBloc>(context).add(Createuser(_controller.text));
                     }
                   },
                 ),

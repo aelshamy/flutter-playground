@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:socialmedia/comments/comments.dart';
+import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/model/post.dart';
-import 'package:socialmedia/model/user.dart';
-import 'package:socialmedia/pages/comments.dart';
-import 'package:socialmedia/pages/home.dart';
-import 'package:socialmedia/widgets/progress.dart';
 
 class PostItem extends StatelessWidget {
   final Post post;
@@ -14,36 +12,36 @@ class PostItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        StreamBuilder(
-          stream: usersRef.document(post.owner).snapshots(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (!snapshot.hasData) {
-              return CircularProgress();
-            }
-            User user = User.fromDocument(snapshot.data);
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: CachedNetworkImageProvider(user.photoUrl),
-                backgroundColor: Colors.grey,
-              ),
-              title: GestureDetector(
-                onTap: () => print("User Clicked "),
-                child: Text(
-                  user.username,
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              subtitle: Text(post.location),
-              trailing: IconButton(
-                icon: Icon(Icons.more_vert),
-                onPressed: () => print("Deleting Post"),
-              ),
-            );
-          },
-        ),
+        // StreamBuilder(
+        //   stream: usersRef.document(post.owner).snapshots(),
+        //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+        //     if (!snapshot.hasData) {
+        //       return CircularProgress();
+        //     }
+        //     User user = User.fromDocument(snapshot.data);
+        //     return ListTile(
+        //       leading: CircleAvatar(
+        //         backgroundImage: CachedNetworkImageProvider(user.photoUrl),
+        //         backgroundColor: Colors.grey,
+        //       ),
+        //       title: GestureDetector(
+        //         onTap: () => print("User Clicked "),
+        //         child: Text(
+        //           user.username,
+        //           style: TextStyle(
+        //             color: Colors.blue,
+        //             fontWeight: FontWeight.bold,
+        //           ),
+        //         ),
+        //       ),
+        //       subtitle: Text(post.location),
+        //       trailing: IconButton(
+        //         icon: Icon(Icons.more_vert),
+        //         onPressed: () => print("Deleting Post"),
+        //       ),
+        //     );
+        //   },
+        // ),
         GestureDetector(
           onDoubleTap: handleLikePost,
           child: Stack(
@@ -152,6 +150,7 @@ class PostItem extends StatelessWidget {
   }
 
   void showComments(context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Comments(post: post)));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) => Comments(post: post)));
   }
 }

@@ -1,23 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'pages/home.dart';
+import 'authentication_bloc/bloc.dart';
+import 'common/simple_bloc_delegate.dart';
+import 'login/home.dart';
+import 'login/login.dart';
+import 'login/splash_screen.dart';
+import 'repo/user_repository.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  BlocSupervisor.delegate = SimpleBlocDelegate();
+  final UserRepository userRepository = UserRepository();
+  runApp(
+    BlocProvider(
+      create: (BuildContext context) =>
+          AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
+      child: App(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Social Media',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
         accentColor: Colors.teal,
       ),
-      home: Home(),
+      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (BuildContext context, AuthenticationState state) {
+          if (state is Uninitialized) {
+            return SplashScreen();
+          }
+          if (state is Unauthenticated) {
+            return Login();
+          }
+          if (state is Authenticated) {
+            return Home();
+          }
+          return SizedBox();
+        },
+      ),
     );
   }
 }

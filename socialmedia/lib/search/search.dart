@@ -2,9 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/model/user.dart';
-import 'package:socialmedia/pages/home.dart';
-import 'package:socialmedia/widgets/progress.dart';
 
 class Search extends StatefulWidget {
   const Search({Key key}) : super(key: key);
@@ -36,9 +35,9 @@ class _SearchState extends State<Search> {
             ),
           ),
           onFieldSubmitted: (String query) {
-            setState(() {
-              users = usersRef.where("displayName", isGreaterThanOrEqualTo: query).snapshots();
-            });
+            // setState(() {
+            //   users = usersRef.where("displayName", isGreaterThanOrEqualTo: query).snapshots();
+            // });
           },
         ),
       ),
@@ -49,29 +48,25 @@ class _SearchState extends State<Search> {
   Widget buildNoContnet() {
     return OrientationBuilder(
       builder: (BuildContext context, Orientation orientation) {
-        return SingleChildScrollView(
-          child: Container(
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  SvgPicture.asset(
-                    'assets/images/search.svg',
-                    height: orientation == Orientation.portrait ? 250 : 200,
-                  ),
-                  Text(
-                    'Find Users',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 60,
-                    ),
-                  )
-                ],
-              ),
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            SvgPicture.asset(
+              'assets/images/search.svg',
+              height: orientation == Orientation.portrait ? 220 : 180,
             ),
-          ),
+            Text(
+              'Find Users',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.w600,
+                fontSize: 40,
+              ),
+            )
+          ],
         );
       },
     );
@@ -88,7 +83,6 @@ class _SearchState extends State<Search> {
           itemCount: snapshot.data.documents.length,
           itemBuilder: (BuildContext context, int index) {
             User user = User.fromDocument(snapshot.data.documents[index]);
-            print(user.photoUrl);
             return Container(
               color: Theme.of(context).primaryColor.withOpacity(0.7),
               child: ListTile(

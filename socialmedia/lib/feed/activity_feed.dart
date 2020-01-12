@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/widgets/header.dart';
+import 'package:socialmedia/common/widgets/header.dart';
 
 class ActivityFeed extends StatelessWidget {
   const ActivityFeed({Key key}) : super(key: key);

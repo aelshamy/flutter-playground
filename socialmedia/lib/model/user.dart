@@ -35,4 +35,16 @@ class User {
         "bio": this.bio,
         "timestamp": DateTime.now()
       };
+
+  @override
+  String toString() {
+    return '''User {
+      id: $id,
+      username: $username,
+      photoUrl: $photoUrl,
+      email: $email,
+      displayName: $displayName,
+      bio: $bio,
+    }''';
+  }
 }

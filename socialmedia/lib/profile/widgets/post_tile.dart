@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/model/post.dart';
-import 'package:socialmedia/widgets/progress.dart';
 
 class PostTile extends StatelessWidget {
   final Post post;

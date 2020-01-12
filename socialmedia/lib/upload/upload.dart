@@ -1,16 +1,14 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image/image.dart' as Im;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/model/user.dart';
-import 'package:socialmedia/pages/home.dart';
-import 'package:socialmedia/widgets/progress.dart';
 import 'package:uuid/uuid.dart';
 
 class Upload extends StatefulWidget {
@@ -257,23 +255,23 @@ class _UploadState extends State<Upload> {
   }
 
   uploadImage(File imageFile) async {
-    final StorageUploadTask uploadTask = storageRef.child("post_$postId.jpg").putFile(imageFile);
-    final StorageTaskSnapshot uploadSnapshot = await uploadTask.onComplete;
-    final String downloadUrl = await uploadSnapshot.ref.getDownloadURL();
-    return downloadUrl;
+    // final StorageUploadTask uploadTask = storageRef.child("post_$postId.jpg").putFile(imageFile);
+    // final StorageTaskSnapshot uploadSnapshot = await uploadTask.onComplete;
+    // final String downloadUrl = await uploadSnapshot.ref.getDownloadURL();
+    // return downloadUrl;
   }
 
   void createPostInFireStore({String mediaUrl, String location, String description}) {
-    postRef.document(widget.currentUser.id).collection("userPosts").document(postId).setData({
-      "postId": postId,
-      "owner": widget.currentUser.id,
-      "username": widget.currentUser.username,
-      "mediaUrl": mediaUrl,
-      "description": description,
-      "location": location,
-      "timestamp": DateTime.now(),
-      "likes": {}
-    });
+    // postRef.document(widget.currentUser.id).collection("userPosts").document(postId).setData({
+    //   "postId": postId,
+    //   "owner": widget.currentUser.id,
+    //   "username": widget.currentUser.username,
+    //   "mediaUrl": mediaUrl,
+    //   "description": description,
+    //   "location": location,
+    //   "timestamp": DateTime.now(),
+    //   "likes": {}
+    // });
   }
 
   void getUserLocation() async {

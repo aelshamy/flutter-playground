@@ -1,16 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:socialmedia/common/widgets/header.dart';
+import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/model/post.dart';
-import 'package:socialmedia/model/user.dart';
-import 'package:socialmedia/widgets/header.dart';
-import 'package:socialmedia/widgets/post_item.dart';
-import 'package:socialmedia/widgets/post_tile.dart';
-import 'package:socialmedia/widgets/progress.dart';
 
 import 'edit_profile.dart';
-import 'home.dart';
+import 'widgets/post_item.dart';
+import 'widgets/post_tile.dart';
 
 class Profile extends StatefulWidget {
   final String profileId;
@@ -21,7 +18,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
-  final String currentUserId = currentUser?.id;
+  // final String currentUserId = currentUser?.id;
+  final String currentUserId = '1';
   bool isLoading = false;
   int postCount = 0;
   List<Post> posts = [];
@@ -66,7 +64,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     return CircularProgress();
                   }
 
-                  List<Post> posts = snapshot.data.documents.map((doc) => Post.fromDocument(doc)).toList();
+                  List<Post> posts =
+                      snapshot.data.documents.map((doc) => Post.fromDocument(doc)).toList();
 
                   postCount = snapshot.data.documents.length;
 
@@ -90,81 +89,81 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   buildProfileHeader() {
-    return StreamBuilder(
-      stream: usersRef.document(widget.profileId).snapshots(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData) {
-          return CircularProgress();
-        }
-        User user = User.fromDocument(snapshot.data);
-        return Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundColor: Colors.grey,
-                        backgroundImage: CachedNetworkImageProvider(user.photoUrl),
-                      ),
-                      Text(
-                        user.username,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        user.displayName,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Column(
-                                children: <Widget>[
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      buildCountColumn("posts", postCount),
-                                      buildCountColumn("followers", 0),
-                                      buildCountColumn("following", 0),
-                                    ],
-                                  ),
-                                  SizedBox(height: 12),
-                                  buildProfileButton(),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 12),
-              Text(
-                user.bio,
-                style: TextStyle(height: 1.5),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+    // return StreamBuilder(
+    //   stream: usersRef.document(widget.profileId).snapshots(),
+    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+    //     if (!snapshot.hasData) {
+    //       return CircularProgress();
+    //     }
+    //     User user = User.fromDocument(snapshot.data);
+    //     return Padding(
+    //       padding: EdgeInsets.all(16),
+    //       child: Column(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         children: <Widget>[
+    //           Row(
+    //             children: <Widget>[
+    //               Column(
+    //                 children: <Widget>[
+    //                   CircleAvatar(
+    //                     radius: 40,
+    //                     backgroundColor: Colors.grey,
+    //                     backgroundImage: CachedNetworkImageProvider(user.photoUrl),
+    //                   ),
+    //                   Text(
+    //                     user.username,
+    //                     style: TextStyle(
+    //                       fontWeight: FontWeight.bold,
+    //                       fontSize: 16,
+    //                     ),
+    //                   ),
+    //                   SizedBox(height: 4),
+    //                   Text(
+    //                     user.displayName,
+    //                     style: TextStyle(
+    //                       fontWeight: FontWeight.bold,
+    //                     ),
+    //                   ),
+    //                 ],
+    //               ),
+    //               Expanded(
+    //                 child: Column(
+    //                   children: <Widget>[
+    //                     Row(
+    //                       children: <Widget>[
+    //                         Expanded(
+    //                           child: Column(
+    //                             children: <Widget>[
+    //                               Row(
+    //                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //                                 children: <Widget>[
+    //                                   buildCountColumn("posts", postCount),
+    //                                   buildCountColumn("followers", 0),
+    //                                   buildCountColumn("following", 0),
+    //                                 ],
+    //                               ),
+    //                               SizedBox(height: 12),
+    //                               buildProfileButton(),
+    //                             ],
+    //                           ),
+    //                         ),
+    //                       ],
+    //                     ),
+    //                   ],
+    //                 ),
+    //               )
+    //             ],
+    //           ),
+    //           SizedBox(height: 12),
+    //           Text(
+    //             user.bio,
+    //             style: TextStyle(height: 1.5),
+    //           ),
+    //         ],
+    //       ),
+    //     );
+    //   },
+    // );
   }
 
   buildCountColumn(String label, int count) {
@@ -256,7 +255,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   Stream<QuerySnapshot> getProfilePost() {
-    return postRef.document(widget.profileId).collection("userPosts").orderBy("timestamp", descending: true).snapshots();
+    // return postRef
+    //     .document(widget.profileId)
+    //     .collection("userPosts")
+    //     .orderBy("timestamp", descending: true)
+    //     .snapshots();
   }
 
   buildSplashScreen(context) {

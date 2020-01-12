@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:socialmedia/pages/home.dart';
 
 class Post {
   final String postId;
@@ -36,17 +35,17 @@ class Post {
   }
 
   bool isLikedByCurrentUser() {
-    return likes[currentUser?.id] == true;
+    // return likes[currentUser?.id] == true;
   }
 
   likePost() {
-    bool isliked = likes[currentUser.id] == true;
+    // bool isliked = likes[currentUser.id] == true;
 
-    likes[currentUser?.id] = !isliked;
-    postRef
-        .document(owner)
-        .collection('userPosts')
-        .document(postId)
-        .updateData({"likes.${currentUser.id}": !isliked});
+    // likes[currentUser?.id] = !isliked;
+    // postRef
+    //     .document(owner)
+    //     .collection('userPosts')
+    //     .document(postId)
+    //     .updateData({"likes.${currentUser.id}": !isliked});
   }
 }

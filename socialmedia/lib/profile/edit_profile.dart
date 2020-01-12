@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:socialmedia/common/widgets/progress.dart';
+import 'package:socialmedia/login/login.dart';
 import 'package:socialmedia/model/user.dart';
-import 'package:socialmedia/pages/home.dart';
-import 'package:socialmedia/widgets/progress.dart';
 
 class EditProfile extends StatefulWidget {
   final String currentUserId;
@@ -122,33 +121,33 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   void getUser() async {
-    setState(() {
-      isLoading = true;
-    });
-    DocumentSnapshot doc = await usersRef.document(widget.currentUserId).get();
-    user = User.fromDocument(doc);
-    displayNameController.text = user.displayName;
-    bioController.text = user.bio;
-    setState(() {
-      isLoading = false;
-    });
+    // setState(() {
+    //   isLoading = true;
+    // });
+    // DocumentSnapshot doc = await usersRef.document(widget.currentUserId).get();
+    // user = User.fromDocument(doc);
+    // displayNameController.text = user.displayName;
+    // bioController.text = user.bio;
+    // setState(() {
+    //   isLoading = false;
+    // });
   }
 
   void updateProfileData() {
-    if (_formKey.currentState.validate()) {
-      usersRef.document(widget.currentUserId).updateData({
-        "displayName": displayNameController.text,
-        "bio": bioController.text,
-      });
-    }
+    // if (_formKey.currentState.validate()) {
+    //   usersRef.document(widget.currentUserId).updateData({
+    //     "displayName": displayNameController.text,
+    //     "bio": bioController.text,
+    //   });
+    // }
   }
 
   void logout() async {
-    await googleSignIn.signOut();
+    // await googleSignIn.signOut();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => Home(),
+        builder: (BuildContext context) => Login(),
       ),
     );
   }

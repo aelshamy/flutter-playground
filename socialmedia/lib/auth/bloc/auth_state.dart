@@ -4,7 +4,7 @@ import 'package:socialmedia/model/user.dart';
 
 @immutable
 abstract class AuthState extends Equatable {
-  final List _props;
+  final List<Object> _props;
   const AuthState([this._props]);
 
   @override

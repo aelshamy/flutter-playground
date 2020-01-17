@@ -26,14 +26,14 @@ class User {
         bio: document["bio"] as String,
       );
 
-  Map<String, dynamic> toDocument() => {
+  Map<String, String> toDocument() => {
         "id": this.id,
         "username": this.username,
         "photoUrl": this.photoUrl,
         "email": this.email,
         "displayName": this.displayName,
         "bio": this.bio,
-        "timestamp": DateTime.now()
+        "timestamp": DateTime.now() as String
       };
 
   @override

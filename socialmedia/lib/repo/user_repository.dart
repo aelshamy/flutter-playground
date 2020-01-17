@@ -25,14 +25,14 @@ class UserRepository {
   Future<void> createUser(String username) async {
     final user = _googleSignIn.currentUser;
 
-    final Map<String, dynamic> data = {
+    final Map<String, String> data = {
       "id": user.id,
       "username": username,
       "photoUrl": user.photoUrl,
       "email": user.email,
       "displayName": user.displayName,
       "bio": "",
-      "timestamp": DateTime.now()
+      "timestamp": DateTime.now() as String
     };
     return _firestoreInstance.collection(usersCollection).document(user.id).setData(data);
   }

@@ -38,8 +38,7 @@ class UserRepository {
   }
 
   Future<bool> isSignedIn() async {
-    final currentUser = _googleSignIn.currentUser;
-    return currentUser != null;
+    return _googleSignIn.currentUser != null;
   }
 
   Future<DocumentSnapshot> getUser() async {

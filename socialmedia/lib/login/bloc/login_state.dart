@@ -9,50 +9,20 @@ abstract class LoginState extends Equatable {
   List<Object> get props => this._props;
 }
 
-class InitialLogin extends LoginState {
-  @override
-  String toString() => 'Initial';
+class LoginInitial extends LoginState {}
+
+class LoginLoading extends LoginState {}
+
+class LoginCreateUser extends LoginState {}
+
+class LoginFailure extends LoginState {
+  final String error;
+
+  const LoginFailure({@required this.error});
 
   @override
-  List<Object> get props => [];
-}
-
-class LoginSuccessfully extends LoginState {
-  @override
-  String toString() => 'Login successfully with google';
+  List<Object> get props => [error];
 
   @override
-  List<Object> get props => [];
-}
-
-class UserNotCreated extends LoginState {
-  @override
-  String toString() => 'User not created';
-
-  @override
-  List<Object> get props => [];
-}
-
-class UserCreated extends LoginState {
-  @override
-  String toString() => 'User created';
-
-  @override
-  List<Object> get props => [];
-}
-
-class LoginError extends LoginState {
-  @override
-  String toString() => 'Login error';
-
-  @override
-  List<Object> get props => [];
-}
-
-class UserCreationError extends LoginState {
-  @override
-  String toString() => 'User creation error';
-
-  @override
-  List<Object> get props => [];
+  String toString() => 'LoginFailure { error: $error }';
 }

@@ -15,7 +15,7 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final UserRepository userRepository = UserRepository();
   runApp(
-    BlocProvider(
+    BlocProvider<AuthBloc>(
       create: (BuildContext context) => AuthBloc(userRepository: userRepository)..add(AppStarted()),
       child: App(),
     ),
@@ -37,11 +37,11 @@ class App extends StatelessWidget {
           if (state is Uninitialized) {
             return SplashScreen();
           }
-          if (state is Unauthenticated) {
-            return Login();
-          }
           if (state is Authenticated) {
             return Home();
+          }
+          if (state is LoggedIn) {
+            return Login();
           }
           return SizedBox();
         },

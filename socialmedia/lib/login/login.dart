@@ -5,7 +5,6 @@ import 'package:socialmedia/login/bloc/bloc.dart';
 import 'package:socialmedia/login/bloc/login_bloc.dart';
 
 import 'create_account.dart';
-import 'home.dart';
 
 class Login extends StatelessWidget {
   const Login({Key key}) : super(key: key);
@@ -16,10 +15,7 @@ class Login extends StatelessWidget {
       create: (BuildContext context) => LoginBloc(),
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (BuildContext context, LoginState state) {
-          if (state is LoginSuccessfully || state is UserCreated) {
-            return Home();
-          }
-          if (state is UserNotCreated) {
+          if (state is LoginCreateUser) {
             return CreateAccount();
           }
           return Scaffold(

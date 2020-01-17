@@ -19,7 +19,7 @@ class Createuser extends LoginEvent {
   Createuser(this.username) : super([username]);
 
   @override
-  String toString() => 'User created';
+  String toString() => 'Create User';
 
   @override
   List<Object> get props => [];

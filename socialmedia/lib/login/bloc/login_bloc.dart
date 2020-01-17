@@ -1,17 +1,21 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:socialmedia/auth/bloc/bloc.dart';
 import 'package:socialmedia/repo/user_repository.dart';
 
 import './bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  UserRepository _userRepository;
+  final UserRepository _userRepository;
+  final AuthBloc _authBloc;
 
-  LoginBloc({UserRepository userRepository}) : _userRepository = userRepository ?? UserRepository();
+  LoginBloc({UserRepository userRepository, AuthBloc authBloc})
+      : _userRepository = userRepository ?? UserRepository(),
+        _authBloc = authBloc ?? AuthBloc(userRepository: userRepository);
 
   @override
-  LoginState get initialState => InitialLogin();
+  LoginState get initialState => LoginInitial();
 
   @override
   Stream<LoginState> mapEventToState(
@@ -26,26 +30,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapLoginWithGoogleToState() async* {
+    yield LoginLoading();
     try {
       await _userRepository.signInWithGoogle();
       final doc = await _userRepository.getUser();
       if (!doc.exists) {
-        yield UserNotCreated();
+        yield LoginCreateUser();
       } else {
-        yield LoginSuccessfully();
+        _authBloc.add(LoggedIn());
+        yield LoginInitial();
       }
-    } catch (_) {
-      yield LoginError();
+    } catch (e) {
+      yield LoginFailure(error: e.toString());
     }
   }
 
   Stream<LoginState> _mapCreateuserToState(String username) async* {
     try {
       await _userRepository.createUser(username);
-      yield UserCreated();
+      _authBloc.add(LoggedIn());
+      yield LoginInitial();
     } catch (e) {
-      print(e);
-      yield UserCreationError();
+      yield LoginFailure(error: e.toString());
     }
   }
 }

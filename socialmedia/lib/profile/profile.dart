@@ -64,8 +64,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     return CircularProgress();
                   }
 
-                  List<Post> posts =
-                      snapshot.data.documents.map((doc) => Post.fromDocument(doc)).toList();
+                  List<Post> posts = snapshot.data.documents.map((doc) => Post.fromDocument(doc)).toList();
 
                   postCount = snapshot.data.documents.length;
 
@@ -88,7 +87,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     );
   }
 
-  buildProfileHeader() {
+  Widget buildProfileHeader() {
     // return StreamBuilder(
     //   stream: usersRef.document(widget.profileId).snapshots(),
     //   builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -164,9 +163,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     //     );
     //   },
     // );
+    return null;
   }
 
-  buildCountColumn(String label, int count) {
+  Widget buildCountColumn(String label, int count) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -188,7 +188,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     );
   }
 
-  buildProfileButton() {
+  Widget buildProfileButton() {
     bool isProfileOwner = currentUserId == widget.profileId;
     if (isProfileOwner) {
       return buildButton(text: "Edit Profile", function: editProfile);
@@ -196,7 +196,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     return Text('Profile button');
   }
 
-  buildButton({String text, Function function}) {
+  Widget buildButton({String text, void Function() function}) {
     return Container(
       padding: EdgeInsets.only(top: 2),
       child: FlatButton(
@@ -219,22 +219,22 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     );
   }
 
-  editProfile() {
-    Navigator.push(
+  void editProfile() {
+    Navigator.push<dynamic>(
       context,
-      MaterialPageRoute(
+      MaterialPageRoute<dynamic>(
         builder: (BuildContext context) => EditProfile(currentUserId: currentUserId),
       ),
     );
   }
 
-  buildProfileColumnPost(List<Post> posts) {
+  Widget buildProfileColumnPost(List<Post> posts) {
     return ListView(
       children: posts.map((post) => PostItem(post: post)).toList(),
     );
   }
 
-  buildProfileGridPost(List<Post> posts) {
+  Widget buildProfileGridPost(List<Post> posts) {
     List<GridTile> gridTiles = posts
         .map((post) => GridTile(
               child: PostTile(
@@ -260,9 +260,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     //     .collection("userPosts")
     //     .orderBy("timestamp", descending: true)
     //     .snapshots();
+    return null;
   }
 
-  buildSplashScreen(context) {
+  Widget buildSplashScreen(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[

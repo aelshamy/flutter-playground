@@ -20,25 +20,27 @@ class Post {
   });
 
   factory Post.fromDocument(DocumentSnapshot doc) => Post(
-        postId: doc["postId"],
-        owner: doc["owner"],
-        username: doc["username"],
-        mediaUrl: doc["mediaUrl"],
-        description: doc["description"],
-        location: doc["location"],
+        postId: doc["postId"] as String,
+        owner: doc["owner"] as String,
+        username: doc["username"] as String,
+        mediaUrl: doc["mediaUrl"] as String,
+        description: doc["description"] as String,
+        location: doc["location"] as String,
         likes: doc["likes"],
       );
 
   int getLikeCount() {
     if (likes == null) return 0;
-    return likes.values.takeWhile((item) => item == true).length;
+    return likes.values.takeWhile((bool item) => item == true).length as int;
   }
 
   bool isLikedByCurrentUser() {
     // return likes[currentUser?.id] == true;
+    return null;
   }
 
-  likePost() {
+  void likePost() {
+    return null;
     // bool isliked = likes[currentUser.id] == true;
 
     // likes[currentUser?.id] = !isliked;

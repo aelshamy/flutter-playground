@@ -4,9 +4,11 @@ import 'package:socialmedia/model/post.dart';
 
 class Comments extends StatelessWidget {
   final Post post;
-  Comments({Key key, this.post}) : super(key: key);
+  final TextEditingController _controller;
 
-  TextEditingController _controller = TextEditingController();
+  Comments({Key key, this.post})
+      : _controller = TextEditingController(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,8 @@ class Comments extends StatelessWidget {
     _controller.clear();
   }
 
-  buildComments() {
+  Widget buildComments() {
+    return null;
     // return StreamBuilder(
     //   stream: commentsRef
     //       .document(post.postId)

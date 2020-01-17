@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
 
 abstract class LoginEvent extends Equatable {
-  const LoginEvent([List props = const []]);
+  final List _props;
+  const LoginEvent([this._props]);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => this._props;
 }
 
 class LoginWithGoogle extends LoginEvent {

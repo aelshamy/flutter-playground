@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialmedia/auth/bloc/auth_event.dart';
+import 'package:socialmedia/auth/bloc/bloc.dart';
 
-import 'authentication_bloc/bloc.dart';
+import 'auth/bloc/auth_state.dart';
 import 'common/simple_bloc_delegate.dart';
 import 'login/home.dart';
 import 'login/login.dart';
@@ -14,8 +16,7 @@ void main() {
   final UserRepository userRepository = UserRepository();
   runApp(
     BlocProvider(
-      create: (BuildContext context) =>
-          AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
+      create: (BuildContext context) => AuthBloc(userRepository: userRepository)..add(AppStarted()),
       child: App(),
     ),
   );
@@ -31,8 +32,8 @@ class App extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
         accentColor: Colors.teal,
       ),
-      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-        builder: (BuildContext context, AuthenticationState state) {
+      home: BlocBuilder<AuthBloc, AuthState>(
+        builder: (BuildContext context, AuthState state) {
           if (state is Uninitialized) {
             return SplashScreen();
           }

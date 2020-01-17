@@ -142,11 +142,11 @@ class _EditProfileState extends State<EditProfile> {
     // }
   }
 
-  void logout() async {
+  Future<void> logout() async {
     // await googleSignIn.signOut();
-    Navigator.pushReplacement(
+    await Navigator.pushReplacement<dynamic, dynamic>(
       context,
-      MaterialPageRoute(
+      MaterialPageRoute<dynamic>(
         builder: (BuildContext context) => Login(),
       ),
     );

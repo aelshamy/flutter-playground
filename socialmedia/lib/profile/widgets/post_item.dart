@@ -60,7 +60,7 @@ class PostItem extends StatelessWidget {
                   ? TweenAnimationBuilder(
                       duration: Duration(milliseconds: 300),
                       tween: Tween(begin: 0.5, end: 1.5),
-                      builder: (context, value, child) => Transform.scale(
+                      builder: (BuildContext context, double value, Widget child) => Transform.scale(
                         //TODO: fix animation
                         scale: value,
                         child: Icon(
@@ -145,12 +145,11 @@ class PostItem extends StatelessWidget {
     );
   }
 
-  handleLikePost() {
+  void handleLikePost() {
     post.likePost();
   }
 
-  void showComments(context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) => Comments(post: post)));
+  void showComments(BuildContext context) {
+    Navigator.of(context).push<dynamic>(MaterialPageRoute<dynamic>(builder: (BuildContext context) => Comments(post: post)));
   }
 }

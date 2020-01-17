@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 final CollectionReference postRef = Firestore.instance.collection('posts');
@@ -11,7 +10,7 @@ class UserRepository {
   final Firestore _firestoreInstance;
   final GoogleSignIn _googleSignIn;
 
-  UserRepository({FirebaseAuth firebaseAuth, GoogleSignIn googleSignin})
+  UserRepository({Firestore firebaseAuth, GoogleSignIn googleSignin})
       : _firestoreInstance = firebaseAuth ?? Firestore.instance,
         _googleSignIn = googleSignin ?? GoogleSignIn();
 
@@ -23,10 +22,10 @@ class UserRepository {
     return _googleSignIn.signInSilently(suppressErrors: false);
   }
 
-  Future<void> createUser(username) async {
+  Future<void> createUser(String username) async {
     final user = _googleSignIn.currentUser;
 
-    return _firestoreInstance.collection(usersCollection).document(user.id).setData({
+    final Map<String, dynamic> data = {
       "id": user.id,
       "username": username,
       "photoUrl": user.photoUrl,
@@ -34,7 +33,8 @@ class UserRepository {
       "displayName": user.displayName,
       "bio": "",
       "timestamp": DateTime.now()
-    });
+    };
+    return _firestoreInstance.collection(usersCollection).document(user.id).setData(data);
   }
 
   Future<bool> isSignedIn() async {
@@ -44,8 +44,7 @@ class UserRepository {
 
   Future<DocumentSnapshot> getUser() async {
     final GoogleSignInAccount user = _googleSignIn.currentUser;
-    DocumentSnapshot doc =
-        await _firestoreInstance.collection(usersCollection).document(user.id).get();
+    DocumentSnapshot doc = await _firestoreInstance.collection(usersCollection).document(user.id).get();
     return doc;
   }
 

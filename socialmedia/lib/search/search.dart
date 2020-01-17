@@ -72,7 +72,7 @@ class _SearchState extends State<Search> {
     );
   }
 
-  buildSearchResults() {
+  Widget buildSearchResults() {
     return StreamBuilder<QuerySnapshot>(
       stream: users,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

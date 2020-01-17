@@ -18,12 +18,12 @@ class User {
   });
 
   factory User.fromDocument(DocumentSnapshot document) => User(
-        id: document["id"],
-        username: document["username"],
-        photoUrl: document["photoUrl"],
-        email: document["email"],
-        displayName: document["displayName"],
-        bio: document["bio"],
+        id: document["id"] as String,
+        username: document["username"] as String,
+        photoUrl: document["photoUrl"] as String,
+        email: document["email"] as String,
+        displayName: document["displayName"] as String,
+        bio: document["bio"] as String,
       );
 
   Map<String, dynamic> toDocument() => {

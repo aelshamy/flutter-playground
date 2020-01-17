@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:image/image.dart' as Im;
+import 'package:image/image.dart' as im;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
@@ -32,7 +32,7 @@ class _UploadState extends State<Upload> {
     return image == null ? buildSplashScreen(context) : buildUploadForm();
   }
 
-  buildSplashScreen(context) {
+  Widget buildSplashScreen(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -59,8 +59,8 @@ class _UploadState extends State<Upload> {
     );
   }
 
-  selectImage(context) {
-    return showDialog(
+  Future<void> selectImage(BuildContext context) async {
+    return await showDialog<void>(
         context: context,
         builder: (context) {
           return SimpleDialog(
@@ -83,7 +83,7 @@ class _UploadState extends State<Upload> {
         });
   }
 
-  handleTakePhoto() async {
+  Future<void> handleTakePhoto() async {
     Navigator.pop(context);
     File file = await ImagePicker.pickImage(
       source: ImageSource.camera,
@@ -95,7 +95,7 @@ class _UploadState extends State<Upload> {
     });
   }
 
-  handlePhotoFromGallary() async {
+  Future<void> handlePhotoFromGallary() async {
     Navigator.pop(context);
     File file = await ImagePicker.pickImage(
       source: ImageSource.gallery,
@@ -107,7 +107,7 @@ class _UploadState extends State<Upload> {
     });
   }
 
-  buildUploadForm() {
+  Widget buildUploadForm() {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white70,
@@ -223,12 +223,11 @@ class _UploadState extends State<Upload> {
     });
   }
 
-  compressImage() async {
+  Future<void> compressImage() async {
     final tempDir = await getTemporaryDirectory();
     final path = tempDir.path;
-    Im.Image imageFile = Im.decodeImage(image.readAsBytesSync());
-    final compressedImageFile = File('$path/image_$postId.jpg')
-      ..writeAsBytesSync(Im.encodeJpg(imageFile, quality: 85));
+    im.Image imageFile = im.decodeImage(image.readAsBytesSync());
+    final compressedImageFile = File('$path/image_$postId.jpg')..writeAsBytesSync(im.encodeJpg(imageFile, quality: 85));
     setState(() {
       image = compressedImageFile;
     });
@@ -254,11 +253,12 @@ class _UploadState extends State<Upload> {
     });
   }
 
-  uploadImage(File imageFile) async {
+  Future<String> uploadImage(File imageFile) async {
     // final StorageUploadTask uploadTask = storageRef.child("post_$postId.jpg").putFile(imageFile);
     // final StorageTaskSnapshot uploadSnapshot = await uploadTask.onComplete;
     // final String downloadUrl = await uploadSnapshot.ref.getDownloadURL();
     // return downloadUrl;
+    return null;
   }
 
   void createPostInFireStore({String mediaUrl, String location, String description}) {
@@ -275,10 +275,8 @@ class _UploadState extends State<Upload> {
   }
 
   void getUserLocation() async {
-    final Position position =
-        await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    List<Placemark> placemarks =
-        await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
+    final Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    List<Placemark> placemarks = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
     final placemark = placemarks[0];
 
     String completeAddress =

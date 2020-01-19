@@ -3,16 +3,19 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:socialmedia/common/model/user.dart';
+import 'package:socialmedia/repo/firestore_repo.dart';
 import 'package:socialmedia/repo/user_repository.dart';
 
 import 'bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserRepository _userRepository;
+  final FirestoreRepo _firestoreRepo;
 
-  AuthBloc({@required UserRepository userRepository})
-      : assert(userRepository != null),
-        _userRepository = userRepository;
+  AuthBloc({@required UserRepository userRepository, FirestoreRepo firestoreRepo})
+      : assert(userRepository != null, firestoreRepo != null),
+        _userRepository = userRepository,
+        _firestoreRepo = firestoreRepo;
 
   @override
   AuthState get initialState => Uninitialized();
@@ -27,6 +30,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield* _mapLoggedInToState();
     } else if (event is LoggedOut) {
       yield* _mapLoggedOutToState();
+    } else if (event is UpdateUser) {
+      yield* _mapUpdateUserToState(event.userId, event.displayName, event.bio);
     }
   }
 
@@ -48,5 +53,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLoggedOutToState() async* {
     await _userRepository.signOut();
     yield Unauthenticated();
+  }
+
+  Stream<AuthState> _mapUpdateUserToState(String userId, String displayName, String bio) async* {
+    await _firestoreRepo.updateUser(userId, displayName, bio);
   }
 }

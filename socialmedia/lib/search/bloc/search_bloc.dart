@@ -9,7 +9,7 @@ import './bloc.dart';
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final FirestoreRepo _fireStoreRepo;
 
-  SearchBloc({FirestoreRepo userRepository}) : _fireStoreRepo = userRepository ?? FirestoreRepo();
+  SearchBloc({FirestoreRepo firestoreRepo}) : _fireStoreRepo = firestoreRepo ?? FirestoreRepo();
 
   @override
   SearchState get initialState => SearchInitial();
@@ -26,7 +26,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   Stream<SearchState> _mapSearchStartedToState(String query) async* {
     yield SearchLoading();
     try {
-      final usersDocuments = await _fireStoreRepo.SearchUsers(query);
+      final usersDocuments = await _fireStoreRepo.searchUsers(query);
       final users = usersDocuments.documents.map((doc) => User.fromDocument(doc)).toList();
       yield SearchLoaded(users: users);
     } catch (e) {

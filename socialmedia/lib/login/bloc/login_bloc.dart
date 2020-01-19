@@ -8,6 +8,7 @@ import './bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository _userRepository;
+  //Todo: see if we need to dispose that
   final AuthBloc _authBloc;
 
   LoginBloc({UserRepository userRepository, AuthBloc authBloc})
@@ -26,6 +27,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
     if (event is Createuser) {
       yield* _mapCreateuserToState(event.username);
+    }
+    if (event is Logout) {
+      yield* _mapLogoutToState();
     }
   }
 
@@ -52,6 +56,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginInitial();
     } catch (e) {
       yield LoginFailure(error: e.toString());
+    }
+  }
+
+  Stream<LoginState> _mapLogoutToState() async* {
+    try {
+      await _userRepository.signOut();
+      _authBloc.add(LoggedOut());
+    } catch (e) {
+      print(e);
     }
   }
 }

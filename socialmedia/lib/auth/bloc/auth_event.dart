@@ -1,24 +1,35 @@
 import 'package:equatable/equatable.dart';
 
 abstract class AuthEvent extends Equatable {
-  final List _props;
-  const AuthEvent([this._props]);
-
-  @override
-  List<Object> get props => this._props;
+  const AuthEvent([List props = const <dynamic>[]]);
 }
 
 class AppStarted extends AuthEvent {
   @override
-  String toString() => 'AppStarted';
+  List<Object> get props => [];
 }
 
 class LoggedIn extends AuthEvent {
   @override
-  String toString() => 'LoggedIn';
+  List<Object> get props => [];
 }
 
 class LoggedOut extends AuthEvent {
   @override
-  String toString() => 'LoggedOut';
+  List<Object> get props => [];
+}
+
+class UpdateUser extends AuthEvent {
+  final String userId;
+  final String bio;
+  final String displayName;
+
+  UpdateUser({
+    this.userId,
+    this.bio,
+    this.displayName,
+  }) : super(<dynamic>[userId, bio, displayName]);
+
+  @override
+  List<Object> get props => [userId, bio, displayName];
 }

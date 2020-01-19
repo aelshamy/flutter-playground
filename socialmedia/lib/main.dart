@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/auth/bloc/auth_event.dart';
 import 'package:socialmedia/auth/bloc/bloc.dart';
+import 'package:socialmedia/repo/firestore_repo.dart';
 
 import 'auth/bloc/auth_state.dart';
 import 'common/simple_bloc_delegate.dart';
@@ -21,11 +22,12 @@ void main() {
   );
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final UserRepository userRepository = UserRepository();
+  final FirestoreRepo firestoreRepo = FirestoreRepo();
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (BuildContext context) => AuthBloc(userRepository: userRepository)..add(AppStarted()),
+          create: (BuildContext context) => AuthBloc(userRepository: userRepository, firestoreRepo: firestoreRepo)..add(AppStarted()),
         ),
         BlocProvider<LoginBloc>(
           create: (BuildContext context) => LoginBloc(
@@ -33,12 +35,15 @@ void main() {
           ),
         ),
       ],
-      child: App(),
+      child: App(firestoreRepo: firestoreRepo),
     ),
   );
 }
 
 class App extends StatelessWidget {
+  final FirestoreRepo firestoreRepo;
+
+  const App({Key key, this.firestoreRepo}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -54,7 +59,7 @@ class App extends StatelessWidget {
             return SplashScreen();
           }
           if (state is Authenticated) {
-            return Home();
+            return Home(firestoreRepo: firestoreRepo);
           }
           if (state is Unauthenticated) {
             return Login();

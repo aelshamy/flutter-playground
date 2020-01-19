@@ -17,7 +17,7 @@ class Search extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.8),
+      // backgroundColor: Theme.of(context).primaryColor.withOpacity(0.8),
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: TextFormField(
@@ -88,7 +88,7 @@ class Search extends StatelessWidget {
   }
 
   Widget _buildSearchLoaded(List<User> users) {
-    return users.length > 0
+    return users.isNotEmpty
         ? ListView.builder(
             itemCount: users.length,
             itemBuilder: (BuildContext context, int index) {

@@ -1,9 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:socialmedia/auth/bloc/bloc.dart';
 import 'package:socialmedia/common/model/post.dart';
+import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/header.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
+import 'package:socialmedia/profile/bloc/bloc.dart';
 
 import 'edit_profile.dart';
 import 'widgets/post_item.dart';
@@ -11,19 +15,15 @@ import 'widgets/post_tile.dart';
 
 class Profile extends StatefulWidget {
   final String profileId;
-  const Profile({Key key, this.profileId}) : super(key: key);
+  final User user;
+
+  const Profile({Key key, this.profileId, this.user}) : super(key: key);
 
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
-  // final String currentUserId = currentUser?.id;
-  final String currentUserId = '1';
-  bool isLoading = false;
-  int postCount = 0;
-  List<Post> posts = [];
-
   @override
   void initState() {
     super.initState();
@@ -38,12 +38,33 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Header(title: "Profile"),
-      body: DefaultTabController(
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (BuildContext context, ProfileState state) {
+          if (state is ProfileLoading || state is ProfileInitial) {
+            return Center(child: CircularProgress());
+          }
+          if (state is ProfileLoadError) {
+            return Center(child: Text(state.error));
+          }
+          List<Post> posts = (state as ProfileLoaded).posts;
+          return Column(
+            // physics: ClampingScrollPhysics(),
+            children: <Widget>[
+              buildProfileHeader(posts.length),
+              _buildPostsTabs(context, posts),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildPostsTabs(BuildContext context, List<Post> posts) {
+    return Expanded(
+      child: DefaultTabController(
         length: 2,
         child: Column(
-          // physics: ClampingScrollPhysics(),
           children: <Widget>[
-            buildProfileHeader(),
             Divider(height: 0.0),
             TabBar(
               labelColor: Theme.of(context).primaryColor,
@@ -57,29 +78,15 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             ),
             Divider(height: 0.0),
             Expanded(
-              child: StreamBuilder(
-                stream: getProfilePost(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData) {
-                    return CircularProgress();
-                  }
-
-                  List<Post> posts = snapshot.data.documents.map((doc) => Post.fromDocument(doc)).toList();
-
-                  postCount = snapshot.data.documents.length;
-
-                  if (posts.isEmpty) {
-                    return buildSplashScreen(context);
-                  }
-                  return TabBarView(
-                    physics: NeverScrollableScrollPhysics(),
-                    children: <Widget>[
-                      buildProfileGridPost(posts),
-                      buildProfileColumnPost(posts),
-                    ],
-                  );
-                },
-              ),
+              child: posts.isEmpty
+                  ? buildSplashScreen(context)
+                  : TabBarView(
+                      physics: NeverScrollableScrollPhysics(),
+                      children: <Widget>[
+                        buildProfileGridPost(posts),
+                        buildProfileColumnPost(posts),
+                      ],
+                    ),
             ),
           ],
         ),
@@ -87,83 +94,73 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget buildProfileHeader() {
-    // return StreamBuilder(
-    //   stream: usersRef.document(widget.profileId).snapshots(),
-    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-    //     if (!snapshot.hasData) {
-    //       return CircularProgress();
-    //     }
-    //     User user = User.fromDocument(snapshot.data);
-    //     return Padding(
-    //       padding: EdgeInsets.all(16),
-    //       child: Column(
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         children: <Widget>[
-    //           Row(
-    //             children: <Widget>[
-    //               Column(
-    //                 children: <Widget>[
-    //                   CircleAvatar(
-    //                     radius: 40,
-    //                     backgroundColor: Colors.grey,
-    //                     backgroundImage: CachedNetworkImageProvider(user.photoUrl),
-    //                   ),
-    //                   Text(
-    //                     user.username,
-    //                     style: TextStyle(
-    //                       fontWeight: FontWeight.bold,
-    //                       fontSize: 16,
-    //                     ),
-    //                   ),
-    //                   SizedBox(height: 4),
-    //                   Text(
-    //                     user.displayName,
-    //                     style: TextStyle(
-    //                       fontWeight: FontWeight.bold,
-    //                     ),
-    //                   ),
-    //                 ],
-    //               ),
-    //               Expanded(
-    //                 child: Column(
-    //                   children: <Widget>[
-    //                     Row(
-    //                       children: <Widget>[
-    //                         Expanded(
-    //                           child: Column(
-    //                             children: <Widget>[
-    //                               Row(
-    //                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //                                 children: <Widget>[
-    //                                   buildCountColumn("posts", postCount),
-    //                                   buildCountColumn("followers", 0),
-    //                                   buildCountColumn("following", 0),
-    //                                 ],
-    //                               ),
-    //                               SizedBox(height: 12),
-    //                               buildProfileButton(),
-    //                             ],
-    //                           ),
-    //                         ),
-    //                       ],
-    //                     ),
-    //                   ],
-    //                 ),
-    //               )
-    //             ],
-    //           ),
-    //           SizedBox(height: 12),
-    //           Text(
-    //             user.bio,
-    //             style: TextStyle(height: 1.5),
-    //           ),
-    //         ],
-    //       ),
-    //     );
-    //   },
-    // );
-    return null;
+  Widget buildProfileHeader(int postsCount) {
+    return Padding(
+      padding: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.grey,
+                    backgroundImage: CachedNetworkImageProvider(widget.user.photoUrl),
+                  ),
+                  Text(
+                    widget.user.username,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    widget.user.displayName,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  buildCountColumn("posts", postsCount),
+                                  buildCountColumn("followers", 0),
+                                  buildCountColumn("following", 0),
+                                ],
+                              ),
+                              SizedBox(height: 12),
+                              buildProfileButton(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          SizedBox(height: 12),
+          Text(
+            widget.user.bio,
+            style: TextStyle(height: 1.5),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget buildCountColumn(String label, int count) {
@@ -189,9 +186,15 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   Widget buildProfileButton() {
-    bool isProfileOwner = currentUserId == widget.profileId;
+    User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+    bool isProfileOwner = user.id == widget.profileId;
     if (isProfileOwner) {
-      return buildButton(text: "Edit Profile", function: editProfile);
+      return buildButton(
+        text: "Edit Profile",
+        function: () {
+          editProfile(user);
+        },
+      );
     }
     return Text('Profile button');
   }
@@ -219,18 +222,18 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     );
   }
 
-  void editProfile() {
+  void editProfile(User user) {
     Navigator.push<dynamic>(
       context,
       MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => EditProfile(currentUserId: currentUserId),
+        builder: (BuildContext context) => EditProfile(user: user),
       ),
     );
   }
 
   Widget buildProfileColumnPost(List<Post> posts) {
     return ListView(
-      children: posts.map((post) => PostItem(post: post)).toList(),
+      children: posts.map((post) => PostItem(post: post, user: widget.user)).toList(),
     );
   }
 
@@ -252,15 +255,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       physics: NeverScrollableScrollPhysics(),
       children: gridTiles,
     );
-  }
-
-  Stream<QuerySnapshot> getProfilePost() {
-    // return postRef
-    //     .document(widget.profileId)
-    //     .collection("userPosts")
-    //     .orderBy("timestamp", descending: true)
-    //     .snapshots();
-    return null;
   }
 
   Widget buildSplashScreen(BuildContext context) {

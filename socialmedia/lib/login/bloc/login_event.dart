@@ -8,10 +8,9 @@ abstract class LoginEvent extends Equatable {
   List<Object> get props => this._props;
 }
 
-class LoginWithGoogle extends LoginEvent {
-  @override
-  String toString() => 'Login With Google';
-}
+class LoginWithGoogle extends LoginEvent {}
+
+class Logout extends LoginEvent {}
 
 class Createuser extends LoginEvent {
   final String username;
@@ -19,8 +18,5 @@ class Createuser extends LoginEvent {
   Createuser(this.username) : super([username]);
 
   @override
-  String toString() => 'Create User';
-
-  @override
-  List<Object> get props => [];
+  List<Object> get props => [username];
 }

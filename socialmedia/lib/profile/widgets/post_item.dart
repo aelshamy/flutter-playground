@@ -1,49 +1,47 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/comments/comments.dart';
 import 'package:socialmedia/common/model/post.dart';
+import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
+import 'package:socialmedia/profile/bloc/bloc.dart';
+import 'package:socialmedia/profile/bloc/profile_bloc.dart';
 
 class PostItem extends StatelessWidget {
   final Post post;
-  PostItem({Key key, this.post}) : super(key: key);
+  final User user;
+  PostItem({Key key, this.post, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        // StreamBuilder(
-        //   stream: usersRef.document(post.owner).snapshots(),
-        //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-        //     if (!snapshot.hasData) {
-        //       return CircularProgress();
-        //     }
-        //     User user = User.fromDocument(snapshot.data);
-        //     return ListTile(
-        //       leading: CircleAvatar(
-        //         backgroundImage: CachedNetworkImageProvider(user.photoUrl),
-        //         backgroundColor: Colors.grey,
-        //       ),
-        //       title: GestureDetector(
-        //         onTap: () => print("User Clicked "),
-        //         child: Text(
-        //           user.username,
-        //           style: TextStyle(
-        //             color: Colors.blue,
-        //             fontWeight: FontWeight.bold,
-        //           ),
-        //         ),
-        //       ),
-        //       subtitle: Text(post.location),
-        //       trailing: IconButton(
-        //         icon: Icon(Icons.more_vert),
-        //         onPressed: () => print("Deleting Post"),
-        //       ),
-        //     );
-        //   },
-        // ),
+        ListTile(
+          leading: CircleAvatar(
+            backgroundImage: CachedNetworkImageProvider(user.photoUrl),
+            backgroundColor: Colors.grey,
+          ),
+          title: GestureDetector(
+            onTap: () => print("User Clicked "),
+            child: Text(
+              user.username,
+              style: TextStyle(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          subtitle: Text(post.location),
+          trailing: IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () => print("Deleting Post"),
+          ),
+        ),
         GestureDetector(
-          onDoubleTap: handleLikePost,
+          onDoubleTap: () {
+            likePost(context);
+          },
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
@@ -56,7 +54,7 @@ class PostItem extends StatelessWidget {
                 ),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
-              post.isLikedByCurrentUser()
+              post.likes[user?.id] == true
                   ? TweenAnimationBuilder(
                       duration: Duration(milliseconds: 300),
                       tween: Tween(begin: 0.5, end: 1.5),
@@ -95,9 +93,11 @@ class PostItem extends StatelessWidget {
             children: <Widget>[
               SizedBox(height: 40),
               GestureDetector(
-                onTap: handleLikePost,
+                onTap: () {
+                  likePost(context);
+                },
                 child: Icon(
-                  post.isLikedByCurrentUser() ? Icons.favorite : Icons.favorite_border,
+                  post.likes[user?.id] == true ? Icons.favorite : Icons.favorite_border,
                   size: 28,
                   color: Colors.pink,
                 ),
@@ -120,7 +120,7 @@ class PostItem extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: 20),
               child: Text(
-                "${post.getLikeCount()} Likes",
+                "${getLikeCount()} Likes",
                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ),
@@ -145,8 +145,13 @@ class PostItem extends StatelessWidget {
     );
   }
 
-  void handleLikePost() {
-    post.likePost();
+  void likePost(BuildContext context) {
+    BlocProvider.of<ProfileBloc>(context).add(LikePost(post: post, user: user));
+  }
+
+  int getLikeCount() {
+    if (post.likes == null) return 0;
+    return post.likes.values.takeWhile((dynamic item) => item == true).length as int;
   }
 
   void showComments(BuildContext context) {

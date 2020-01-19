@@ -28,26 +28,4 @@ class Post {
         location: doc["location"] as String,
         likes: doc["likes"],
       );
-
-  int getLikeCount() {
-    if (likes == null) return 0;
-    return likes.values.takeWhile((bool item) => item == true).length as int;
-  }
-
-  bool isLikedByCurrentUser() {
-    // return likes[currentUser?.id] == true;
-    return null;
-  }
-
-  void likePost() {
-    return null;
-    // bool isliked = likes[currentUser.id] == true;
-
-    // likes[currentUser?.id] = !isliked;
-    // postRef
-    //     .document(owner)
-    //     .collection('userPosts')
-    //     .document(postId)
-    //     .updateData({"likes.${currentUser.id}": !isliked});
-  }
 }

@@ -1,25 +1,17 @@
 import 'package:equatable/equatable.dart';
 
 abstract class SearchEvent extends Equatable {
-  const SearchEvent();
+  const SearchEvent([List props = const <dynamic>[]]);
 }
 
-class SearchLoading extends SearchEvent {
-  @override
-  List<Object> get props => [];
-}
+class SearchStarted extends SearchEvent {
+  String query;
 
-class SearchLoaded extends SearchEvent {
-  @override
-  List<Object> get props => [];
-}
+  SearchStarted(this.query) : super(<dynamic>[query]);
 
-class SearchError extends SearchEvent {
   @override
-  List<Object> get props => [];
-}
+  String toString() => 'Search {term: $query}';
 
-class SearchEmpty extends SearchEvent {
   @override
-  List<Object> get props => [];
+  List<Object> get props => [query];
 }

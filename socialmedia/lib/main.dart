@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/auth/bloc/auth_event.dart';
 import 'package:socialmedia/auth/bloc/bloc.dart';
@@ -13,6 +14,11 @@ import 'repo/user_repository.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    ),
+  );
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final UserRepository userRepository = UserRepository();
   runApp(
@@ -52,7 +58,6 @@ class App extends StatelessWidget {
           }
           if (state is Unauthenticated) {
             return Login();
-            // return Login();
           }
           return SizedBox();
         },

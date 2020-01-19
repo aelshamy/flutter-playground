@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 abstract class ProfileState extends Equatable {
-  const ProfileState();
+  const ProfileState([List _props = const <dynamic>[]]);
 }
 
 class InitialProfileState extends ProfileState {

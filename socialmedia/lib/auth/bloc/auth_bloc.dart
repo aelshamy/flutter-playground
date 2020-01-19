@@ -31,13 +31,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapAppStartedToState() async* {
-    // try {
-    //   await _userRepository.signInSilentlyWithGoogle();
-    //   final doc = await _userRepository.getUser();
-    //   yield Authenticated(User.fromDocument(doc));
-    // } catch (_) {
-    yield Unauthenticated();
-    // }
+    try {
+      await _userRepository.signInSilentlyWithGoogle();
+      final doc = await _userRepository.getUser();
+      yield Authenticated(User.fromDocument(doc));
+    } catch (_) {
+      yield Unauthenticated();
+    }
   }
 
   Stream<AuthState> _mapLoggedInToState() async* {

@@ -1,20 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/model/user.dart';
+import 'package:socialmedia/search/bloc/search_bloc.dart';
 
-class Search extends StatefulWidget {
-  const Search({Key key}) : super(key: key);
+import 'bloc/bloc.dart';
+import 'bloc/search_state.dart';
 
-  @override
-  _SearchState createState() => _SearchState();
-}
+class Search extends StatelessWidget {
+  final TextEditingController _controller;
 
-class _SearchState extends State<Search> {
-  Stream<QuerySnapshot> users;
-  TextEditingController _controller = TextEditingController();
+  Search() : _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,17 +34,33 @@ class _SearchState extends State<Search> {
             ),
           ),
           onFieldSubmitted: (String query) {
-            // setState(() {
-            //   users = usersRef.where("displayName", isGreaterThanOrEqualTo: query).snapshots();
-            // });
+            _controller.clear();
+
+            BlocProvider.of<SearchBloc>(context).add(SearchStarted(query));
           },
         ),
       ),
-      body: users == null ? buildNoContnet() : buildSearchResults(),
+      body: BlocBuilder<SearchBloc, SearchState>(
+        builder: (BuildContext context, SearchState state) {
+          if (state is SearchInitial) {
+            return _buildSearchInitial();
+          }
+          if (state is SearchLoading) {
+            return CircularProgress();
+          }
+          if (state is SearchError) {
+            return Center(
+              child: Text(state.error),
+            );
+          }
+          if (state is SearchError) {}
+          return _buildSearchLoaded((state as SearchLoaded).users);
+        },
+      ),
     );
   }
 
-  Widget buildNoContnet() {
+  Widget _buildSearchInitial() {
     return OrientationBuilder(
       builder: (BuildContext context, Orientation orientation) {
         return Column(
@@ -72,39 +87,35 @@ class _SearchState extends State<Search> {
     );
   }
 
-  Widget buildSearchResults() {
-    return StreamBuilder<QuerySnapshot>(
-      stream: users,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) {
-          return CircularProgress();
-        }
-        return ListView.builder(
-          itemCount: snapshot.data.documents.length,
-          itemBuilder: (BuildContext context, int index) {
-            User user = User.fromDocument(snapshot.data.documents[index]);
-            return Container(
-              color: Theme.of(context).primaryColor.withOpacity(0.7),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(user.photoUrl),
-                ),
-                title: Text(
-                  user.displayName,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+  Widget _buildSearchLoaded(List<User> users) {
+    return users.length > 0
+        ? ListView.builder(
+            itemCount: users.length,
+            itemBuilder: (BuildContext context, int index) {
+              User user = users[index];
+              return Container(
+                color: Theme.of(context).primaryColor.withOpacity(0.7),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(user.photoUrl),
+                  ),
+                  title: Text(
+                    user.displayName,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Text(
+                    user.username,
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
-                subtitle: Text(
-                  user.username,
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
+              );
+            },
+          )
+        : Center(
+            child: Text('No Results found'),
+          );
   }
 }

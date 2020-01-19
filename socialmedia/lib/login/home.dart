@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/feed/activity_feed.dart';
 import 'package:socialmedia/profile/profile.dart';
+import 'package:socialmedia/search/bloc/bloc.dart';
 import 'package:socialmedia/search/search.dart';
 import 'package:socialmedia/timeline/timeline.dart';
 import 'package:socialmedia/upload/upload.dart';
 
 class Home extends StatelessWidget {
   final List<Widget> _pages;
-  const Home({Key key})
-      : _pages = const [
+  Home({Key key})
+      : _pages = [
           Timeline(),
           ActivityFeed(),
           Upload(),
@@ -46,7 +48,21 @@ class Home extends StatelessWidget {
         ],
       ),
       tabBuilder: (BuildContext context, int index) {
-        return _pages[index];
+        switch (index) {
+          case 0:
+            return _pages[0];
+          case 1:
+            return _pages[1];
+          case 2:
+            return _pages[2];
+          case 3:
+            return BlocProvider<SearchBloc>(
+              create: (context) => SearchBloc(),
+              child: _pages[3],
+            );
+          case 4:
+            return _pages[4];
+        }
       },
     );
   }

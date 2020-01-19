@@ -43,11 +43,15 @@ class UserRepository {
 
   Future<DocumentSnapshot> getUser() async {
     final GoogleSignInAccount user = _googleSignIn.currentUser;
-    DocumentSnapshot doc = await _firestoreInstance.collection(usersCollection).document(user.id).get();
-    return doc;
+    return await _firestoreInstance.collection(usersCollection).document(user.id).get();
   }
 
   Future<GoogleSignInAccount> signOut() async {
     return _googleSignIn.signOut();
+  }
+
+  Future<QuerySnapshot> SearchUsers(String query) async {
+    final doc = await _firestoreInstance.collection(usersCollection).where("displayName", isGreaterThanOrEqualTo: query).getDocuments();
+    return doc;
   }
 }

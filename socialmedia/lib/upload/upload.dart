@@ -7,8 +7,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:socialmedia/auth/bloc/bloc.dart';
+import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
-import 'package:socialmedia/model/user.dart';
 import 'package:socialmedia/upload/bloc/upload_state.dart';
 
 import 'bloc/bloc.dart';

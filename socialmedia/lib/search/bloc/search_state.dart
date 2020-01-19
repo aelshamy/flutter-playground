@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:socialmedia/model/user.dart';
+import 'package:socialmedia/common/model/user.dart';
 
 abstract class SearchState extends Equatable {
   const SearchState([List props = const <dynamic>[]]);

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:socialmedia/model/user.dart';
+import 'package:socialmedia/common/model/user.dart';
 
 class FirestoreRepo {
   final Firestore _firestoreInstance;

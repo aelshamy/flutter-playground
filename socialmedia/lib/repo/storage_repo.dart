@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image/image.dart' as im;
 import 'package:path_provider/path_provider.dart';
-import 'package:socialmedia/model/user.dart';
+import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
 import 'package:uuid/uuid.dart';
 

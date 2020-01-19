@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:socialmedia/model/user.dart';
+import 'package:socialmedia/common/model/user.dart';
 
 abstract class UploadEvent extends Equatable {
   const UploadEvent([List props = const <dynamic>[]]);

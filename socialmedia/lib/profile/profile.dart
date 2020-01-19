@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/widgets/header.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
-import 'package:socialmedia/model/post.dart';
 
 import 'edit_profile.dart';
 import 'widgets/post_item.dart';

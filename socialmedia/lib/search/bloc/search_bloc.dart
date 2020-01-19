@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:socialmedia/model/user.dart';
+import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
 
 import './bloc.dart';

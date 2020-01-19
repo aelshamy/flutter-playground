@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
-import 'package:socialmedia/model/user.dart';
 import 'package:socialmedia/search/bloc/search_bloc.dart';
 
 import 'bloc/bloc.dart';

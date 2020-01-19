@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:socialmedia/comments/comments.dart';
+import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
-import 'package:socialmedia/model/post.dart';
 
 class PostItem extends StatelessWidget {
   final Post post;

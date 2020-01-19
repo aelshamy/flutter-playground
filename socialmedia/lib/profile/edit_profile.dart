@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/login/login.dart';
-import 'package:socialmedia/model/user.dart';
 
 class EditProfile extends StatefulWidget {
   final String currentUserId;

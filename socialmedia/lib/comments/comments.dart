@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/widgets/header.dart';
-import 'package:socialmedia/model/post.dart';
 
 class Comments extends StatelessWidget {
   final Post post;

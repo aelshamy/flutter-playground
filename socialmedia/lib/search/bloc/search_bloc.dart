@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:socialmedia/model/user.dart';
-import 'package:socialmedia/repo/user_repository.dart';
+import 'package:socialmedia/repo/firestore_repo.dart';
 
 import './bloc.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  final UserRepository _userRepository;
+  final FirestoreRepo _fireStoreRepo;
 
-  SearchBloc({UserRepository userRepository}) : _userRepository = userRepository ?? UserRepository();
+  SearchBloc({FirestoreRepo userRepository}) : _fireStoreRepo = userRepository ?? FirestoreRepo();
 
   @override
   SearchState get initialState => SearchInitial();
@@ -26,7 +26,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   Stream<SearchState> _mapSearchStartedToState(String query) async* {
     yield SearchLoading();
     try {
-      final usersDocuments = await _userRepository.SearchUsers(query);
+      final usersDocuments = await _fireStoreRepo.SearchUsers(query);
       final users = usersDocuments.documents.map((doc) => User.fromDocument(doc)).toList();
       yield SearchLoaded(users: users);
     } catch (e) {

@@ -2,37 +2,37 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:image/image.dart' as im;
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:socialmedia/auth/bloc/bloc.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/model/user.dart';
-import 'package:uuid/uuid.dart';
+import 'package:socialmedia/upload/bloc/upload_state.dart';
 
-class Upload extends StatefulWidget {
-  final User currentUser;
+import 'bloc/bloc.dart';
+import 'bloc/upload_bloc.dart';
 
-  const Upload({Key key, this.currentUser}) : super(key: key);
-
-  @override
-  _UploadState createState() => _UploadState();
-}
-
-class _UploadState extends State<Upload> {
-  File image;
+class Upload extends StatelessWidget {
   bool isUploading = false;
-  String postId = Uuid().v4();
+
   TextEditingController locationController = TextEditingController();
   TextEditingController captionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return image == null ? buildSplashScreen(context) : buildUploadForm();
+    return BlocBuilder<UploadBloc, UploadState>(
+      builder: (BuildContext context, UploadState state) {
+        if (state is UploadInitial) {
+          return _buildUploadInitial(context);
+        }
+        return _buildUploadForm(context, (state as UploadPhotoSelected).image);
+      },
+    );
   }
 
-  Widget buildSplashScreen(BuildContext context) {
+  Widget _buildUploadInitial(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -52,62 +52,49 @@ class _UploadState extends State<Upload> {
           ),
           color: Colors.deepPurple,
           onPressed: () {
-            selectImage(context);
+            _showSelectImageDialog(context);
           },
         )
       ],
     );
   }
 
-  Future<void> selectImage(BuildContext context) async {
+  Future<void> _showSelectImageDialog(BuildContext context) async {
+    UploadBloc uploadBloc = BlocProvider.of<UploadBloc>(context);
     return await showDialog<void>(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(
-            title: Text('Create Post'),
-            children: <Widget>[
-              SimpleDialogOption(
-                child: Text("Photo with Camera"),
-                onPressed: handleTakePhoto,
-              ),
-              SimpleDialogOption(
-                child: Text("Image from gallary"),
-                onPressed: handlePhotoFromGallary,
-              ),
-              SimpleDialogOption(
-                child: Text("Cancel"),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          );
-        });
-  }
-
-  Future<void> handleTakePhoto() async {
-    Navigator.pop(context);
-    File file = await ImagePicker.pickImage(
-      source: ImageSource.camera,
-      maxHeight: 675,
-      maxWidth: 960,
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: Text('Create Post'),
+          children: <Widget>[
+            SimpleDialogOption(
+              child: Text("Photo with Camera"),
+              onPressed: () {
+                Navigator.pop(context);
+                uploadBloc.add(SelectPhoto(source: ImageSource.camera));
+              },
+            ),
+            SimpleDialogOption(
+              child: Text("Image from gallary"),
+              onPressed: () {
+                Navigator.pop(context);
+                uploadBloc.add(SelectPhoto(source: ImageSource.gallery));
+              },
+            ),
+            SimpleDialogOption(
+              child: Text("Cancel"),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        );
+      },
     );
-    setState(() {
-      image = file;
-    });
   }
 
-  Future<void> handlePhotoFromGallary() async {
-    Navigator.pop(context);
-    File file = await ImagePicker.pickImage(
-      source: ImageSource.gallery,
-      maxHeight: 675,
-      maxWidth: 960,
-    );
-    setState(() {
-      image = file;
-    });
-  }
+  Widget _buildUploadForm(BuildContext context, File image) {
+    UploadBloc uploadBloc = BlocProvider.of<UploadBloc>(context);
+    User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
 
-  Widget buildUploadForm() {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white70,
@@ -116,7 +103,7 @@ class _UploadState extends State<Upload> {
             Icons.arrow_back,
             color: Colors.black,
           ),
-          onPressed: clearImage,
+          onPressed: () => uploadBloc.add(CancelUpload()),
         ),
         title: Text(
           'Caption Text',
@@ -129,16 +116,29 @@ class _UploadState extends State<Upload> {
               style: TextStyle(
                 color: Colors.blueAccent,
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: 16,
               ),
             ),
-            onPressed: isUploading ? null : () => createPost(),
+            onPressed: isUploading
+                ? null
+                : () {
+                    captionController.clear();
+                    locationController.clear();
+                    uploadBloc.add(
+                      CreatePost(
+                        image: image,
+                        user: user,
+                        description: captionController.text,
+                        location: locationController.text,
+                      ),
+                    );
+                  },
           ),
         ],
       ),
       body: ListView(
         children: <Widget>[
-          isUploading ? LinearProgress() : SizedBox(),
+          (uploadBloc.state as UploadPhotoSelected).isLoading ? LinearProgress() : SizedBox(),
           SizedBox(height: 10),
           Container(
             height: 220,
@@ -160,7 +160,7 @@ class _UploadState extends State<Upload> {
           SizedBox(height: 10),
           ListTile(
             leading: CircleAvatar(
-              backgroundImage: CachedNetworkImageProvider(widget.currentUser.photoUrl),
+              backgroundImage: CachedNetworkImageProvider(user.photoUrl),
             ),
             title: Container(
               width: 250,
@@ -216,73 +216,13 @@ class _UploadState extends State<Upload> {
     );
   }
 
-  void clearImage() {
-    setState(() {
-      image = null;
-      isUploading = false;
-    });
-  }
-
-  Future<void> compressImage() async {
-    final tempDir = await getTemporaryDirectory();
-    final path = tempDir.path;
-    im.Image imageFile = im.decodeImage(image.readAsBytesSync());
-    final compressedImageFile = File('$path/image_$postId.jpg')..writeAsBytesSync(im.encodeJpg(imageFile, quality: 85));
-    setState(() {
-      image = compressedImageFile;
-    });
-  }
-
-  void createPost() async {
-    setState(() {
-      isUploading = true;
-    });
-    await compressImage();
-    final String mediaUrl = await uploadImage(image);
-    createPostInFireStore(
-      mediaUrl: mediaUrl,
-      location: locationController.text,
-      description: captionController.text,
-    );
-    captionController.clear();
-    locationController.clear();
-    setState(() {
-      image = null;
-      isUploading = false;
-      postId = Uuid().v4();
-    });
-  }
-
-  Future<String> uploadImage(File imageFile) async {
-    // final StorageUploadTask uploadTask = storageRef.child("post_$postId.jpg").putFile(imageFile);
-    // final StorageTaskSnapshot uploadSnapshot = await uploadTask.onComplete;
-    // final String downloadUrl = await uploadSnapshot.ref.getDownloadURL();
-    // return downloadUrl;
-    return null;
-  }
-
-  void createPostInFireStore({String mediaUrl, String location, String description}) {
-    // postRef.document(widget.currentUser.id).collection("userPosts").document(postId).setData({
-    //   "postId": postId,
-    //   "owner": widget.currentUser.id,
-    //   "username": widget.currentUser.username,
-    //   "mediaUrl": mediaUrl,
-    //   "description": description,
-    //   "location": location,
-    //   "timestamp": DateTime.now(),
-    //   "likes": {}
-    // });
-  }
-
   void getUserLocation() async {
     final Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     List<Placemark> placemarks = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
     final placemark = placemarks[0];
 
-    String completeAddress =
-        '${placemark.subThoroughfare} ${placemark.thoroughfare}, ${placemark.subLocality} ${placemark.locality}, ${placemark.subAdministrativeArea},${placemark.administrativeArea} ${placemark.postalCode}, ${placemark.country}';
-
-    print(completeAddress);
+    // String completeAddress =
+    //     '${placemark.subThoroughfare} ${placemark.thoroughfare}, ${placemark.subLocality} ${placemark.locality}, ${placemark.subAdministrativeArea},${placemark.administrativeArea} ${placemark.postalCode}, ${placemark.country}';
 
     String formatedAddress = '${placemark.locality}, ${placemark.country}';
     locationController.text = formatedAddress;

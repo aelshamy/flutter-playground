@@ -6,6 +6,7 @@ import 'package:socialmedia/profile/profile.dart';
 import 'package:socialmedia/search/bloc/bloc.dart';
 import 'package:socialmedia/search/search.dart';
 import 'package:socialmedia/timeline/timeline.dart';
+import 'package:socialmedia/upload/bloc/bloc.dart';
 import 'package:socialmedia/upload/upload.dart';
 
 class Home extends StatelessWidget {
@@ -49,12 +50,13 @@ class Home extends StatelessWidget {
       ),
       tabBuilder: (BuildContext context, int index) {
         switch (index) {
-          case 0:
-            return _pages[0];
           case 1:
             return _pages[1];
           case 2:
-            return _pages[2];
+            return BlocProvider<UploadBloc>(
+              create: (context) => UploadBloc(),
+              child: _pages[2],
+            );
           case 3:
             return BlocProvider<SearchBloc>(
               create: (context) => SearchBloc(),
@@ -62,6 +64,8 @@ class Home extends StatelessWidget {
             );
           case 4:
             return _pages[4];
+          default:
+            return _pages[0];
         }
       },
     );

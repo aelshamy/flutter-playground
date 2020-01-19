@@ -1,17 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:socialmedia/repo/firestore_repo.dart';
 
-final CollectionReference postRef = Firestore.instance.collection('posts');
-final CollectionReference commentsRef = Firestore.instance.collection('comments');
-const usersCollection = 'users';
-// User currentUser;
+// final CollectionReference commentsRef = Firestore.instance.collection('comments');
 
 class UserRepository {
-  final Firestore _firestoreInstance;
   final GoogleSignIn _googleSignIn;
+  final FirestoreRepo _fireStoreRepo;
 
-  UserRepository({Firestore firebaseAuth, GoogleSignIn googleSignin})
-      : _firestoreInstance = firebaseAuth ?? Firestore.instance,
+  UserRepository({FirestoreRepo fireStoreRepo, GoogleSignIn googleSignin})
+      : _fireStoreRepo = fireStoreRepo ?? FirestoreRepo(),
         _googleSignIn = googleSignin ?? GoogleSignIn();
 
   Future<GoogleSignInAccount> signInWithGoogle() async {
@@ -24,17 +22,7 @@ class UserRepository {
 
   Future<void> createUser(String username) async {
     final user = _googleSignIn.currentUser;
-
-    final Map<String, String> data = {
-      "id": user.id,
-      "username": username,
-      "photoUrl": user.photoUrl,
-      "email": user.email,
-      "displayName": user.displayName,
-      "bio": "",
-      "timestamp": DateTime.now() as String
-    };
-    return _firestoreInstance.collection(usersCollection).document(user.id).setData(data);
+    return await _fireStoreRepo.createUser(user, username);
   }
 
   Future<bool> isSignedIn() async {
@@ -43,15 +31,10 @@ class UserRepository {
 
   Future<DocumentSnapshot> getUser() async {
     final GoogleSignInAccount user = _googleSignIn.currentUser;
-    return await _firestoreInstance.collection(usersCollection).document(user.id).get();
+    return await _fireStoreRepo.getUser(user.id);
   }
 
   Future<GoogleSignInAccount> signOut() async {
     return _googleSignIn.signOut();
-  }
-
-  Future<QuerySnapshot> SearchUsers(String query) async {
-    final doc = await _firestoreInstance.collection(usersCollection).where("displayName", isGreaterThanOrEqualTo: query).getDocuments();
-    return doc;
   }
 }

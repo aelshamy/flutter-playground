@@ -1,15 +1,48 @@
 import 'dart:async';
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:socialmedia/repo/storage_repo.dart';
+
 import './bloc.dart';
 
 class UploadBloc extends Bloc<UploadEvent, UploadState> {
+  StorageRepo _storageRepo;
+
+  UploadBloc({StorageRepo storageRepo}) : _storageRepo = storageRepo ?? StorageRepo();
+
   @override
-  UploadState get initialState => InitialUploadState();
+  UploadState get initialState => UploadInitial();
 
   @override
   Stream<UploadState> mapEventToState(
     UploadEvent event,
   ) async* {
-    // TODO: Add Logic
+    if (event is SelectPhoto) {
+      yield* _mapSelectPhotoToState(event.source);
+    }
+    if (event is CreatePost) {
+      yield* _mapCreatePostToState(event);
+    }
+    if (event is CancelUpload) {
+      yield UploadInitial();
+    }
+  }
+
+  Stream<UploadState> _mapSelectPhotoToState(ImageSource source) async* {
+    File image = await ImagePicker.pickImage(
+      source: source,
+      maxHeight: 675,
+      maxWidth: 960,
+    );
+    yield UploadPhotoSelected(image: image);
+  }
+
+  Stream<UploadState> _mapCreatePostToState(CreatePost event) async* {
+    (this.state as UploadPhotoSelected).isLoading = true;
+    await _storageRepo.uploadAssetToStorage(image: event.image, user: event.user, description: event.description, location: event.location);
+    (this.state as UploadPhotoSelected).isLoading = true;
+    yield UploadInitial();
   }
 }

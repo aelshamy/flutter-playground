@@ -5,6 +5,7 @@ import 'package:socialmedia/auth/bloc/bloc.dart';
 
 import 'auth/bloc/auth_state.dart';
 import 'common/simple_bloc_delegate.dart';
+import 'login/bloc/bloc.dart';
 import 'login/home.dart';
 import 'login/login.dart';
 import 'login/splash_screen.dart';
@@ -15,8 +16,17 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final UserRepository userRepository = UserRepository();
   runApp(
-    BlocProvider<AuthBloc>(
-      create: (BuildContext context) => AuthBloc(userRepository: userRepository)..add(AppStarted()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          create: (BuildContext context) => AuthBloc(userRepository: userRepository)..add(AppStarted()),
+        ),
+        BlocProvider<LoginBloc>(
+          create: (BuildContext context) => LoginBloc(
+            userRepository: userRepository,
+          ),
+        ),
+      ],
       child: App(),
     ),
   );
@@ -40,8 +50,9 @@ class App extends StatelessWidget {
           if (state is Authenticated) {
             return Home();
           }
-          if (state is LoggedIn) {
+          if (state is Unauthenticated) {
             return Login();
+            // return Login();
           }
           return SizedBox();
         },

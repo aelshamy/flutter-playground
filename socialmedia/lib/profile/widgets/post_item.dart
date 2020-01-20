@@ -135,10 +135,10 @@ class PostItem extends StatelessWidget {
 
   int getLikeCount() {
     if (post.likes == null) return 0;
-    return post.likes.values.takeWhile((dynamic item) => item == true).length as int;
+    return post.likes.values.takeWhile((item) => item == true).length as int;
   }
 
   void showComments(BuildContext context) {
-    Navigator.of(context).push<dynamic>(MaterialPageRoute<dynamic>(builder: (BuildContext context) => Comments(post: post)));
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Comments(post: post)));
   }
 }

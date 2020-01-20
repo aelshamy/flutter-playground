@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 abstract class LoginEvent extends Equatable {
-  const LoginEvent([List _props = const []]);
+  const LoginEvent();
 }
 
 class LoginWithGoogle extends LoginEvent {
@@ -17,7 +17,7 @@ class Logout extends LoginEvent {
 class Createuser extends LoginEvent {
   final String username;
 
-  Createuser(this.username) : super([username]);
+  const Createuser(this.username);
 
   @override
   List<Object> get props => [username];

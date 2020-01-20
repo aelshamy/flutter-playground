@@ -70,14 +70,14 @@ class Upload extends StatelessWidget {
             SimpleDialogOption(
               onPressed: () {
                 Navigator.pop(context);
-                uploadBloc.add(SelectPhoto(source: ImageSource.camera));
+                uploadBloc.add(const SelectPhoto(source: ImageSource.camera));
               },
               child: const Text("Photo with Camera"),
             ),
             SimpleDialogOption(
               onPressed: () {
                 Navigator.pop(context);
-                uploadBloc.add(SelectPhoto(source: ImageSource.gallery));
+                uploadBloc.add(const SelectPhoto(source: ImageSource.gallery));
               },
               child: const Text("Image from gallary"),
             ),

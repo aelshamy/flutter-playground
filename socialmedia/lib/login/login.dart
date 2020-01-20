@@ -34,7 +34,7 @@ class Login extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text(
+                const Text(
                   'FlutterShare',
                   style: TextStyle(
                     color: Colors.white,

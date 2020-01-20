@@ -4,13 +4,10 @@ import 'package:socialmedia/common/model/user.dart';
 
 @immutable
 abstract class AuthState extends Equatable {
-  const AuthState([List _props = const <dynamic>[]]);
+  const AuthState();
 }
 
 class Uninitialized extends AuthState {
-  @override
-  String toString() => 'Uninitialized';
-
   @override
   List<Object> get props => [];
 }
@@ -18,7 +15,7 @@ class Uninitialized extends AuthState {
 class Authenticated extends AuthState {
   final User user;
 
-  Authenticated(this.user) : super([user]);
+  const Authenticated(this.user);
 
   @override
   String toString() => 'Authenticated: $user';
@@ -28,9 +25,6 @@ class Authenticated extends AuthState {
 }
 
 class Unauthenticated extends AuthState {
-  @override
-  String toString() => 'Unauthenticated';
-
   @override
   List<Object> get props => [];
 }

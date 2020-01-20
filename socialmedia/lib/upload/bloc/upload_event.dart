@@ -5,20 +5,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:socialmedia/common/model/user.dart';
 
 abstract class UploadEvent extends Equatable {
-  const UploadEvent([List props = const <dynamic>[]]);
+  const UploadEvent();
 }
 
 class SelectPhoto extends UploadEvent {
   final ImageSource source;
 
-  SelectPhoto({this.source}) : super(<dynamic>[source]);
-  @override
-  String toString() {
-    return "Uploading photo";
-  }
+  const SelectPhoto({this.source});
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [source];
 }
 
 class CreatePost extends UploadEvent {
@@ -27,23 +23,13 @@ class CreatePost extends UploadEvent {
   final String location;
   final User user;
 
-  CreatePost({this.image, this.user, this.description, this.location}) : super(<dynamic>[image, user, description, location]);
+  const CreatePost({this.image, this.user, this.description, this.location});
 
   @override
-  String toString() {
-    return "Create Post";
-  }
-
-  @override
-  List<Object> get props => null;
+  List<Object> get props => [image, description, location, user];
 }
 
 class CancelUpload extends UploadEvent {
   @override
-  String toString() {
-    return "Cancel upload...";
-  }
-
-  @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }

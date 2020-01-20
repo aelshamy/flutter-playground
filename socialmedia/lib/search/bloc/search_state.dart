@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:socialmedia/common/model/user.dart';
 
 abstract class SearchState extends Equatable {
-  const SearchState([List props = const <dynamic>[]]);
+  const SearchState();
 }
 
 class SearchInitial extends SearchState {
@@ -12,32 +12,22 @@ class SearchInitial extends SearchState {
 
 class SearchLoading extends SearchState {
   @override
-  String toString() {
-    return "Search Loading";
-  }
-
-  @override
   List<Object> get props => [];
 }
 
 class SearchLoaded extends SearchState {
   final List<User> users;
 
-  SearchLoaded({this.users}) : super(<dynamic>[users]);
+  const SearchLoaded({this.users});
 
   @override
-  String toString() {
-    return "Search Loaded";
-  }
-
-  @override
-  List<Object> get props => [];
+  List<Object> get props => [users];
 }
 
 class SearchError extends SearchState {
   final String error;
 
-  SearchError({this.error}) : super(<dynamic>[error]);
+  const SearchError({this.error});
 
   @override
   String toString() {
@@ -45,5 +35,5 @@ class SearchError extends SearchState {
   }
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [error];
 }

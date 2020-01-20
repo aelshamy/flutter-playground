@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 abstract class AuthEvent extends Equatable {
-  const AuthEvent([List props = const <dynamic>[]]);
+  const AuthEvent();
 }
 
 class AppStarted extends AuthEvent {
@@ -24,11 +24,11 @@ class UpdateUser extends AuthEvent {
   final String bio;
   final String displayName;
 
-  UpdateUser({
+  const UpdateUser({
     this.userId,
     this.bio,
     this.displayName,
-  }) : super(<dynamic>[userId, bio, displayName]);
+  });
 
   @override
   List<Object> get props => [userId, bio, displayName];

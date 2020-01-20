@@ -223,9 +223,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   void editProfile(User user) {
-    Navigator.push<dynamic>(
+    Navigator.push(
       context,
-      MaterialPageRoute<dynamic>(
+      MaterialPageRoute(
         builder: (BuildContext context) => EditProfile(user: user),
       ),
     );

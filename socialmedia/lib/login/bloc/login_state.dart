@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 @immutable
 abstract class LoginState extends Equatable {
-  const LoginState([List _props = const <dynamic>[]]);
+  const LoginState();
 }
 
 class LoginInitial extends LoginState {

@@ -88,7 +88,7 @@ class _EditProfileState extends State<EditProfile> {
                   RaisedButton(
                     color: Colors.blue,
                     onPressed: updateProfileData,
-                    child: Text(
+                    child: const Text(
                       'Update Profile',
                       style: TextStyle(
                         color: Colors.white,

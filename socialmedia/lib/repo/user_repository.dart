@@ -17,7 +17,7 @@ class UserRepository {
   }
 
   Future<GoogleSignInAccount> signInSilentlyWithGoogle() async {
-    return _googleSignIn.signInSilently(suppressErrors: false);
+    return _googleSignIn.signInSilently(suppressErrors: true);
   }
 
   Future<void> createUser(String username) async {

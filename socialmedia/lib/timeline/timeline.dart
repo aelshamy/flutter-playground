@@ -20,6 +20,8 @@ class _TimelineState extends State<Timeline> {
           FlatButton(
             onPressed: () {
               BlocProvider.of<AuthBloc>(context).add(LoggedOut());
+              // Future.delayed(const Duration(seconds: 1))
+              //     .then((_) => throw Exception());
             },
             child: const Text('logout'),
           ),

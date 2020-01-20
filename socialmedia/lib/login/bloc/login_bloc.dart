@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:socialmedia/auth/bloc/bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/repo/user_repository.dart';
@@ -10,10 +10,10 @@ import './bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository _userRepository;
-  //Todo: see if we need to dispose that
   final AuthBloc _authBloc;
 
-  LoginBloc({UserRepository userRepository, AuthBloc authBloc})
+  LoginBloc(
+      {@required UserRepository userRepository, @required AuthBloc authBloc})
       : _userRepository = userRepository ?? UserRepository(),
         _authBloc = authBloc ?? AuthBloc(userRepository: userRepository);
 

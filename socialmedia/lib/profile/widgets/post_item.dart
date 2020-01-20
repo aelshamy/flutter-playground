@@ -55,36 +55,19 @@ class PostItem extends StatelessWidget {
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
               if (post.likes[user?.id] == true)
-                {
-                  TweenAnimationBuilder(
-                    duration: const Duration(milliseconds: 300),
-                    tween: Tween(begin: 0.5, end: 1.5),
-                    builder: (BuildContext context, double value, Widget child) => Transform.scale(
-                      //TODO: fix animation
-                      scale: value,
-                      child: const Icon(
-                        Icons.favorite,
-                        size: 80,
-                        color: Colors.red,
-                      ),
+                TweenAnimationBuilder(
+                  duration: const Duration(milliseconds: 300),
+                  tween: Tween(begin: 0.5, end: 1.5),
+                  builder: (BuildContext context, double value, Widget child) => Transform.scale(
+                    //TODO: fix animation
+                    scale: value,
+                    child: const Icon(
+                      Icons.favorite,
+                      size: 80,
+                      color: Colors.red,
                     ),
                   ),
-                  // Animator(
-                  //     resetAnimationOnRebuild: true,
-                  //     duration: Duration(milliseconds: 300),
-                  //     tween: Tween(begin: 0.5, end: 1.5),
-                  //     curve: Curves.elasticOut,
-                  //     cycles: 0,
-                  //     builder: (anim) => Transform.scale(
-                  //       scale: anim.value,
-                  //       child: Icon(
-                  //         Icons.favorite,
-                  //         size: 80,
-                  //         color: Colors.red,
-                  //       ),
-                  //     ),
-                  //   )
-                }
+                ),
             ],
           ),
         ),

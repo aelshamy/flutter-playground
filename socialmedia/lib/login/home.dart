@@ -16,11 +16,11 @@ import 'package:socialmedia/upload/upload.dart';
 
 class Home extends StatelessWidget {
   final FirestoreRepo firestoreRepo;
-  Home({Key key, this.firestoreRepo}) : super(key: key);
+  const Home({Key key, this.firestoreRepo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+    final User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         activeColor: Theme.of(context).primaryColor,
@@ -49,7 +49,7 @@ class Home extends StatelessWidget {
       tabBuilder: (BuildContext context, int index) {
         switch (index) {
           case 1:
-            return ActivityFeed();
+            return const ActivityFeed();
           case 2:
             return BlocProvider<UploadBloc>(
               create: (context) => UploadBloc(),
@@ -69,7 +69,7 @@ class Home extends StatelessWidget {
               ),
             );
           default:
-            return Timeline();
+            return const Timeline();
         }
       },
     );

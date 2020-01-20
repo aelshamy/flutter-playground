@@ -21,7 +21,7 @@ class _TimelineState extends State<Timeline> {
             onPressed: () {
               BlocProvider.of<AuthBloc>(context).add(LoggedOut());
             },
-            child: Text('logout'),
+            child: const Text('logout'),
           ),
         ],
       ),

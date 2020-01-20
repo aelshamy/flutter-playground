@@ -15,7 +15,7 @@ class PostTile extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: post.mediaUrl,
         fit: BoxFit.cover,
-        placeholder: (context, url) => Padding(
+        placeholder: (context, url) => const Padding(
           padding: EdgeInsets.all(20),
           child: CircularProgress(),
         ),

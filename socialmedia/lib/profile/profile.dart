@@ -37,16 +37,16 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header(title: "Profile"),
+      appBar: const Header(title: "Profile"),
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (BuildContext context, ProfileState state) {
           if (state is ProfileLoading || state is ProfileInitial) {
-            return Center(child: CircularProgress());
+            return const Center(child: CircularProgress());
           }
           if (state is ProfileLoadError) {
             return Center(child: Text(state.error));
           }
-          List<Post> posts = (state as ProfileLoaded).posts;
+          final List<Post> posts = (state as ProfileLoaded).posts;
           return Column(
             // physics: ClampingScrollPhysics(),
             children: <Widget>[
@@ -65,23 +65,23 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         length: 2,
         child: Column(
           children: <Widget>[
-            Divider(height: 0.0),
+            const Divider(height: 0.0),
             TabBar(
               labelColor: Theme.of(context).primaryColor,
               unselectedLabelColor: Colors.grey,
               indicatorColor: Colors.transparent,
-              labelPadding: EdgeInsets.all(5),
+              labelPadding: const EdgeInsets.all(5),
               tabs: <Widget>[
                 Icon(Icons.grid_on),
                 Icon(Icons.list),
               ],
             ),
-            Divider(height: 0.0),
+            const Divider(height: 0.0),
             Expanded(
               child: posts.isEmpty
                   ? buildSplashScreen(context)
                   : TabBarView(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       children: <Widget>[
                         buildProfileGridPost(posts),
                         buildProfileColumnPost(posts),
@@ -96,7 +96,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   Widget buildProfileHeader(int postsCount) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -111,15 +111,15 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   ),
                   Text(
                     widget.user.username,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     widget.user.displayName,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -141,7 +141,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                   buildCountColumn("following", 0),
                                 ],
                               ),
-                              SizedBox(height: 12),
+                              const SizedBox(height: 12),
                               buildProfileButton(),
                             ],
                           ),
@@ -153,10 +153,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
               )
             ],
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Text(
             widget.user.bio,
-            style: TextStyle(height: 1.5),
+            style: const TextStyle(height: 1.5),
           ),
         ],
       ),
@@ -170,9 +170,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       children: <Widget>[
         Text(
           count.toString(),
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(
           label,
           style: TextStyle(
@@ -186,8 +186,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   Widget buildProfileButton() {
-    User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
-    bool isProfileOwner = user.id == widget.profileId;
+    final User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+    final bool isProfileOwner = user.id == widget.profileId;
     if (isProfileOwner) {
       return buildButton(
         text: "Edit Profile",
@@ -196,12 +196,12 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         },
       );
     }
-    return Text('Profile button');
+    return const Text('Profile button');
   }
 
   Widget buildButton({String text, void Function() function}) {
     return Container(
-      padding: EdgeInsets.only(top: 2),
+      padding: const EdgeInsets.only(top: 2),
       child: FlatButton(
         onPressed: function,
         child: Container(
@@ -211,12 +211,12 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             borderRadius: BorderRadius.circular(5),
           ),
           alignment: Alignment.center,
-          child: Text(
-            text,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
           width: 250,
           height: 27,
+          child: Text(
+            text,
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );
@@ -238,7 +238,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   Widget buildProfileGridPost(List<Post> posts) {
-    List<GridTile> gridTiles = posts
+    final List<GridTile> gridTiles = posts
         .map((post) => GridTile(
               child: PostTile(
                 post: post,
@@ -252,7 +252,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       mainAxisSpacing: 1.5,
       crossAxisSpacing: 1.5,
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       children: gridTiles,
     );
   }
@@ -262,7 +262,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         SvgPicture.asset('assets/images/no_content.svg', height: 200),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text(
           'No Posts',
           style: TextStyle(

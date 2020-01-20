@@ -13,16 +13,16 @@ class UserRepository {
         _googleSignIn = googleSignin ?? GoogleSignIn();
 
   Future<GoogleSignInAccount> signInWithGoogle() async {
-    return await _googleSignIn.signIn();
+    return _googleSignIn.signIn();
   }
 
   Future<GoogleSignInAccount> signInSilentlyWithGoogle() async {
-    return await _googleSignIn.signInSilently(suppressErrors: false);
+    return _googleSignIn.signInSilently(suppressErrors: false);
   }
 
   Future<void> createUser(String username) async {
     final user = _googleSignIn.currentUser;
-    return await _fireStoreRepo.createUser(user, username);
+    return _fireStoreRepo.createUser(user, username);
   }
 
   Future<bool> isSignedIn() async {
@@ -31,7 +31,7 @@ class UserRepository {
 
   Future<DocumentSnapshot> getUser() async {
     final GoogleSignInAccount user = _googleSignIn.currentUser;
-    return await _fireStoreRepo.getUser(user.id);
+    return _fireStoreRepo.getUser(user.id);
   }
 
   Future<GoogleSignInAccount> signOut() async {

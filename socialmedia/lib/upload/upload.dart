@@ -40,50 +40,50 @@ class Upload extends StatelessWidget {
           'assets/images/upload.svg',
           height: 200,
         ),
-        SizedBox(height: 40),
+        const SizedBox(height: 40),
         RaisedButton(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            'Upload Image',
-            style: TextStyle(color: Colors.white, fontSize: 22),
           ),
           color: Colors.deepPurple,
           onPressed: () {
             _showSelectImageDialog(context);
           },
+          child: const Text(
+            'Upload Image',
+            style: TextStyle(color: Colors.white, fontSize: 22),
+          ),
         )
       ],
     );
   }
 
   Future<void> _showSelectImageDialog(BuildContext context) async {
-    UploadBloc uploadBloc = BlocProvider.of<UploadBloc>(context);
-    return await showDialog<void>(
+    final UploadBloc uploadBloc = BlocProvider.of<UploadBloc>(context);
+    return showDialog<void>(
       context: context,
       builder: (context) {
         return SimpleDialog(
-          title: Text('Create Post'),
+          title: const Text('Create Post'),
           children: <Widget>[
             SimpleDialogOption(
-              child: Text("Photo with Camera"),
               onPressed: () {
                 Navigator.pop(context);
                 uploadBloc.add(SelectPhoto(source: ImageSource.camera));
               },
+              child: const Text("Photo with Camera"),
             ),
             SimpleDialogOption(
-              child: Text("Image from gallary"),
               onPressed: () {
                 Navigator.pop(context);
                 uploadBloc.add(SelectPhoto(source: ImageSource.gallery));
               },
+              child: const Text("Image from gallary"),
             ),
             SimpleDialogOption(
-              child: Text("Cancel"),
               onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
             ),
           ],
         );
@@ -92,8 +92,8 @@ class Upload extends StatelessWidget {
   }
 
   Widget _buildUploadForm(BuildContext context, File image) {
-    UploadBloc uploadBloc = BlocProvider.of<UploadBloc>(context);
-    User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+    final UploadBloc uploadBloc = BlocProvider.of<UploadBloc>(context);
+    final User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
 
     return Scaffold(
       appBar: AppBar(
@@ -111,14 +111,6 @@ class Upload extends StatelessWidget {
         ),
         actions: <Widget>[
           FlatButton(
-            child: Text(
-              "Post",
-              style: TextStyle(
-                color: Colors.blueAccent,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
             onPressed: isUploading
                 ? null
                 : () {
@@ -133,13 +125,21 @@ class Upload extends StatelessWidget {
                       ),
                     );
                   },
+            child: Text(
+              "Post",
+              style: TextStyle(
+                color: Colors.blueAccent,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
           ),
         ],
       ),
       body: ListView(
         children: <Widget>[
-          (uploadBloc.state as UploadPhotoSelected).isLoading ? LinearProgress() : SizedBox(),
-          SizedBox(height: 10),
+          if ((uploadBloc.state as UploadPhotoSelected).isLoading) const LinearProgress(),
+          const SizedBox(height: 10),
           Container(
             height: 220,
             width: MediaQuery.of(context).size.width * .8,
@@ -157,7 +157,7 @@ class Upload extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ListTile(
             leading: CircleAvatar(
               backgroundImage: CachedNetworkImageProvider(user.photoUrl),
@@ -166,14 +166,14 @@ class Upload extends StatelessWidget {
               width: 250,
               child: TextField(
                 controller: captionController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Write a caption...",
                   border: InputBorder.none,
                 ),
               ),
             ),
           ),
-          Divider(),
+          const Divider(),
           ListTile(
             leading: Icon(
               Icons.pin_drop,
@@ -184,7 +184,7 @@ class Upload extends StatelessWidget {
               width: 250,
               child: TextField(
                 controller: locationController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Where was this photo taken?",
                   border: InputBorder.none,
                 ),
@@ -196,7 +196,7 @@ class Upload extends StatelessWidget {
             height: 100,
             alignment: Alignment.center,
             child: RaisedButton.icon(
-              label: Text(
+              label: const Text(
                 'Use Current Location',
                 style: TextStyle(color: Colors.white),
               ),
@@ -216,15 +216,15 @@ class Upload extends StatelessWidget {
     );
   }
 
-  void getUserLocation() async {
+  Future<void> getUserLocation() async {
     final Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    List<Placemark> placemarks = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
+    final List<Placemark> placemarks = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
     final placemark = placemarks[0];
 
     // String completeAddress =
     //     '${placemark.subThoroughfare} ${placemark.thoroughfare}, ${placemark.subLocality} ${placemark.locality}, ${placemark.subAdministrativeArea},${placemark.administrativeArea} ${placemark.postalCode}, ${placemark.country}';
 
-    String formatedAddress = '${placemark.locality}, ${placemark.country}';
+    final formatedAddress = '${placemark.locality}, ${placemark.country}';
     locationController.text = formatedAddress;
   }
 }

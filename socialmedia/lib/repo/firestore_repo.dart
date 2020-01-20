@@ -18,19 +18,19 @@ class FirestoreRepo {
       "bio": "",
       "timestamp": DateTime.now()
     };
-    return await _firestoreInstance.collection('users').document(user.id).setData(data);
+    return _firestoreInstance.collection('users').document(user.id).setData(data);
   }
 
   Future<DocumentSnapshot> getUser(String userId) async {
-    return await _firestoreInstance.collection('users').document(userId).get();
+    return _firestoreInstance.collection('users').document(userId).get();
   }
 
   Future<QuerySnapshot> searchUsers(String query) async {
-    return await _firestoreInstance.collection('users').where("displayName", isGreaterThanOrEqualTo: query).getDocuments();
+    return _firestoreInstance.collection('users').where("displayName", isGreaterThanOrEqualTo: query).getDocuments();
   }
 
   Future<void> updateUser(String userId, String displayName, String bio) async {
-    return await _firestoreInstance.collection('users').document(userId).updateData({
+    return _firestoreInstance.collection('users').document(userId).updateData({
       "displayName": displayName,
       "bio": bio,
     });
@@ -47,11 +47,11 @@ class FirestoreRepo {
       "timestamp": DateTime.now(),
       "likes": {},
     };
-    return await _firestoreInstance.collection('posts').document(user.id).collection("userPosts").document(id).setData(data);
+    return _firestoreInstance.collection('posts').document(user.id).collection("userPosts").document(id).setData(data);
   }
 
   Future<QuerySnapshot> getUserPosts(String userId) async {
-    return await _firestoreInstance
+    return _firestoreInstance
         .collection('posts')
         .document(userId)
         .collection("userPosts")
@@ -60,7 +60,7 @@ class FirestoreRepo {
   }
 
   Future<void> likePost(Post post, User user) async {
-    bool isliked = post.likes[user?.id] == true;
+    final bool isliked = post.likes[user?.id] == true;
     post.likes[user?.id] = !isliked;
 
     try {

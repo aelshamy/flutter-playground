@@ -15,7 +15,7 @@ class Login extends StatelessWidget {
       bloc: BlocProvider.of<LoginBloc>(context),
       builder: (BuildContext context, LoginState state) {
         if (state is LoginCreateUser) {
-          return CreateAccount();
+          return const CreateAccount();
         }
         return Scaffold(
           body: Container(
@@ -49,7 +49,7 @@ class Login extends StatelessWidget {
                   child: Container(
                     width: 260,
                     height: 60,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage('assets/images/google_signin_button.png'),
                         fit: BoxFit.cover,

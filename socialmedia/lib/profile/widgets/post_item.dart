@@ -11,7 +11,7 @@ import 'package:socialmedia/profile/bloc/profile_bloc.dart';
 class PostItem extends StatelessWidget {
   final Post post;
   final User user;
-  PostItem({Key key, this.post, this.user}) : super(key: key);
+  const PostItem({Key key, this.post, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,26 +48,27 @@ class PostItem extends StatelessWidget {
               CachedNetworkImage(
                 imageUrl: post.mediaUrl,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Padding(
+                placeholder: (context, url) => const Padding(
                   padding: EdgeInsets.all(20),
                   child: CircularProgress(),
                 ),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
-              post.likes[user?.id] == true
-                  ? TweenAnimationBuilder(
-                      duration: Duration(milliseconds: 300),
-                      tween: Tween(begin: 0.5, end: 1.5),
-                      builder: (BuildContext context, double value, Widget child) => Transform.scale(
-                        //TODO: fix animation
-                        scale: value,
-                        child: Icon(
-                          Icons.favorite,
-                          size: 80,
-                          color: Colors.red,
-                        ),
+              if (post.likes[user?.id] == true)
+                {
+                  TweenAnimationBuilder(
+                    duration: const Duration(milliseconds: 300),
+                    tween: Tween(begin: 0.5, end: 1.5),
+                    builder: (BuildContext context, double value, Widget child) => Transform.scale(
+                      //TODO: fix animation
+                      scale: value,
+                      child: const Icon(
+                        Icons.favorite,
+                        size: 80,
+                        color: Colors.red,
                       ),
-                    )
+                    ),
+                  ),
                   // Animator(
                   //     resetAnimationOnRebuild: true,
                   //     duration: Duration(milliseconds: 300),
@@ -83,7 +84,7 @@ class PostItem extends StatelessWidget {
                   //       ),
                   //     ),
                   //   )
-                  : SizedBox(),
+                }
             ],
           ),
         ),
@@ -91,7 +92,7 @@ class PostItem extends StatelessWidget {
           padding: const EdgeInsets.only(left: 20, top: 10),
           child: Row(
             children: <Widget>[
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               GestureDetector(
                 onTap: () {
                   likePost(context);
@@ -102,7 +103,7 @@ class PostItem extends StatelessWidget {
                   color: Colors.pink,
                 ),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               GestureDetector(
                 onTap: () => showComments(context),
                 child: Icon(
@@ -114,11 +115,11 @@ class PostItem extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Row(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(left: 20),
+              margin: const EdgeInsets.only(left: 20),
               child: Text(
                 "${getLikeCount()} Likes",
                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
@@ -126,11 +127,11 @@ class PostItem extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Row(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(left: 20),
+              margin: const EdgeInsets.only(left: 20),
               child: Text(
                 "${post.username} ",
                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),

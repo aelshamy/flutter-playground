@@ -33,7 +33,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     try {
       final postsDocuments = await _firestoreRepo.getUserPosts(userId);
 
-      final posts = await postsDocuments.documents.map((DocumentSnapshot doc) => Post.fromDocument(doc)).toList();
+      final posts = postsDocuments.documents.map((DocumentSnapshot doc) => Post.fromDocument(doc)).toList();
 
       yield ProfileLoaded(posts: posts);
     } catch (e) {

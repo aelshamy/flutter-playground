@@ -9,7 +9,7 @@ import 'package:socialmedia/login/bloc/login_bloc.dart';
 class EditProfile extends StatefulWidget {
   final User user;
 
-  EditProfile({Key key, this.user}) : super(key: key);
+  const EditProfile({Key key, this.user}) : super(key: key);
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -51,21 +51,21 @@ class _EditProfileState extends State<EditProfile> {
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: <Widget>[
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Center(
               child: CircleAvatar(
                 radius: 50,
                 backgroundImage: CachedNetworkImageProvider(widget.user?.photoUrl),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Form(
               key: _formKey,
               child: Column(
                 children: <Widget>[
                   TextFormField(
                     controller: _displayNameController,
-                    decoration: InputDecoration(hintText: "Update Display Name"),
+                    decoration: const InputDecoration(hintText: "Update Display Name"),
                     validator: (value) {
                       if (value.trim().length < 3 || value.isEmpty) {
                         return "Display name is too short";
@@ -73,10 +73,10 @@ class _EditProfileState extends State<EditProfile> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   TextFormField(
                     controller: _bioController,
-                    decoration: InputDecoration(hintText: "Update Bio"),
+                    decoration: const InputDecoration(hintText: "Update Bio"),
                     validator: (value) {
                       if (value.trim().length > 100) {
                         return "Bio is too long";
@@ -84,8 +84,10 @@ class _EditProfileState extends State<EditProfile> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   RaisedButton(
+                    color: Colors.blue,
+                    onPressed: updateProfileData,
                     child: Text(
                       'Update Profile',
                       style: TextStyle(
@@ -93,10 +95,8 @@ class _EditProfileState extends State<EditProfile> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    color: Colors.blue,
-                    onPressed: updateProfileData,
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   FlatButton.icon(
                     icon: Icon(
                       Icons.cancel,

@@ -13,7 +13,7 @@ class Comments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header(
+      appBar: const Header(
         title: "Comments",
       ),
       body: Column(
@@ -21,7 +21,7 @@ class Comments extends StatelessWidget {
           Expanded(
             child: buildComments(),
           ),
-          Divider(),
+          const Divider(),
           SafeArea(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -31,14 +31,14 @@ class Comments extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 15.0),
                     child: TextFormField(
                       controller: _controller,
-                      decoration: InputDecoration.collapsed(hintText: 'Write a comment...'),
+                      decoration: const InputDecoration.collapsed(hintText: 'Write a comment...'),
                     ),
                   ),
                 ),
                 OutlineButton(
                   borderSide: BorderSide.none,
                   onPressed: addcomment,
-                  child: Text("Post"),
+                  child: const Text("Post"),
                 ),
               ],
             ),

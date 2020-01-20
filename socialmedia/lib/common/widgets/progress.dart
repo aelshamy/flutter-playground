@@ -7,7 +7,7 @@ class CircularProgress extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      padding: EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 10),
       child: CircularProgressIndicator(
         valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
       ),
@@ -20,12 +20,8 @@ class LinearProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // alignment: Alignment.center,
-      // padding: EdgeInsets.only(top: 10),
-      child: LinearProgressIndicator(
-        valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
-      ),
+    return LinearProgressIndicator(
+      valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
     );
   }
 }

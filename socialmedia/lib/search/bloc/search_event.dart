@@ -5,7 +5,7 @@ abstract class SearchEvent extends Equatable {
 }
 
 class SearchStarted extends SearchEvent {
-  String query;
+  final String query;
 
   SearchStarted(this.query) : super(<dynamic>[query]);
 

@@ -46,7 +46,7 @@ class Search extends StatelessWidget {
             return _buildSearchInitial();
           }
           if (state is SearchLoading) {
-            return CircularProgress();
+            return const CircularProgress();
           }
           if (state is SearchError) {
             return Center(
@@ -92,7 +92,7 @@ class Search extends StatelessWidget {
         ? ListView.builder(
             itemCount: users.length,
             itemBuilder: (BuildContext context, int index) {
-              User user = users[index];
+              final User user = users[index];
               return Container(
                 color: Theme.of(context).primaryColor.withOpacity(0.7),
                 child: ListTile(
@@ -114,7 +114,7 @@ class Search extends StatelessWidget {
               );
             },
           )
-        : Center(
+        : const Center(
             child: Text('No Results found'),
           );
   }

@@ -8,7 +8,7 @@ import 'package:socialmedia/repo/storage_repo.dart';
 import './bloc.dart';
 
 class UploadBloc extends Bloc<UploadEvent, UploadState> {
-  StorageRepo _storageRepo;
+  final StorageRepo _storageRepo;
 
   UploadBloc({StorageRepo storageRepo}) : _storageRepo = storageRepo ?? StorageRepo();
 
@@ -31,7 +31,7 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
   }
 
   Stream<UploadState> _mapSelectPhotoToState(ImageSource source) async* {
-    File image = await ImagePicker.pickImage(
+    final File image = await ImagePicker.pickImage(
       source: source,
       maxHeight: 675,
       maxWidth: 960,
@@ -40,9 +40,9 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
   }
 
   Stream<UploadState> _mapCreatePostToState(CreatePost event) async* {
-    (this.state as UploadPhotoSelected).isLoading = true;
+    (state as UploadPhotoSelected).isLoading = true;
     await _storageRepo.uploadAssetToStorage(image: event.image, user: event.user, description: event.description, location: event.location);
-    (this.state as UploadPhotoSelected).isLoading = true;
+    (state as UploadPhotoSelected).isLoading = true;
     yield UploadInitial();
   }
 }

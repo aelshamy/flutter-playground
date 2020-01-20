@@ -23,7 +23,7 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Setup your profile'),
+        title: const Text('Setup your profile'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -41,16 +41,15 @@ class _CreateAccountState extends State<CreateAccount> {
                     }
                     return null;
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Username",
                     labelStyle: TextStyle(fontSize: 15.0),
                     hintText: "Must be at least 3 characters",
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 RaisedButton(
-                  child: Text('Submit'),
                   color: Theme.of(context).primaryColor,
                   colorBrightness: Brightness.dark,
                   onPressed: () {
@@ -58,6 +57,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       BlocProvider.of<LoginBloc>(context).add(Createuser(_controller.text));
                     }
                   },
+                  child: const Text('Submit'),
                 ),
               ],
             ),

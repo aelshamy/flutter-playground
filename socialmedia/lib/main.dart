@@ -56,15 +56,15 @@ class App extends StatelessWidget {
       home: BlocBuilder<AuthBloc, AuthState>(
         builder: (BuildContext context, AuthState state) {
           if (state is Uninitialized) {
-            return SplashScreen();
+            return const SplashScreen();
           }
           if (state is Authenticated) {
             return Home(firestoreRepo: firestoreRepo);
           }
           if (state is Unauthenticated) {
-            return Login();
+            return const Login();
           }
-          return SizedBox();
+          return const SizedBox();
         },
       ),
     );

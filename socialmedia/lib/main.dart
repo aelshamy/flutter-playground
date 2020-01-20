@@ -21,18 +21,17 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final UserRepository userRepository = UserRepository();
   final FirestoreRepo firestoreRepo = FirestoreRepo();
+  final AuthBloc authBloc =
+      AuthBloc(userRepository: userRepository, firestoreRepo: firestoreRepo);
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (BuildContext context) => AuthBloc(
-              userRepository: userRepository, firestoreRepo: firestoreRepo)
-            ..add(AppStarted()),
+          create: (BuildContext context) => authBloc..add(AppStarted()),
         ),
         BlocProvider<LoginBloc>(
-          create: (BuildContext context) => LoginBloc(
-            userRepository: userRepository,
-          ),
+          create: (BuildContext context) =>
+              LoginBloc(userRepository: userRepository, authBloc: authBloc),
         ),
       ],
       child: App(firestoreRepo: firestoreRepo),

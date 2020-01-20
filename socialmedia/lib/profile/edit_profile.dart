@@ -23,7 +23,8 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-    _displayNameController = TextEditingController(text: widget.user.displayName);
+    _displayNameController =
+        TextEditingController(text: widget.user.displayName);
     _bioController = TextEditingController(text: widget.user.bio);
   }
 
@@ -55,7 +56,8 @@ class _EditProfileState extends State<EditProfile> {
             Center(
               child: CircleAvatar(
                 radius: 50,
-                backgroundImage: CachedNetworkImageProvider(widget.user?.photoUrl),
+                backgroundImage:
+                    CachedNetworkImageProvider(widget.user?.photoUrl),
               ),
             ),
             const SizedBox(height: 20),
@@ -65,7 +67,8 @@ class _EditProfileState extends State<EditProfile> {
                 children: <Widget>[
                   TextFormField(
                     controller: _displayNameController,
-                    decoration: const InputDecoration(hintText: "Update Display Name"),
+                    decoration:
+                        const InputDecoration(hintText: "Update Display Name"),
                     validator: (value) {
                       if (value.trim().length < 3 || value.isEmpty) {
                         return "Display name is too short";
@@ -109,7 +112,10 @@ class _EditProfileState extends State<EditProfile> {
                         fontSize: 20,
                       ),
                     ),
-                    onPressed: () => BlocProvider.of<LoginBloc>(context).add(Logout()),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      BlocProvider.of<LoginBloc>(context).add(Logout());
+                    },
                   ),
                 ],
               ),
@@ -122,8 +128,10 @@ class _EditProfileState extends State<EditProfile> {
 
   void updateProfileData() {
     if (_formKey.currentState.validate()) {
-      BlocProvider.of<AuthBloc>(context)
-          .add(UpdateUser(userId: widget.user.id, displayName: _displayNameController.text, bio: _bioController.text));
+      BlocProvider.of<AuthBloc>(context).add(UpdateUser(
+          userId: widget.user.id,
+          displayName: _displayNameController.text,
+          bio: _bioController.text));
     }
   }
 }

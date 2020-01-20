@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:socialmedia/common/model/user.dart';
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
@@ -10,8 +11,11 @@ class AppStarted extends AuthEvent {
 }
 
 class LoggedIn extends AuthEvent {
+  final User user;
+
+  const LoggedIn({this.user});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [user];
 }
 
 class LoggedOut extends AuthEvent {

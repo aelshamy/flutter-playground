@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:socialmedia/auth/bloc/bloc.dart';
+import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/repo/user_repository.dart';
 
 import './bloc.dart';
@@ -41,7 +43,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (!doc.exists) {
         yield LoginCreateUser();
       } else {
-        _authBloc.add(LoggedIn());
+        _authBloc.add(LoggedIn(user: User.fromDocument(doc)));
         yield LoginInitial();
       }
     } catch (e) {
@@ -51,8 +53,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Stream<LoginState> _mapCreateuserToState(String username) async* {
     try {
-      await _userRepository.createUser(username);
-      _authBloc.add(LoggedIn());
+      final User user = await _userRepository.createUser(username);
+      _authBloc.add(LoggedIn(user: user));
       yield LoginInitial();
     } catch (e) {
       yield LoginFailure(error: e.toString());

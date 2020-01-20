@@ -15,7 +15,7 @@ class Uninitialized extends AuthState {
 class Authenticated extends AuthState {
   final User user;
 
-  const Authenticated(this.user);
+  const Authenticated({this.user});
 
   @override
   String toString() => 'Authenticated: $user';

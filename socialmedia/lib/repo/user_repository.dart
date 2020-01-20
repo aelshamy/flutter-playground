@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
 
 // final CollectionReference commentsRef = Firestore.instance.collection('comments');
@@ -20,7 +21,7 @@ class UserRepository {
     return _googleSignIn.signInSilently(suppressErrors: true);
   }
 
-  Future<void> createUser(String username) async {
+  Future<User> createUser(String username) async {
     final user = _googleSignIn.currentUser;
     return _fireStoreRepo.createUser(user, username);
   }

@@ -9,7 +9,7 @@ import './bloc.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final FirestoreRepo _firestoreRepo;
-  StreamSubscription _todosSubscription;
+  StreamSubscription _postsSubscription;
 
   ProfileBloc({FirestoreRepo firestoreRepo})
       : _firestoreRepo = firestoreRepo ?? FirestoreRepo();
@@ -35,8 +35,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Stream<ProfileState> _mapLoadPostsToState(String userId) async* {
     yield ProfileLoading();
     try {
-      _todosSubscription?.cancel();
-      _todosSubscription = _firestoreRepo.getUserPosts(userId).listen(
+      _postsSubscription?.cancel();
+      _postsSubscription = _firestoreRepo.getUserPosts(userId).listen(
             (posts) => add(PostsLoaded(posts: posts)),
           );
     } catch (e) {
@@ -56,7 +56,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   @override
   Future<void> close() {
-    _todosSubscription?.cancel();
+    _postsSubscription?.cancel();
     return super.close();
   }
 }

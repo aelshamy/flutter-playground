@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialmedia/comments/bloc/bloc.dart';
 import 'package:socialmedia/comments/comments.dart';
 import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
@@ -58,7 +59,8 @@ class PostItem extends StatelessWidget {
                 TweenAnimationBuilder(
                   duration: const Duration(milliseconds: 300),
                   tween: Tween(begin: 0.5, end: 1.5),
-                  builder: (BuildContext context, double value, Widget child) => Transform.scale(
+                  builder: (BuildContext context, double value, Widget child) =>
+                      Transform.scale(
                     //TODO: fix animation
                     scale: value,
                     child: const Icon(
@@ -81,7 +83,9 @@ class PostItem extends StatelessWidget {
                   likePost(context);
                 },
                 child: Icon(
-                  post.likes[user?.id] == true ? Icons.favorite : Icons.favorite_border,
+                  post.likes[user?.id] == true
+                      ? Icons.favorite
+                      : Icons.favorite_border,
                   size: 28,
                   color: Colors.pink,
                 ),
@@ -105,7 +109,8 @@ class PostItem extends StatelessWidget {
               margin: const EdgeInsets.only(left: 20),
               child: Text(
                 "${getLikeCount()} Likes",
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -117,7 +122,8 @@ class PostItem extends StatelessWidget {
               margin: const EdgeInsets.only(left: 20),
               child: Text(
                 "${post.username} ",
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ),
             Expanded(
@@ -139,6 +145,14 @@ class PostItem extends StatelessWidget {
   }
 
   void showComments(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Comments(post: post)));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) => BlocProvider<CommentsBloc>(
+          create: (context) =>
+              CommentsBloc()..add(LoadComments(postId: post.postId)),
+          child: Comments(post: post),
+        ),
+      ),
+    );
   }
 }

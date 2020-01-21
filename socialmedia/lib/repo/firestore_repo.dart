@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:socialmedia/common/model/comment.dart';
 import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
 
@@ -92,6 +93,38 @@ class FirestoreRepo {
           .collection("userPosts")
           .document(post.postId)
           .updateData({"likes.${user.id}": !isliked});
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Stream<List<Comment>> getPostComments(String postId) {
+    return _firestoreInstance
+        .collection('comments')
+        .document(postId)
+        .collection('comments')
+        .orderBy("timestamp", descending: false)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.documents
+          .map((doc) => Comment.fromDocument(doc))
+          .toList();
+    });
+  }
+
+  Future<void> addComment(String postId, User user, String comment) async {
+    try {
+      return await _firestoreInstance
+          .collection('comments')
+          .document(postId)
+          .collection("comments")
+          .add({
+        "username": user.username,
+        "userId": user.id,
+        "avatarUrl": user.photoUrl,
+        "comment": comment,
+        "timestamp": DateTime.now()
+      });
     } catch (e) {
       print(e);
     }

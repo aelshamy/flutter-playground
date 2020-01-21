@@ -1,6 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialmedia/auth/bloc/bloc.dart';
+import 'package:socialmedia/comments/bloc/bloc.dart';
+import 'package:socialmedia/comments/bloc/comments_bloc.dart';
+import 'package:socialmedia/common/model/comment.dart';
 import 'package:socialmedia/common/model/post.dart';
+import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/header.dart';
+import 'package:socialmedia/common/widgets/progress.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class Comments extends StatelessWidget {
   final Post post;
@@ -31,13 +40,16 @@ class Comments extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 15.0),
                     child: TextFormField(
                       controller: _controller,
-                      decoration: const InputDecoration.collapsed(hintText: 'Write a comment...'),
+                      decoration: const InputDecoration.collapsed(
+                          hintText: 'Write a comment...'),
                     ),
                   ),
                 ),
                 OutlineButton(
                   borderSide: BorderSide.none,
-                  onPressed: addcomment,
+                  onPressed: () {
+                    addcomment(context);
+                  },
                   child: const Text("Post"),
                 ),
               ],
@@ -48,44 +60,40 @@ class Comments extends StatelessWidget {
     );
   }
 
-  void addcomment() {
-    // commentsRef.document(post.postId).collection("comments").add({
-    //   "username": currentUser.username,
-    //   "userId": currentUser.id,
-    //   "avatarUrl": currentUser.photoUrl,
-    //   "comment": _controller.text,
-    //   "timestamp": DateTime.now()
-    // });
+  void addcomment(BuildContext context) {
+    final User user =
+        (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+    BlocProvider.of<CommentsBloc>(context).add(
+        AddComment(postId: post.postId, user: user, comment: _controller.text));
     _controller.clear();
   }
 
   Widget buildComments() {
-    return null;
-    // return StreamBuilder(
-    //   stream: commentsRef
-    //       .document(post.postId)
-    //       .collection('comments')
-    //       .orderBy("timestamp", descending: false)
-    //       .snapshots(),
-    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-    //     if (!snapshot.hasData) {
-    //       return CircularProgress();
-    //     }
-    //     return ListView.separated(
-    //       itemBuilder: (BuildContext context, int index) {
-    //         Comment comment = Comment.fromDocument(snapshot.data.documents[index]);
-    //         return ListTile(
-    //           leading: CircleAvatar(
-    //             backgroundImage: CachedNetworkImageProvider(comment.avatarUrl),
-    //           ),
-    //           title: Text(comment.comment),
-    //           subtitle: Text(timeago.format(comment.timestamp.toDate())),
-    //         );
-    //       },
-    //       itemCount: snapshot.data.documents.length,
-    //       separatorBuilder: (BuildContext context, int index) => Divider(),
-    //     );
-    //   },
-    // );
+    return BlocBuilder<CommentsBloc, CommentsState>(
+      builder: (context, state) {
+        if (state is CommentsLoading || state is CommentsInitial) {
+          return const CircularProgress();
+        }
+        if (state is CommentsLoadError) {
+          return Center(child: Text(state.error));
+        }
+
+        return ListView.separated(
+          itemBuilder: (BuildContext context, int index) {
+            final Comment comment = (state as CommentsRecieved).comments[index];
+            return ListTile(
+              leading: CircleAvatar(
+                backgroundImage: CachedNetworkImageProvider(comment.avatarUrl),
+              ),
+              title: Text(comment.comment),
+              subtitle: Text(timeago.format(comment.timestamp.toDate())),
+            );
+          },
+          itemCount: (state as CommentsRecieved).comments.length,
+          separatorBuilder: (BuildContext context, int index) =>
+              const Divider(),
+        );
+      },
+    );
   }
 }

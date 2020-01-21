@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/auth/bloc/bloc.dart';
+import 'package:socialmedia/comments/bloc/bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/feed/activity_feed.dart';
 import 'package:socialmedia/profile/bloc/bloc.dart';
@@ -20,7 +21,8 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+    final User user =
+        (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         activeColor: Theme.of(context).primaryColor,
@@ -62,12 +64,14 @@ class Home extends StatelessWidget {
             );
           case 4:
             return BlocProvider<ProfileBloc>(
-              create: (context) => ProfileBloc(firestoreRepo: firestoreRepo)..add(LoadPosts(userId: user.id)),
+              create: (context) => ProfileBloc(firestoreRepo: firestoreRepo)
+                ..add(LoadPosts(userId: user.id)),
               child: Profile(
                 user: user,
                 profileId: user.id,
               ),
             );
+
           default:
             return const Timeline();
         }

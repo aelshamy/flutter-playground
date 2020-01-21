@@ -108,7 +108,7 @@ class Search extends StatelessWidget {
                   ),
                   subtitle: Text(
                     user.username,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               );

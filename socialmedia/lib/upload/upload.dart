@@ -15,10 +15,8 @@ import 'bloc/bloc.dart';
 import 'bloc/upload_bloc.dart';
 
 class Upload extends StatelessWidget {
-  bool isUploading = false;
-
-  TextEditingController locationController = TextEditingController();
-  TextEditingController captionController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+  final TextEditingController captionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +25,10 @@ class Upload extends StatelessWidget {
         if (state is UploadInitial) {
           return _buildUploadInitial(context);
         }
-        return _buildUploadForm(context, (state as UploadPhotoSelected).image);
+        if (state is UploadPhotoSelected) {
+          return _buildUploadForm(context, state.image);
+        }
+        return const SizedBox();
       },
     );
   }
@@ -93,7 +94,8 @@ class Upload extends StatelessWidget {
 
   Widget _buildUploadForm(BuildContext context, File image) {
     final UploadBloc uploadBloc = BlocProvider.of<UploadBloc>(context);
-    final User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+    final User user =
+        (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
 
     return Scaffold(
       appBar: AppBar(
@@ -111,20 +113,18 @@ class Upload extends StatelessWidget {
         ),
         actions: <Widget>[
           FlatButton(
-            onPressed: isUploading
-                ? null
-                : () {
-                    captionController.clear();
-                    locationController.clear();
-                    uploadBloc.add(
-                      CreatePost(
-                        image: image,
-                        user: user,
-                        description: captionController.text,
-                        location: locationController.text,
-                      ),
-                    );
-                  },
+            onPressed: () {
+              captionController.clear();
+              locationController.clear();
+              uploadBloc.add(
+                CreatePost(
+                  image: image,
+                  user: user,
+                  description: captionController.text,
+                  location: locationController.text,
+                ),
+              );
+            },
             child: Text(
               "Post",
               style: TextStyle(
@@ -138,7 +138,9 @@ class Upload extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          if ((uploadBloc.state as UploadPhotoSelected).isLoading) const LinearProgress(),
+          //TODO:update code
+          if ((uploadBloc.state as UploadPhotoSelected).isLoading)
+            const LinearProgress(),
           const SizedBox(height: 10),
           Container(
             height: 220,
@@ -217,8 +219,10 @@ class Upload extends StatelessWidget {
   }
 
   Future<void> getUserLocation() async {
-    final Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    final List<Placemark> placemarks = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
+    final Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    final List<Placemark> placemarks = await Geolocator()
+        .placemarkFromCoordinates(position.latitude, position.longitude);
     final placemark = placemarks[0];
 
     // String completeAddress =

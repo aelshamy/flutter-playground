@@ -12,6 +12,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository _userRepository;
   final AuthBloc _authBloc;
 
+  StreamSubscription _userSubscription;
+
   LoginBloc(
       {@required UserRepository userRepository, @required AuthBloc authBloc})
       : _userRepository = userRepository ?? UserRepository(),
@@ -27,6 +29,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is LoginWithGoogle) {
       yield* _mapLoginWithGoogleToState();
     }
+    if (event is StartCreateUser) {
+      yield* _mapStartCreateuserToState();
+    }
     if (event is Createuser) {
       yield* _mapCreateuserToState(event.username);
     }
@@ -39,16 +44,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     yield LoginLoading();
     try {
       await _userRepository.signInWithGoogle();
-      final doc = await _userRepository.getUser();
-      if (!doc.exists) {
-        yield LoginCreateUser();
-      } else {
-        _authBloc.add(LoggedIn(user: User.fromDocument(doc)));
-        yield LoginInitial();
-      }
+      _userSubscription?.cancel();
+      _userSubscription = _userRepository.getUser().listen((doc) {
+        if (!doc.exists) {
+          add(StartCreateUser());
+        } else {
+          _authBloc.add(LoggedIn(user: User.fromDocument(doc)));
+        }
+      });
     } catch (e) {
       yield LoginFailure(error: e.toString());
     }
+  }
+
+  Stream<LoginState> _mapStartCreateuserToState() async* {
+    yield LoginCreateUser();
   }
 
   Stream<LoginState> _mapCreateuserToState(String username) async* {
@@ -68,5 +78,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } catch (e) {
       print(e);
     }
+  }
+
+  @override
+  Future<void> close() {
+    _authBloc.close();
+    _userSubscription.cancel();
+    return super.close();
   }
 }

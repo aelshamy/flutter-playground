@@ -12,6 +12,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserRepository _userRepository;
   final FirestoreRepo _firestoreRepo;
 
+  StreamSubscription _userSubscription;
+
   AuthBloc(
       {@required UserRepository userRepository, FirestoreRepo firestoreRepo})
       : assert(userRepository != null, firestoreRepo != null),
@@ -39,8 +41,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapAppStartedToState() async* {
     try {
       await _userRepository.signInSilentlyWithGoogle();
-      final doc = await _userRepository.getUser();
-      yield Authenticated(user: User.fromDocument(doc));
+      _userSubscription?.cancel();
+      _userSubscription = _userRepository.getUser().listen((doc) {
+        add(LoggedIn(user: User.fromDocument(doc)));
+      });
     } catch (_) {
       yield Unauthenticated();
     }
@@ -58,5 +62,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapUpdateUserToState(
       String userId, String displayName, String bio) async* {
     await _firestoreRepo.updateUser(userId, displayName, bio);
+  }
+
+  @override
+  Future<void> close() {
+    _userSubscription.cancel();
+    return super.close();
   }
 }

@@ -22,3 +22,8 @@ class Createuser extends LoginEvent {
   @override
   List<Object> get props => [username];
 }
+
+class StartCreateUser extends LoginEvent {
+  @override
+  List<Object> get props => [];
+}

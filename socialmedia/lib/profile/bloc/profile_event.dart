@@ -15,6 +15,15 @@ class LoadPosts extends ProfileEvent {
   List<Object> get props => [userId];
 }
 
+class PostsLoaded extends ProfileEvent {
+  final List<Post> posts;
+
+  const PostsLoaded({this.posts});
+
+  @override
+  List<Object> get props => [posts];
+}
+
 class LikePost extends ProfileEvent {
   final Post post;
   final User user;

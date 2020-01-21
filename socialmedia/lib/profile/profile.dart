@@ -107,7 +107,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   CircleAvatar(
                     radius: 40,
                     backgroundColor: Colors.grey,
-                    backgroundImage: CachedNetworkImageProvider(widget.user.photoUrl),
+                    backgroundImage:
+                        CachedNetworkImageProvider(widget.user.photoUrl),
                   ),
                   Text(
                     widget.user.username,
@@ -134,7 +135,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                           child: Column(
                             children: <Widget>[
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   buildCountColumn("posts", postsCount),
                                   buildCountColumn("followers", 0),
@@ -186,7 +188,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   Widget buildProfileButton() {
-    final User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+    final User user =
+        (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
     final bool isProfileOwner = user.id == widget.profileId;
     if (isProfileOwner) {
       return buildButton(
@@ -215,7 +218,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
           height: 27,
           child: Text(
             text,
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -233,7 +237,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   Widget buildProfileColumnPost(List<Post> posts) {
     return ListView(
-      children: posts.map((post) => PostItem(post: post, user: widget.user)).toList(),
+      children:
+          posts.map((post) => PostItem(post: post, user: widget.user)).toList(),
     );
   }
 

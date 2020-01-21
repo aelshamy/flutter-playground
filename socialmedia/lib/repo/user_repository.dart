@@ -30,7 +30,7 @@ class UserRepository {
     return _googleSignIn.currentUser != null;
   }
 
-  Future<DocumentSnapshot> getUser() async {
+  Stream<DocumentSnapshot> getUser() {
     final GoogleSignInAccount user = _googleSignIn.currentUser;
     return _fireStoreRepo.getUser(user.id);
   }

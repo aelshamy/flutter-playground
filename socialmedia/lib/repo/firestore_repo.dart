@@ -27,8 +27,8 @@ class FirestoreRepo {
     return newUser;
   }
 
-  Future<DocumentSnapshot> getUser(String userId) async {
-    return _firestoreInstance.collection('users').document(userId).get();
+  Stream<DocumentSnapshot> getUser(String userId) {
+    return _firestoreInstance.collection('users').document(userId).snapshots();
   }
 
   Future<QuerySnapshot> searchUsers(String query) async {
@@ -69,13 +69,16 @@ class FirestoreRepo {
         .setData(data);
   }
 
-  Future<QuerySnapshot> getUserPosts(String userId) async {
+  Stream<List<Post>> getUserPosts(String userId) {
     return _firestoreInstance
         .collection('posts')
         .document(userId)
         .collection("userPosts")
         .orderBy("timestamp", descending: true)
-        .getDocuments();
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.documents.map((doc) => Post.fromDocument(doc)).toList();
+    });
   }
 
   Future<void> likePost(Post post, User user) async {

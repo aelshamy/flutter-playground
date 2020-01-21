@@ -11,7 +11,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
   CommentsBloc({FirestoreRepo firestoreRepo})
       : _firestoreRepo = firestoreRepo ?? FirestoreRepo();
   @override
-  CommentsState get initialState => CommentsInitial();
+  CommentsState get initialState => CommentsLoading();
 
   @override
   Stream<CommentsState> mapEventToState(
@@ -29,7 +29,6 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
   }
 
   Stream<CommentsState> _mapLoadCommentsToState(String postId) async* {
-    yield CommentsLoading();
     try {
       _commentsSubscription?.cancel();
       _commentsSubscription = _firestoreRepo.getPostComments(postId).listen(

@@ -15,7 +15,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       : _firestoreRepo = firestoreRepo ?? FirestoreRepo();
 
   @override
-  ProfileState get initialState => ProfileInitial();
+  ProfileState get initialState => ProfileLoading();
 
   @override
   Stream<ProfileState> mapEventToState(
@@ -33,7 +33,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Stream<ProfileState> _mapLoadPostsToState(String userId) async* {
-    yield ProfileLoading();
     try {
       _postsSubscription?.cancel();
       _postsSubscription = _firestoreRepo.getUserPosts(userId).listen(

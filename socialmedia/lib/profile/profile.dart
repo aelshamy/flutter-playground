@@ -40,7 +40,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       appBar: const Header(title: "Profile"),
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (BuildContext context, ProfileState state) {
-          if (state is ProfileLoading || state is ProfileInitial) {
+          if (state is ProfileLoading) {
             return const Center(child: CircularProgress());
           }
           if (state is ProfileLoadError) {

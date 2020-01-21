@@ -71,7 +71,7 @@ class Comments extends StatelessWidget {
   Widget buildComments() {
     return BlocBuilder<CommentsBloc, CommentsState>(
       builder: (context, state) {
-        if (state is CommentsLoading || state is CommentsInitial) {
+        if (state is CommentsLoading) {
           return const CircularProgress();
         }
         if (state is CommentsLoadError) {

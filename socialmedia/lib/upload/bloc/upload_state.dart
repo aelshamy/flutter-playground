@@ -13,9 +13,8 @@ class UploadInitial extends UploadState {
 
 class UploadPhotoSelected extends UploadState {
   final File image;
-  bool isLoading;
 
-  UploadPhotoSelected({this.image}) : isLoading = false;
+  const UploadPhotoSelected({this.image});
 
   @override
   List<Object> get props => [image];

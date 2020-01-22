@@ -40,9 +40,8 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
   }
 
   Stream<UploadState> _mapCreatePostToState(CreatePost event) async* {
-    (state as UploadPhotoSelected).isLoading = true;
     await _storageRepo.uploadAssetToStorage(image: event.image, user: event.user, description: event.description, location: event.location);
-    (state as UploadPhotoSelected).isLoading = true;
+
     yield UploadInitial();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,10 +11,17 @@ import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/profile/bloc/bloc.dart';
 import 'package:socialmedia/profile/bloc/profile_bloc.dart';
 
-class PostItem extends StatelessWidget {
+class PostItem extends StatefulWidget {
   final Post post;
   final User user;
   const PostItem({Key key, this.post, this.user}) : super(key: key);
+
+  @override
+  _PostItemState createState() => _PostItemState();
+}
+
+class _PostItemState extends State<PostItem> {
+  bool _showLikeAnimation = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,20 +29,20 @@ class PostItem extends StatelessWidget {
       children: <Widget>[
         ListTile(
           leading: CircleAvatar(
-            backgroundImage: CachedNetworkImageProvider(user.photoUrl),
+            backgroundImage: CachedNetworkImageProvider(widget.user.photoUrl),
             backgroundColor: Colors.grey,
           ),
           title: GestureDetector(
             onTap: () => print("User Clicked "),
             child: Text(
-              user.username,
+              widget.user.username,
               style: TextStyle(
                 color: Colors.blue,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          subtitle: Text(post.location),
+          subtitle: Text(widget.post.location),
           trailing: IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () => print("Deleting Post"),
@@ -41,31 +50,42 @@ class PostItem extends StatelessWidget {
         ),
         GestureDetector(
           onDoubleTap: () {
+            if (widget.post.likes[widget.user.id] != true) {
+              setState(() {
+                _showLikeAnimation = true;
+              });
+
+              Timer(const Duration(milliseconds: 800), () {
+                setState(() {
+                  _showLikeAnimation = false;
+                });
+              });
+            }
             likePost(context);
           },
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
               CachedNetworkImage(
-                imageUrl: post.mediaUrl,
-                fit: BoxFit.cover,
+                imageUrl: widget.post.mediaUrl,
+                // height: 250,
+                fit: BoxFit.fitWidth,
                 placeholder: (context, url) => const Padding(
                   padding: EdgeInsets.all(20),
                   child: CircularProgress(),
                 ),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
-              if (post.likes[user?.id] == true)
+              if (_showLikeAnimation)
                 TweenAnimationBuilder(
                   duration: const Duration(milliseconds: 300),
                   tween: Tween(begin: 0.5, end: 1.5),
-                  builder: (BuildContext context, double value, Widget child) =>
-                      Transform.scale(
+                  builder: (BuildContext context, double value, Widget child) => Transform.scale(
                     //TODO: fix animation
                     scale: value,
                     child: const Icon(
                       Icons.favorite,
-                      size: 80,
+                      size: 100,
                       color: Colors.red,
                     ),
                   ),
@@ -83,9 +103,7 @@ class PostItem extends StatelessWidget {
                   likePost(context);
                 },
                 child: Icon(
-                  post.likes[user?.id] == true
-                      ? Icons.favorite
-                      : Icons.favorite_border,
+                  widget.post.likes[widget.user?.id] == true ? Icons.favorite : Icons.favorite_border,
                   size: 28,
                   color: Colors.pink,
                 ),
@@ -109,8 +127,7 @@ class PostItem extends StatelessWidget {
               margin: const EdgeInsets.only(left: 20),
               child: Text(
                 "${getLikeCount()} Likes",
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -121,13 +138,12 @@ class PostItem extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(left: 20),
               child: Text(
-                "${post.username} ",
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                "${widget.post.username} ",
+                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ),
             Expanded(
-              child: Text(post.description),
+              child: Text(widget.post.description),
             ),
           ],
         ),
@@ -136,21 +152,20 @@ class PostItem extends StatelessWidget {
   }
 
   void likePost(BuildContext context) {
-    BlocProvider.of<ProfileBloc>(context).add(LikePost(post: post, user: user));
+    BlocProvider.of<ProfileBloc>(context).add(LikePost(post: widget.post, user: widget.user));
   }
 
   int getLikeCount() {
-    if (post.likes == null) return 0;
-    return post.likes.values.takeWhile((item) => item == true).length as int;
+    if (widget.post.likes == null) return 0;
+    return widget.post.likes.values.takeWhile((item) => item == true).length as int;
   }
 
   void showComments(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) => BlocProvider<CommentsBloc>(
-          create: (context) =>
-              CommentsBloc()..add(LoadComments(postId: post.postId)),
-          child: Comments(post: post),
+          create: (context) => CommentsBloc()..add(LoadComments(postId: widget.post.postId)),
+          child: Comments(post: widget.post),
         ),
       ),
     );

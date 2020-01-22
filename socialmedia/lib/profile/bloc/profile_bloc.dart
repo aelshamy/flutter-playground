@@ -11,8 +11,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final FirestoreRepo _firestoreRepo;
   StreamSubscription _postsSubscription;
 
-  ProfileBloc({FirestoreRepo firestoreRepo})
-      : _firestoreRepo = firestoreRepo ?? FirestoreRepo();
+  ProfileBloc({FirestoreRepo firestoreRepo}) : _firestoreRepo = firestoreRepo ?? FirestoreRepo();
 
   @override
   ProfileState get initialState => ProfileLoading();

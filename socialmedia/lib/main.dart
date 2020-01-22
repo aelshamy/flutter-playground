@@ -8,7 +8,6 @@ import 'package:socialmedia/repo/firestore_repo.dart';
 
 import 'common/simple_bloc_delegate.dart';
 import 'login/bloc/bloc.dart';
-
 import 'repo/user_repository.dart';
 
 void main() {
@@ -19,10 +18,10 @@ void main() {
     ),
   );
   BlocSupervisor.delegate = SimpleBlocDelegate();
+
   final UserRepository userRepository = UserRepository();
   final FirestoreRepo firestoreRepo = FirestoreRepo();
-  final AuthBloc authBloc =
-      AuthBloc(userRepository: userRepository, firestoreRepo: firestoreRepo);
+  final AuthBloc authBloc = AuthBloc(userRepository: userRepository, firestoreRepo: firestoreRepo);
   runApp(
     MultiBlocProvider(
       providers: [
@@ -30,8 +29,7 @@ void main() {
           create: (BuildContext context) => authBloc..add(AppStarted()),
         ),
         BlocProvider<LoginBloc>(
-          create: (BuildContext context) =>
-              LoginBloc(userRepository: userRepository, authBloc: authBloc),
+          create: (BuildContext context) => LoginBloc(userRepository: userRepository, authBloc: authBloc),
         ),
       ],
       child: App(firestoreRepo: firestoreRepo),

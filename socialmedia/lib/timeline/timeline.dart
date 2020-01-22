@@ -16,6 +16,7 @@ class _TimelineState extends State<Timeline> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Header(
+        title: "Timeline",
         actions: <Widget>[
           FlatButton(
             onPressed: () {
@@ -23,7 +24,10 @@ class _TimelineState extends State<Timeline> {
               // Future.delayed(const Duration(seconds: 1))
               //     .then((_) => throw Exception());
             },
-            child: const Text('logout'),
+            child: const Text(
+              'logout',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),

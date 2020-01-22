@@ -26,6 +26,7 @@ class _PostItemState extends State<PostItem> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         ListTile(
           leading: CircleAvatar(
@@ -37,7 +38,7 @@ class _PostItemState extends State<PostItem> {
             child: Text(
               widget.user.username,
               style: TextStyle(
-                color: Colors.blue,
+                color: Theme.of(context).accentColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -124,32 +125,15 @@ class _PostItemState extends State<PostItem> {
           ),
         ),
         const SizedBox(height: 10),
-        Row(
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(left: 20),
-              child: Text(
-                "${getLikeCount()} Likes",
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
+        Container(
+          margin: const EdgeInsets.only(left: 20),
+          child: Text(
+            "${getLikeCount()} Likes",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
         ),
         const SizedBox(height: 10),
-        Row(
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(left: 20),
-              child: Text(
-                "${widget.post.username} ",
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(
-              child: Text(widget.post.description),
-            ),
-          ],
-        ),
+        Text(widget.post.description),
       ],
     );
   }

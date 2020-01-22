@@ -9,13 +9,14 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 0,
       actions: actions,
       title: Text(
         title ?? "FlutterShare",
         style: TextStyle(
           color: Colors.white,
-          fontFamily: title == null ? "Signatra" : "",
-          fontSize: title == null ? 50 : 22,
+          fontFamily: "Signatra",
+          fontSize: 50,
         ),
       ),
       centerTitle: true,

@@ -3,12 +3,10 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:socialmedia/auth/bloc/bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
-import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/upload/bloc/upload_state.dart';
 
 import 'bloc/bloc.dart';
@@ -25,10 +23,8 @@ class Upload extends StatelessWidget {
         if (state is UploadInitial) {
           return _buildUploadInitial(context);
         }
-        if (state is UploadPhotoSelected) {
-          return _buildUploadForm(context, state.image);
-        }
-        return const SizedBox();
+        print("state: $state");
+        return _buildUploadForm(context, (state as UploadPhotoSelected).image);
       },
     );
   }
@@ -37,17 +33,24 @@ class Upload extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        SvgPicture.asset(
-          'assets/images/upload.svg',
-          height: 200,
+        Icon(
+          Icons.add_a_photo,
+          size: 150,
+          color: Theme.of(context).accentColor.withOpacity(0.2),
         ),
-        const SizedBox(height: 40),
+        // SvgPicture.asset(
+        //   'assets/images/upload.svg',
+        //   height: 200,
+        //   color: Theme.of(context).accentColor.withOpacity(0.3),
+        //   colorBlendMode: BlendMode.color,
+        // ),
+        const SizedBox(height: 60),
         RaisedButton(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          color: Colors.deepPurple,
+          color: Theme.of(context).accentColor,
           onPressed: () {
             _showSelectImageDialog(context);
           },
@@ -60,42 +63,9 @@ class Upload extends StatelessWidget {
     );
   }
 
-  Future<void> _showSelectImageDialog(BuildContext context) async {
-    final UploadBloc uploadBloc = BlocProvider.of<UploadBloc>(context);
-    return showDialog<void>(
-      context: context,
-      builder: (context) {
-        return SimpleDialog(
-          title: const Text('Create Post'),
-          children: <Widget>[
-            SimpleDialogOption(
-              onPressed: () {
-                Navigator.pop(context);
-                uploadBloc.add(const SelectPhoto(source: ImageSource.camera));
-              },
-              child: const Text("Photo with Camera"),
-            ),
-            SimpleDialogOption(
-              onPressed: () {
-                Navigator.pop(context);
-                uploadBloc.add(const SelectPhoto(source: ImageSource.gallery));
-              },
-              child: const Text("Image from gallary"),
-            ),
-            SimpleDialogOption(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Cancel"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Widget _buildUploadForm(BuildContext context, File image) {
     final UploadBloc uploadBloc = BlocProvider.of<UploadBloc>(context);
-    final User user =
-        (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+    final User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
 
     return Scaffold(
       appBar: AppBar(
@@ -139,22 +109,16 @@ class Upload extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           //TODO:update code
-          if ((uploadBloc.state as UploadPhotoSelected).isLoading)
-            const LinearProgress(),
+          // if ((uploadBloc.state as UploadPhotoSelected).isLoading)
+          //   const LinearProgress(),
           const SizedBox(height: 10),
-          Container(
-            height: 220,
-            width: MediaQuery.of(context).size.width * .8,
-            child: Center(
-              child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: FileImage(image),
-                    ),
-                  ),
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: FileImage(image),
                 ),
               ),
             ),
@@ -218,11 +182,41 @@ class Upload extends StatelessWidget {
     );
   }
 
+  Future<void> _showSelectImageDialog(BuildContext context) async {
+    final UploadBloc uploadBloc = BlocProvider.of<UploadBloc>(context);
+    return showDialog<void>(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: const Text('Create Post'),
+          children: <Widget>[
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context);
+                uploadBloc.add(const SelectPhoto(source: ImageSource.camera));
+              },
+              child: const Text("Photo with Camera"),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context);
+                uploadBloc.add(const SelectPhoto(source: ImageSource.gallery));
+              },
+              child: const Text("Image from gallary"),
+            ),
+            SimpleDialogOption(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> getUserLocation() async {
-    final Position position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    final List<Placemark> placemarks = await Geolocator()
-        .placemarkFromCoordinates(position.latitude, position.longitude);
+    final Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    final List<Placemark> placemarks = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
     final placemark = placemarks[0];
 
     // String completeAddress =

@@ -7,7 +7,7 @@ class ActivityFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: Header(),
+      appBar: Header(title: "Feed"),
       body: Center(child: Text('Feed')),
     );
   }

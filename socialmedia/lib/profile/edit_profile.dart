@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/auth/bloc/bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
+import 'package:socialmedia/common/widgets/header.dart';
 import 'package:socialmedia/login/bloc/bloc.dart';
-import 'package:socialmedia/login/bloc/login_bloc.dart';
 
 class EditProfile extends StatefulWidget {
   final User user;
@@ -23,28 +23,26 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-    _displayNameController =
-        TextEditingController(text: widget.user.displayName);
+    _displayNameController = TextEditingController(text: widget.user.displayName);
     _bioController = TextEditingController(text: widget.user.bio);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Edit Profile',
-          style: TextStyle(color: Colors.black),
-        ),
+      backgroundColor: Colors.white,
+      appBar: Header(
+        title: 'Edit Profile',
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.done,
+              Icons.exit_to_app,
               size: 30,
-              color: Colors.green,
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              Navigator.pop(context);
+              BlocProvider.of<LoginBloc>(context).add(Logout());
+            },
           )
         ],
       ),
@@ -56,19 +54,25 @@ class _EditProfileState extends State<EditProfile> {
             Center(
               child: CircleAvatar(
                 radius: 50,
-                backgroundImage:
-                    CachedNetworkImageProvider(widget.user?.photoUrl),
+                backgroundImage: CachedNetworkImageProvider(widget.user?.photoUrl),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 40),
             Form(
               key: _formKey,
               child: Column(
                 children: <Widget>[
                   TextFormField(
                     controller: _displayNameController,
-                    decoration:
-                        const InputDecoration(hintText: "Update Display Name"),
+                    style: TextStyle(color: Colors.grey.shade600),
+                    cursorColor: Colors.grey.shade600,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      fillColor: Colors.grey.shade200,
+                      hintText: 'Update display name',
+                      hintStyle: TextStyle(color: Colors.grey.shade400),
+                      filled: true,
+                    ),
                     validator: (value) {
                       if (value.trim().length < 3 || value.isEmpty) {
                         return "Display name is too short";
@@ -79,7 +83,15 @@ class _EditProfileState extends State<EditProfile> {
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _bioController,
-                    decoration: const InputDecoration(hintText: "Update Bio"),
+                    style: TextStyle(color: Colors.grey.shade600),
+                    cursorColor: Colors.white,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      fillColor: Colors.grey.shade200,
+                      hintText: 'Update user bio',
+                      hintStyle: TextStyle(color: Colors.grey.shade400),
+                      filled: true,
+                    ),
                     validator: (value) {
                       if (value.trim().length > 100) {
                         return "Bio is too long";
@@ -87,9 +99,9 @@ class _EditProfileState extends State<EditProfile> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 20),
                   RaisedButton(
-                    color: Colors.blue,
+                    color: Theme.of(context).accentColor,
                     onPressed: updateProfileData,
                     child: const Text(
                       'Update Profile',
@@ -98,24 +110,6 @@ class _EditProfileState extends State<EditProfile> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  FlatButton.icon(
-                    icon: Icon(
-                      Icons.cancel,
-                      color: Colors.red,
-                    ),
-                    label: Text(
-                      'Logout',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 20,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      BlocProvider.of<LoginBloc>(context).add(Logout());
-                    },
                   ),
                 ],
               ),
@@ -128,10 +122,8 @@ class _EditProfileState extends State<EditProfile> {
 
   void updateProfileData() {
     if (_formKey.currentState.validate()) {
-      BlocProvider.of<AuthBloc>(context).add(UpdateUser(
-          userId: widget.user.id,
-          displayName: _displayNameController.text,
-          bio: _bioController.text));
+      BlocProvider.of<AuthBloc>(context)
+          .add(UpdateUser(userId: widget.user.id, displayName: _displayNameController.text, bio: _bioController.text));
     }
   }
 }

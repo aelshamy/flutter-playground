@@ -67,7 +67,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
           children: <Widget>[
             const Divider(height: 0.0),
             TabBar(
-              labelColor: Theme.of(context).primaryColor,
+              labelColor: Theme.of(context).accentColor,
               unselectedLabelColor: Colors.grey,
               indicatorColor: Colors.transparent,
               labelPadding: const EdgeInsets.all(5),
@@ -107,8 +107,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   CircleAvatar(
                     radius: 40,
                     backgroundColor: Colors.grey,
-                    backgroundImage:
-                        CachedNetworkImageProvider(widget.user.photoUrl),
+                    backgroundImage: CachedNetworkImageProvider(widget.user.photoUrl),
                   ),
                   Text(
                     widget.user.username,
@@ -135,8 +134,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                           child: Column(
                             children: <Widget>[
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   buildCountColumn("posts", postsCount),
                                   buildCountColumn("followers", 0),
@@ -188,8 +186,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   Widget buildProfileButton() {
-    final User user =
-        (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+    final User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
     final bool isProfileOwner = user.id == widget.profileId;
     if (isProfileOwner) {
       return buildButton(
@@ -209,17 +206,16 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         onPressed: function,
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.blue,
+            color: Theme.of(context).accentColor,
             border: Border.all(color: Colors.blue),
             borderRadius: BorderRadius.circular(5),
           ),
           alignment: Alignment.center,
-          width: 250,
+          width: 150,
           height: 27,
           child: Text(
             text,
-            style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -236,9 +232,19 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   Widget buildProfileColumnPost(List<Post> posts) {
-    return ListView(
-      children:
-          posts.map((post) => PostItem(post: post, user: widget.user)).toList(),
+    return ListView.separated(
+      padding: const EdgeInsets.only(bottom: 30),
+      itemBuilder: (BuildContext context, int index) {
+        final Post post = posts[index];
+        return PostItem(post: post, user: widget.user);
+      },
+      itemCount: posts.length,
+      separatorBuilder: (BuildContext context, int index) => Padding(
+        padding: const EdgeInsets.only(top: 13.0),
+        child: Divider(
+          color: Colors.grey.shade400,
+        ),
+      ),
     );
   }
 

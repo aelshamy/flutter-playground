@@ -40,8 +40,7 @@ class Comments extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 15.0),
                     child: TextFormField(
                       controller: _controller,
-                      decoration: const InputDecoration.collapsed(
-                          hintText: 'Write a comment...'),
+                      decoration: const InputDecoration.collapsed(hintText: 'Write a comment...'),
                     ),
                   ),
                 ),
@@ -50,7 +49,7 @@ class Comments extends StatelessWidget {
                   onPressed: () {
                     addcomment(context);
                   },
-                  child: const Text("Post"),
+                  child: Text("Post", style: TextStyle(color: Theme.of(context).accentColor)),
                 ),
               ],
             ),
@@ -61,10 +60,8 @@ class Comments extends StatelessWidget {
   }
 
   void addcomment(BuildContext context) {
-    final User user =
-        (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
-    BlocProvider.of<CommentsBloc>(context).add(
-        AddComment(postId: post.postId, user: user, comment: _controller.text));
+    final User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+    BlocProvider.of<CommentsBloc>(context).add(AddComment(postId: post.postId, user: user, comment: _controller.text));
     _controller.clear();
   }
 
@@ -90,8 +87,7 @@ class Comments extends StatelessWidget {
             );
           },
           itemCount: (state as CommentsRecieved).comments.length,
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
+          separatorBuilder: (BuildContext context, int index) => const Divider(),
         );
       },
     );

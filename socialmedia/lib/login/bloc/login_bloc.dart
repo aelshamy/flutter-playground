@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +15,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   StreamSubscription _userSubscription;
 
-  LoginBloc(
-      {@required UserRepository userRepository, @required AuthBloc authBloc})
+  LoginBloc({@required UserRepository userRepository, @required AuthBloc authBloc})
       : _userRepository = userRepository ?? UserRepository(),
         _authBloc = authBloc ?? AuthBloc(userRepository: userRepository);
 
@@ -76,7 +76,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       await _userRepository.signOut();
       _authBloc.add(LoggedOut());
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 

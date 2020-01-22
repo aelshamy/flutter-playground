@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:socialmedia/common/model/comment.dart';
@@ -7,8 +9,7 @@ import 'package:socialmedia/common/model/user.dart';
 class FirestoreRepo {
   final Firestore _firestoreInstance;
 
-  FirestoreRepo({Firestore firebaseAuth})
-      : _firestoreInstance = firebaseAuth ?? Firestore.instance;
+  FirestoreRepo({Firestore firebaseAuth}) : _firestoreInstance = firebaseAuth ?? Firestore.instance;
 
   Future<User> createUser(GoogleSignInAccount user, String username) async {
     final User newUser = User(
@@ -20,10 +21,7 @@ class FirestoreRepo {
       bio: "",
     );
 
-    _firestoreInstance
-        .collection('users')
-        .document(user.id)
-        .setData(newUser.toDocument());
+    _firestoreInstance.collection('users').document(user.id).setData(newUser.toDocument());
 
     return newUser;
   }
@@ -33,10 +31,7 @@ class FirestoreRepo {
   }
 
   Future<QuerySnapshot> searchUsers(String query) async {
-    return _firestoreInstance
-        .collection('users')
-        .where("displayName", isGreaterThanOrEqualTo: query)
-        .getDocuments();
+    return _firestoreInstance.collection('users').where("displayName", isGreaterThanOrEqualTo: query).getDocuments();
   }
 
   Future<void> updateUser(String userId, String displayName, String bio) async {
@@ -46,12 +41,7 @@ class FirestoreRepo {
     });
   }
 
-  Future<void> createPost(
-      {String id,
-      String mediaUrl,
-      String location,
-      String description,
-      User user}) async {
+  Future<void> createPost({String id, String mediaUrl, String location, String description, User user}) async {
     final Map<String, dynamic> data = {
       "postId": id,
       "owner": user.id,
@@ -62,12 +52,7 @@ class FirestoreRepo {
       "timestamp": DateTime.now(),
       "likes": {},
     };
-    return _firestoreInstance
-        .collection('posts')
-        .document(user.id)
-        .collection("userPosts")
-        .document(id)
-        .setData(data);
+    return _firestoreInstance.collection('posts').document(user.id).collection("userPosts").document(id).setData(data);
   }
 
   Stream<List<Post>> getUserPosts(String userId) {
@@ -94,7 +79,7 @@ class FirestoreRepo {
           .document(post.postId)
           .updateData({"likes.${user.id}": !isliked});
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 
@@ -106,9 +91,7 @@ class FirestoreRepo {
         .orderBy("timestamp", descending: false)
         .snapshots()
         .map((snapshot) {
-      return snapshot.documents
-          .map((doc) => Comment.fromDocument(doc))
-          .toList();
+      return snapshot.documents.map((doc) => Comment.fromDocument(doc)).toList();
     });
   }
 
@@ -118,15 +101,9 @@ class FirestoreRepo {
           .collection('comments')
           .document(postId)
           .collection("comments")
-          .add({
-        "username": user.username,
-        "userId": user.id,
-        "avatarUrl": user.photoUrl,
-        "comment": comment,
-        "timestamp": DateTime.now()
-      });
+          .add({"username": user.username, "userId": user.id, "avatarUrl": user.photoUrl, "comment": comment, "timestamp": DateTime.now()});
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 }

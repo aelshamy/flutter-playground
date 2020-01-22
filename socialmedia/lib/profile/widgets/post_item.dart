@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class _PostItemState extends State<PostItem> {
             backgroundColor: Colors.grey,
           ),
           title: GestureDetector(
-            onTap: () => print("User Clicked "),
+            onTap: () => log("User Clicked "),
             child: Text(
               widget.user.username,
               style: TextStyle(
@@ -46,7 +47,7 @@ class _PostItemState extends State<PostItem> {
           subtitle: Text(widget.post.location),
           trailing: IconButton(
             icon: Icon(Icons.more_vert),
-            onPressed: () => print("Deleting Post"),
+            onPressed: () => log("Deleting Post"),
           ),
         ),
         GestureDetector(

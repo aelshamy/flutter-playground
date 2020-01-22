@@ -23,7 +23,6 @@ class Upload extends StatelessWidget {
         if (state is UploadInitial) {
           return _buildUploadInitial(context);
         }
-        print("state: $state");
         return _buildUploadForm(context, (state as UploadPhotoSelected).image);
       },
     );

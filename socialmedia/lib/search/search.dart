@@ -114,7 +114,7 @@ class Search extends StatelessWidget {
                   ),
                   title: Text(
                     user.displayName,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),

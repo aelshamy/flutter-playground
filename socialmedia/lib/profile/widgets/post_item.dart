@@ -66,15 +66,18 @@ class _PostItemState extends State<PostItem> {
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              CachedNetworkImage(
-                imageUrl: widget.post.mediaUrl,
-                // height: 250,
-                fit: BoxFit.fitWidth,
-                placeholder: (context, url) => const Padding(
-                  padding: EdgeInsets.all(20),
-                  child: CircularProgress(),
+              AspectRatio(
+                aspectRatio: 16 / 9,
+                child: CachedNetworkImage(
+                  imageUrl: widget.post.mediaUrl,
+                  // height: 250,
+                  fit: BoxFit.fitWidth,
+                  placeholder: (context, url) => const Padding(
+                    padding: EdgeInsets.all(20),
+                    child: CircularProgress(),
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
               if (_showLikeAnimation)
                 TweenAnimationBuilder(

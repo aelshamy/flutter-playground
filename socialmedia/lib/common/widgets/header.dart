@@ -13,7 +13,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
       actions: actions,
       title: Text(
         title ?? "FlutterShare",
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontFamily: "Signatra",
           fontSize: 50,

@@ -50,11 +50,12 @@ class _CreateAccountState extends State<CreateAccount> {
                 ),
                 const SizedBox(height: 15),
                 RaisedButton(
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).accentColor,
                   colorBrightness: Brightness.dark,
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      BlocProvider.of<LoginBloc>(context).add(Createuser(_controller.text));
+                      BlocProvider.of<LoginBloc>(context)
+                          .add(Createuser(_controller.text));
                     }
                   },
                   child: const Text('Submit'),

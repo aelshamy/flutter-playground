@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/auth/bloc/bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/feed/activity_feed.dart';
+import 'package:socialmedia/feed/bloc/bloc.dart';
+import 'package:socialmedia/feed/bloc/feed_bloc.dart';
 import 'package:socialmedia/profile/bloc/bloc.dart';
 import 'package:socialmedia/profile/profile.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
@@ -35,9 +37,14 @@ class _HomeState extends State<Home> {
     user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
     _pages = [
       const Timeline(),
-      const ActivityFeed(),
+      BlocProvider<FeedBloc>(
+        create: (context) =>
+            FeedBloc(firestoreRepo: widget.firestoreRepo)..add(LoadFeed(userId: user.id)),
+        child: const ActivityFeed(),
+      ),
       BlocProvider<UploadBloc>(
-        create: (context) => UploadBloc(storageRepo: StorageRepo(fireStoreRepo: widget.firestoreRepo)),
+        create: (context) =>
+            UploadBloc(storageRepo: StorageRepo(fireStoreRepo: widget.firestoreRepo)),
         child: Upload(),
       ),
       BlocProvider<SearchBloc>(
@@ -45,7 +52,8 @@ class _HomeState extends State<Home> {
         child: Search(),
       ),
       BlocProvider<ProfileBloc>(
-        create: (context) => ProfileBloc(firestoreRepo: widget.firestoreRepo)..add(LoadPosts(userId: user.id)),
+        create: (context) =>
+            ProfileBloc(firestoreRepo: widget.firestoreRepo)..add(LoadPosts(userId: user.id)),
         child: Profile(user: user, profileId: user.id),
       ),
     ];
@@ -80,7 +88,8 @@ class _HomeState extends State<Home> {
   }
 
   void navigateToPage(int page) {
-    _pageController.animateToPage(page, duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    _pageController.animateToPage(page,
+        duration: const Duration(milliseconds: 300), curve: Curves.ease);
   }
 
   void onPageChanged(int page) {

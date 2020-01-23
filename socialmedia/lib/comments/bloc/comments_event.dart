@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:socialmedia/common/model/comment.dart';
+import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
 
 abstract class CommentsEvent extends Equatable {
@@ -7,14 +8,14 @@ abstract class CommentsEvent extends Equatable {
 }
 
 class AddComment extends CommentsEvent {
-  final String postId;
+  final Post post;
   final User user;
   final String comment;
 
-  const AddComment({this.postId, this.user, this.comment});
+  const AddComment({this.post, this.user, this.comment});
 
   @override
-  List<Object> get props => [postId, user, comment];
+  List<Object> get props => [post, user, comment];
 }
 
 class LoadComments extends CommentsEvent {

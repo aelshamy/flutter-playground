@@ -16,10 +16,10 @@ class Comment {
   });
 
   factory Comment.fromDocument(DocumentSnapshot doc) => Comment(
-        username: doc['username'] as String,
-        userId: doc['userId'] as String,
-        avatarUrl: doc['avatarUrl'] as String,
-        comment: doc['comment'] as String,
+        username: doc['username'].toString(),
+        userId: doc['userId'].toString(),
+        avatarUrl: doc['avatarUrl'].toString(),
+        comment: doc['comment'].toString(),
         timestamp: doc['timestamp'] as Timestamp,
       );
 }

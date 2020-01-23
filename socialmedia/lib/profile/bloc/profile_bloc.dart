@@ -50,6 +50,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Stream<ProfileState> _mapLikePostToState(Post post, User user) async* {
     await _firestoreRepo.likePost(post, user);
+    // if (post.owner != user.id) {
+    if (post.likes[user.id] == true) {
+      await _firestoreRepo.addLikesToFeed(post, user);
+    } else {
+      await _firestoreRepo.removeLikesToFeed(post, user);
+    }
+    // }
   }
 
   @override

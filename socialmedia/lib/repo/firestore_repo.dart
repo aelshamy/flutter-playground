@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:socialmedia/common/model/comment.dart';
+import 'package:socialmedia/common/model/feed.dart';
 import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
 
@@ -31,7 +32,10 @@ class FirestoreRepo {
   }
 
   Future<QuerySnapshot> searchUsers(String query) async {
-    return _firestoreInstance.collection('users').where("displayName", isGreaterThanOrEqualTo: query).getDocuments();
+    return _firestoreInstance
+        .collection('users')
+        .where("displayName", isGreaterThanOrEqualTo: query)
+        .getDocuments();
   }
 
   Future<void> updateUser(String userId, String displayName, String bio) async {
@@ -41,7 +45,8 @@ class FirestoreRepo {
     });
   }
 
-  Future<void> createPost({String id, String mediaUrl, String location, String description, User user}) async {
+  Future<void> createPost(
+      {String id, String mediaUrl, String location, String description, User user}) async {
     final Map<String, dynamic> data = {
       "postId": id,
       "owner": user.id,
@@ -52,7 +57,12 @@ class FirestoreRepo {
       "timestamp": DateTime.now(),
       "likes": {},
     };
-    return _firestoreInstance.collection('posts').document(user.id).collection("userPosts").document(id).setData(data);
+    return _firestoreInstance
+        .collection('posts')
+        .document(user.id)
+        .collection("userPosts")
+        .document(id)
+        .setData(data);
   }
 
   Stream<List<Post>> getUserPosts(String userId) {
@@ -95,15 +105,113 @@ class FirestoreRepo {
     });
   }
 
-  Future<void> addComment(String postId, User user, String comment) async {
+  Future<void> addComment(Post post, User user, String comment) async {
     try {
       return await _firestoreInstance
           .collection('comments')
-          .document(postId)
+          .document(post.postId)
           .collection("comments")
-          .add({"username": user.username, "userId": user.id, "avatarUrl": user.photoUrl, "comment": comment, "timestamp": DateTime.now()});
+          .add({
+        "username": user.username,
+        "userId": user.id,
+        "avatarUrl": user.photoUrl,
+        "comment": comment,
+        "timestamp": DateTime.now()
+      });
     } catch (e) {
       log(e.toString());
     }
+  }
+
+  Future<void> addLikesToFeed(Post post, User currentUser) async {
+    try {
+      return await _firestoreInstance
+          .collection('feed')
+          .document(post.owner)
+          .collection("posts")
+          .document(post.postId)
+          .collection("feedItems")
+          .document()
+          .setData({
+        "type": FeedType.like.toString(),
+        "username": currentUser.username,
+        "userId": currentUser.id,
+        "userProfileImage": currentUser.photoUrl,
+        "postId": post.postId,
+        "mediaUrl": post.mediaUrl,
+        "timestamp": DateTime.now(),
+      });
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<void> removeLikesToFeed(Post post, User currentUser) async {
+    try {
+      return await _firestoreInstance
+          .collection('feed')
+          .document(post.owner)
+          .collection("posts")
+          .document(post.postId)
+          .collection("feedItems")
+          .where("userId", isEqualTo: currentUser.id)
+          .where("type", isEqualTo: "FeedType.like")
+          .limit(1)
+          .getDocuments()
+          .then((snapshot) {
+        final doc = snapshot.documents.first;
+        if (doc.exists) {
+          doc.reference.delete();
+        }
+      });
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<void> addCommentToFeed(Post post, User currentUser, String comment) async {
+    try {
+      return await _firestoreInstance
+          .collection('feed')
+          .document(post.owner)
+          .collection("posts")
+          .document(post.postId)
+          .collection("feedItems")
+          .document()
+          .setData({
+        "type": FeedType.comment.toString(),
+        "commentData": comment,
+        "username": currentUser.username,
+        "userId": currentUser.id,
+        "userProfileImage": currentUser.photoUrl,
+        "postId": post.postId,
+        "mediaUrl": post.mediaUrl,
+        "timestamp": DateTime.now(),
+      });
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Stream<List<Feed>> getFeed(String userId) {
+    // _firestoreInstance
+    //     .collection('feed')
+    //     .document(userId)
+    //     .collection("posts")
+    //     .getDocuments()
+    //     .then((doc) {
+    //   print(doc.documents);
+    // });
+    return _firestoreInstance
+        .collection('feed')
+        .document(userId)
+        .collection("posts")
+        .document("62e6aa87-b90b-453f-953a-e85f26c7d635")
+        .collection("feedItems")
+        .orderBy("timestamp", descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.documents.map((doc) => Feed.fromDocument(doc)).toList();
+    });
   }
 }

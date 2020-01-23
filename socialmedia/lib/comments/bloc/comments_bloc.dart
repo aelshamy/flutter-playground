@@ -8,8 +8,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
   final FirestoreRepo _firestoreRepo;
   StreamSubscription _commentsSubscription;
 
-  CommentsBloc({FirestoreRepo firestoreRepo})
-      : _firestoreRepo = firestoreRepo ?? FirestoreRepo();
+  CommentsBloc({FirestoreRepo firestoreRepo}) : _firestoreRepo = firestoreRepo ?? FirestoreRepo();
   @override
   CommentsState get initialState => CommentsLoading();
 
@@ -39,13 +38,15 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
     }
   }
 
-  Stream<CommentsState> _mapCommentsLoadedToState(
-      List<Comment> comments) async* {
+  Stream<CommentsState> _mapCommentsLoadedToState(List<Comment> comments) async* {
     yield CommentsRecieved(comments: comments);
   }
 
   Stream<CommentsState> _mapAddCommentToState(AddComment event) async* {
-    _firestoreRepo.addComment(event.postId, event.user, event.comment);
+    await _firestoreRepo.addComment(event.post, event.user, event.comment);
+    // if (event.post.owner != event.user.id) {
+    await _firestoreRepo.addCommentToFeed(event.post, event.user, event.comment);
+    // }
   }
 
   @override

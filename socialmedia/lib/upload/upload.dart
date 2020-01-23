@@ -214,12 +214,11 @@ class Upload extends StatelessWidget {
   }
 
   Future<void> getUserLocation() async {
-    final Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    final List<Placemark> placemarks = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
+    final Position position =
+        await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    final List<Placemark> placemarks =
+        await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
     final placemark = placemarks[0];
-
-    // String completeAddress =
-    //     '${placemark.subThoroughfare} ${placemark.thoroughfare}, ${placemark.subLocality} ${placemark.locality}, ${placemark.subAdministrativeArea},${placemark.administrativeArea} ${placemark.postalCode}, ${placemark.country}';
 
     final formatedAddress = '${placemark.locality}, ${placemark.country}';
     locationController.text = formatedAddress;

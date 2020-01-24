@@ -1,14 +1,25 @@
+import 'package:daynamic_theme/theme_preferences.dart';
+import 'package:daynamic_theme/themes/dark_theme.dart';
+import 'package:daynamic_theme/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 
 class ThemeNotifier with ChangeNotifier {
-  ThemeData _themeData;
+  final ThemePreferences _themePreferences;
+  ThemeData _theme;
 
-  ThemeNotifier(this._themeData);
+  ThemeNotifier({ThemePreferences themePreferences, ThemeData theme})
+      : _themePreferences = themePreferences ?? ThemePreferences(),
+        _theme = theme ?? lightTheme;
 
-  ThemeData getTheme() => _themeData;
+  ThemeData get theme => _theme;
 
-  setTheme(ThemeData themeData) async {
-    _themeData = themeData;
+  setDarkMode(bool value) async {
+    _theme = value ? darkTheme : lightTheme;
+    _themePreferences.setDarkMode(value);
     notifyListeners();
+  }
+
+  isDarkModeEnabled() {
+    return theme == darkTheme;
   }
 }

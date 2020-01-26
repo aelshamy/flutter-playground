@@ -11,7 +11,6 @@ class LoadFeed extends FeedEvent {
   const LoadFeed({this.userId});
 
   @override
-  // TODO: implement props
   List<Object> get props => [userId];
 }
 

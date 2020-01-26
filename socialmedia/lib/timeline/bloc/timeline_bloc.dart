@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+
 import './bloc.dart';
 
 class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
@@ -9,7 +11,5 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   @override
   Stream<TimelineState> mapEventToState(
     TimelineEvent event,
-  ) async* {
-    // TODO: Add Logic
-  }
+  ) async* {}
 }

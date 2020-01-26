@@ -86,7 +86,6 @@ class _PostItemState extends State<PostItem> {
                   duration: const Duration(milliseconds: 300),
                   tween: Tween(begin: 0.5, end: 1.5),
                   builder: (BuildContext context, double value, Widget child) => Transform.scale(
-                    //TODO: fix animation
                     scale: value,
                     child: const Icon(
                       Icons.favorite,
@@ -108,7 +107,9 @@ class _PostItemState extends State<PostItem> {
                   likePost(context);
                 },
                 child: Icon(
-                  widget.post.likes[widget.user?.id] == true ? Icons.favorite : Icons.favorite_border,
+                  widget.post.likes[widget.user?.id] == true
+                      ? Icons.favorite
+                      : Icons.favorite_border,
                   size: 28,
                   color: Colors.pink,
                 ),

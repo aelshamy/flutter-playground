@@ -227,6 +227,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       context,
       MaterialPageRoute(
         builder: (BuildContext context) => EditProfile(user: user),
+        settings: const RouteSettings(name: "EditProfile"),
       ),
     );
   }

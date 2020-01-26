@@ -1,9 +1,11 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
+import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/auth/bloc/bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
+import 'package:socialmedia/common/widgets/route_aware_widget.dart';
 import 'package:socialmedia/feed/activity_feed.dart';
 import 'package:socialmedia/feed/bloc/bloc.dart';
 import 'package:socialmedia/feed/bloc/feed_bloc.dart';
@@ -28,12 +30,15 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
   User user;
-  final _pageController = PageController(initialPage: 0);
+  PageController _pageController;
+  CircularBottomNavigationController _circularBottomNavigationController;
   List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
+    _pageController = PageController(initialPage: _currentIndex);
+    _circularBottomNavigationController = CircularBottomNavigationController(_currentIndex);
     user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
     _pages = [
       const Timeline(),
@@ -49,7 +54,7 @@ class _HomeState extends State<Home> {
       ),
       BlocProvider<SearchBloc>(
         create: (context) => SearchBloc(firestoreRepo: widget.firestoreRepo),
-        child: Search(),
+        child: RouteAwareWidget('search', child: Search()),
       ),
       BlocProvider<ProfileBloc>(
         create: (context) =>
@@ -67,22 +72,23 @@ class _HomeState extends State<Home> {
         onPageChanged: onPageChanged,
         children: _pages,
       ),
-      bottomNavigationBar: CurvedNavigationBar(
-        onTap: navigateToPage,
-        height: 50,
-        index: _currentIndex,
-        backgroundColor: Theme.of(context).accentColor,
-        color: Colors.grey.shade100,
-        buttonBackgroundColor: Colors.white,
-        items: <Widget>[
-          Icon(Icons.whatshot),
-          Icon(Icons.notifications_active),
-          Icon(Icons.photo_camera, size: 30),
-          Icon(Icons.search),
-          Icon(Icons.account_circle),
+      bottomNavigationBar: CircularBottomNavigation(
+        [
+          TabItem(Icons.list, "Home", Colors.cyan),
+          TabItem(Icons.notifications, "Feed", Colors.cyan),
+          TabItem(Icons.photo_camera, "Photo", Colors.red),
+          TabItem(Icons.search, "Search", Colors.cyan),
+          TabItem(Icons.person, "Account", Colors.cyan),
         ],
-        // onTap: navigateToPage,
-        // currentIndex: _page,
+        barHeight: 50,
+        selectedCallback: navigateToPage,
+        // height: 50,
+        // index: _currentIndex,
+        // selectedIconColor: Theme.of(context).accentColor,
+        selectedIconColor: Colors.white,
+        barBackgroundColor: Colors.white,
+        controller: _circularBottomNavigationController,
+        // buttonBackgroundColor: Colors.white,
       ),
     );
   }

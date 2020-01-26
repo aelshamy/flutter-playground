@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialmedia/common/custom_route_observer.dart';
 import 'package:socialmedia/login/home.dart';
 import 'package:socialmedia/login/login.dart';
 import 'package:socialmedia/login/splash_screen.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
 
 import 'auth/bloc/bloc.dart';
+
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 class App extends StatelessWidget {
   final FirestoreRepo firestoreRepo;
@@ -16,9 +19,10 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Social Media',
       debugShowCheckedModeBanner: false,
+      navigatorObservers: [CustomRouteObserver(), routeObserver],
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
-        accentColor: Colors.teal,
+        accentColor: Colors.cyan,
       ),
       home: BlocBuilder<AuthBloc, AuthState>(
         builder: (BuildContext context, AuthState state) {

@@ -7,6 +7,8 @@ import 'package:socialmedia/common/widgets/header.dart';
 import 'package:socialmedia/login/bloc/bloc.dart';
 
 class EditProfile extends StatefulWidget {
+  static const String screenName = 'EditProfile';
+
   final User user;
 
   const EditProfile({Key key, this.user}) : super(key: key);
@@ -122,8 +124,10 @@ class _EditProfileState extends State<EditProfile> {
 
   void updateProfileData() {
     if (_formKey.currentState.validate()) {
-      BlocProvider.of<AuthBloc>(context)
-          .add(UpdateUser(userId: widget.user.id, displayName: _displayNameController.text, bio: _bioController.text));
+      BlocProvider.of<AuthBloc>(context).add(UpdateUser(
+          userId: widget.user.id,
+          displayName: _displayNameController.text,
+          bio: _bioController.text));
     }
   }
 }

@@ -26,13 +26,13 @@ class ActivityFeed extends StatelessWidget {
           final feeds = (state as FeedRecieved).feeds;
 
           return ListView.separated(
+            padding: const EdgeInsets.only(top: 10),
             itemCount: feeds.length,
             itemBuilder: (BuildContext context, int index) {
               final Feed feed = feeds[index];
               return ListTile(
                 dense: true,
-                isThreeLine: true,
-                contentPadding: const EdgeInsets.all(10),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
                 leading: CircleAvatar(
                   child: CachedNetworkImage(
                     imageUrl: feed.userProfileImage,
@@ -78,7 +78,10 @@ class ActivityFeed extends StatelessWidget {
     return Text.rich(
       TextSpan(
         children: [
-          TextSpan(text: "${feed.username}", style: TextStyle(fontWeight: FontWeight.bold)),
+          TextSpan(
+            text: "${feed.username}",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          ),
           TextSpan(text: "$activityItemText"),
         ],
       ),

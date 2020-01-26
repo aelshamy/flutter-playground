@@ -37,7 +37,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header(title: "Profile"),
+      appBar: Header(title: widget.user.displayName),
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (BuildContext context, ProfileState state) {
           if (state is ProfileLoading) {
@@ -101,6 +101,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Column(
                 children: <Widget>[
@@ -116,13 +117,13 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       fontSize: 16,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    widget.user.displayName,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  // const SizedBox(height: 4),
+                  // Text(
+                  //   widget.user.displayName,
+                  //   style: const TextStyle(
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
                 ],
               ),
               Expanded(
@@ -207,7 +208,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         child: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).accentColor,
-            border: Border.all(color: Colors.blue),
             borderRadius: BorderRadius.circular(5),
           ),
           alignment: Alignment.center,

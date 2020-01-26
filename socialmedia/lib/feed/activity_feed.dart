@@ -30,27 +30,32 @@ class ActivityFeed extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               final Feed feed = feeds[index];
               return ListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  leading: CircleAvatar(
-                    radius: 50,
-                    child: CachedNetworkImage(
-                      imageUrl: feed.userProfileImage,
-                    ),
+                dense: true,
+                isThreeLine: true,
+                contentPadding: const EdgeInsets.all(10),
+                leading: CircleAvatar(
+                  child: CachedNetworkImage(
+                    imageUrl: feed.userProfileImage,
                   ),
-                  title: _getFeedTitle(feed),
-                  trailing: (feed.type == FeedType.comment || feed.type == FeedType.like)
-                      ? Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: CachedNetworkImageProvider(feed.mediaUrl),
-                            ),
+                ),
+                title: _getFeedTitle(feed),
+                trailing: (feed.type == FeedType.comment || feed.type == FeedType.like)
+                    ? Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: CachedNetworkImageProvider(feed.mediaUrl),
                           ),
-                        )
-                      : null,
-                  subtitle: Text(timeago.format(feed.timestamp.toDate())));
+                        ),
+                      )
+                    : null,
+                subtitle: Text(
+                  timeago.format(feed.timestamp.toDate()),
+                  style: const TextStyle(height: 1.5),
+                ),
+              );
             },
             separatorBuilder: (BuildContext context, int index) => const Divider(),
           );
@@ -62,14 +67,24 @@ class ActivityFeed extends StatelessWidget {
   Text _getFeedTitle(Feed feed) {
     String activityItemText = '';
     if (feed.type == FeedType.comment) {
-      activityItemText = "replied: ${feed.commentData}";
+      activityItemText = " commented on your post: ${feed.commentData}";
     } else if (feed.type == FeedType.like) {
-      activityItemText = "liked your post";
+      activityItemText = " like your post";
     } else if (feed.type == FeedType.follow) {
-      activityItemText = "is following you";
+      activityItemText = " is following you";
     } else {
       activityItemText = "Error: Unkown type ${feed.type}";
     }
-    return Text("${feed.username} $activityItemText");
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(text: "${feed.username}", style: TextStyle(fontWeight: FontWeight.bold)),
+          TextSpan(text: "$activityItemText"),
+        ],
+      ),
+      style: const TextStyle(height: 1.3),
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+    );
   }
 }

@@ -22,7 +22,8 @@ class App extends StatelessWidget {
       navigatorObservers: [CustomRouteObserver(), routeObserver],
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
-        accentColor: Colors.cyan,
+        accentColor: Colors.redAccent,
+        scaffoldBackgroundColor: Colors.white,
       ),
       home: BlocBuilder<AuthBloc, AuthState>(
         builder: (BuildContext context, AuthState state) {

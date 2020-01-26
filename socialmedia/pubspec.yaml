@@ -28,7 +28,7 @@ dependencies:
   equatable: ^1.0.2
   bloc: ^3.0.0
   firebase_crashlytics: ^0.1.2+4
-  circular_bottom_navigation: ^1.0.1
+  circle_bottom_navigation: ^1.0.5
 
 dev_dependencies:
   flutter_test:

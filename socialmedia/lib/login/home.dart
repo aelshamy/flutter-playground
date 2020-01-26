@@ -1,5 +1,5 @@
-import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
-import 'package:circular_bottom_navigation/tab_item.dart';
+import 'package:circle_bottom_navigation/circle_bottom_navigation.dart';
+import 'package:circle_bottom_navigation/widgets/tab_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,14 +31,12 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   User user;
   PageController _pageController;
-  CircularBottomNavigationController _circularBottomNavigationController;
   List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
-    _circularBottomNavigationController = CircularBottomNavigationController(_currentIndex);
     user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
     _pages = [
       const Timeline(),
@@ -72,23 +70,17 @@ class _HomeState extends State<Home> {
         onPageChanged: onPageChanged,
         children: _pages,
       ),
-      bottomNavigationBar: CircularBottomNavigation(
-        [
-          TabItem(Icons.list, "Home", Colors.cyan),
-          TabItem(Icons.notifications, "Feed", Colors.cyan),
-          TabItem(Icons.photo_camera, "Photo", Colors.red),
-          TabItem(Icons.search, "Search", Colors.cyan),
-          TabItem(Icons.person, "Account", Colors.cyan),
+      bottomNavigationBar: CircleBottomNavigation(
+        initialSelection: _currentIndex,
+        tabs: [
+          TabData(icon: Icons.list, title: "Home"),
+          TabData(icon: Icons.notifications, title: "Feed"),
+          TabData(icon: Icons.photo_camera, title: "Photo"),
+          TabData(icon: Icons.search, title: "Search"),
+          TabData(icon: Icons.person, title: "Account"),
         ],
-        barHeight: 50,
-        selectedCallback: navigateToPage,
-        // height: 50,
-        // index: _currentIndex,
-        // selectedIconColor: Theme.of(context).accentColor,
-        selectedIconColor: Colors.white,
-        barBackgroundColor: Colors.white,
-        controller: _circularBottomNavigationController,
-        // buttonBackgroundColor: Colors.white,
+        onTabChangedListener: navigateToPage,
+        circleSize: 50,
       ),
     );
   }

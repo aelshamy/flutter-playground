@@ -5,6 +5,7 @@ import 'package:socialmedia/common/model/feed.dart';
 import 'package:socialmedia/common/widgets/header.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/feed/bloc/bloc.dart';
+import 'package:socialmedia/profile/post_page.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ActivityFeed extends StatelessWidget {
@@ -40,13 +41,16 @@ class ActivityFeed extends StatelessWidget {
                 ),
                 title: _getFeedTitle(feed),
                 trailing: (feed.type == FeedType.comment || feed.type == FeedType.like)
-                    ? Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: CachedNetworkImageProvider(feed.mediaUrl),
+                    ? GestureDetector(
+                        onTap: () => _goToPost(context),
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: CachedNetworkImageProvider(feed.mediaUrl),
+                            ),
                           ),
                         ),
                       )
@@ -60,6 +64,15 @@ class ActivityFeed extends StatelessWidget {
             separatorBuilder: (BuildContext context, int index) => const Divider(),
           );
         },
+      ),
+    );
+  }
+
+  void _goToPost(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) => const PostPage(),
+        settings: const RouteSettings(name: "PostPage"),
       ),
     );
   }

@@ -14,10 +14,9 @@ import 'widgets/post_item.dart';
 import 'widgets/post_tile.dart';
 
 class Profile extends StatefulWidget {
-  final String profileId;
   final User user;
 
-  const Profile({Key key, this.profileId, this.user}) : super(key: key);
+  const Profile({Key key, this.user}) : super(key: key);
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -188,7 +187,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   Widget buildProfileButton() {
     final User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
-    final bool isProfileOwner = user.id == widget.profileId;
+    final bool isProfileOwner = user.id == widget.user.id;
     if (isProfileOwner) {
       return buildButton(
         text: "Edit Profile",

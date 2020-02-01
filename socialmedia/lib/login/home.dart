@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
     _pageController = PageController(initialPage: _currentIndex);
     user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
     _pages = [
-      const RouteAwareWidget("Timeline", child: const Timeline()),
+      const RouteAwareWidget("Timeline", child: Timeline()),
       BlocProvider<FeedBloc>(
         create: (context) =>
             FeedBloc(firestoreRepo: widget.firestoreRepo)..add(LoadFeed(userId: user.id)),
@@ -57,7 +57,7 @@ class _HomeState extends State<Home> {
       BlocProvider<ProfileBloc>(
         create: (context) =>
             ProfileBloc(firestoreRepo: widget.firestoreRepo)..add(LoadPosts(userId: user.id)),
-        child: RouteAwareWidget("Profile", child: Profile(user: user, profileId: user.id)),
+        child: RouteAwareWidget("Profile", child: Profile(user: user)),
       ),
     ];
   }

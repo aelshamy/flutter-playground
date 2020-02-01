@@ -36,11 +36,17 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
       maxHeight: 675,
       maxWidth: 960,
     );
-    yield UploadPhotoSelected(image: image);
+    if (image != null) {
+      yield UploadPhotoSelected(image: image);
+    }
   }
 
   Stream<UploadState> _mapCreatePostToState(CreatePost event) async* {
-    await _storageRepo.uploadAssetToStorage(image: event.image, user: event.user, description: event.description, location: event.location);
+    await _storageRepo.uploadAssetToStorage(
+        image: event.image,
+        user: event.user,
+        description: event.description,
+        location: event.location);
 
     yield UploadInitial();
   }

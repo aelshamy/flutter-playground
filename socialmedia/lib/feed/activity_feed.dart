@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/common/model/feed.dart';
@@ -31,19 +34,20 @@ class ActivityFeed extends StatelessWidget {
             itemCount: feeds.length,
             itemBuilder: (BuildContext context, int index) {
               final Feed feed = feeds[index];
-              return ListTile(
-                dense: true,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-                leading: CircleAvatar(
-                  child: CachedNetworkImage(
-                    imageUrl: feed.userProfileImage,
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => _goToPost(context),
+                child: ListTile(
+                  dense: true,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                  leading: CircleAvatar(
+                    child: CachedNetworkImage(
+                      imageUrl: feed.userProfileImage,
+                    ),
                   ),
-                ),
-                title: _getFeedTitle(feed),
-                trailing: (feed.type == FeedType.comment || feed.type == FeedType.like)
-                    ? GestureDetector(
-                        onTap: () => _goToPost(context),
-                        child: Container(
+                  title: _getFeedTitle(feed),
+                  trailing: (feed.type == FeedType.comment || feed.type == FeedType.like)
+                      ? Container(
                           width: 50,
                           height: 50,
                           decoration: BoxDecoration(
@@ -52,12 +56,12 @@ class ActivityFeed extends StatelessWidget {
                               image: CachedNetworkImageProvider(feed.mediaUrl),
                             ),
                           ),
-                        ),
-                      )
-                    : null,
-                subtitle: Text(
-                  timeago.format(feed.timestamp.toDate()),
-                  style: const TextStyle(height: 1.5),
+                        )
+                      : null,
+                  subtitle: Text(
+                    timeago.format(feed.timestamp.toDate()),
+                    style: const TextStyle(height: 1.5),
+                  ),
                 ),
               );
             },
@@ -94,6 +98,10 @@ class ActivityFeed extends StatelessWidget {
           TextSpan(
             text: "${feed.username}",
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                log('clicked');
+              },
           ),
           TextSpan(text: "$activityItemText"),
         ],

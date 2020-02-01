@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   void _sendScreenView(PageRoute<dynamic> route) {
     final screenName = route.settings.name;
-    log('screenName $screenName');
+    log('didPush ${screenName}');
     // do something with it, ie. send it to your analytics service collector
   }
 
@@ -13,7 +13,8 @@ class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
     super.didPush(route, previousRoute);
     if (route is PageRoute) {
-      _sendScreenView(route);
+      log('didPush ${route.settings.name}');
+      // _sendScreenView(route);
     }
   }
 
@@ -21,7 +22,8 @@ class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   void didReplace({Route<dynamic> newRoute, Route<dynamic> oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     if (newRoute is PageRoute) {
-      _sendScreenView(newRoute);
+      log('didReplace ${newRoute.settings.name}');
+      // _sendScreenView(newRoute);
     }
   }
 
@@ -29,7 +31,8 @@ class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
     super.didPop(route, previousRoute);
     if (previousRoute is PageRoute && route is PageRoute) {
-      _sendScreenView(previousRoute);
+      log('didPop ${route.settings.name}');
+      // _sendScreenView(previousRoute);
     }
   }
 }

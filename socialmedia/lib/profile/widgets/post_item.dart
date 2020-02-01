@@ -157,6 +157,7 @@ class _PostItemState extends State<PostItem> {
           create: (context) => CommentsBloc()..add(LoadComments(postId: widget.post.postId)),
           child: Comments(post: widget.post),
         ),
+        settings: const RouteSettings(name: "Comments"),
       ),
     );
   }

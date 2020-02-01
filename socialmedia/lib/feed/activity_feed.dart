@@ -80,7 +80,7 @@ class ActivityFeed extends StatelessWidget {
         children: [
           TextSpan(
             text: "${feed.username}",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
           TextSpan(text: "$activityItemText"),
         ],

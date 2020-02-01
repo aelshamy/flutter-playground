@@ -76,7 +76,7 @@ class Upload extends StatelessWidget {
           ),
           onPressed: () => uploadBloc.add(CancelUpload()),
         ),
-        title: Text(
+        title: const Text(
           'Caption Text',
           style: TextStyle(color: Colors.black),
         ),

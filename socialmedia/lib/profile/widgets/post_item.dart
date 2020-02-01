@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/comments/bloc/bloc.dart';
@@ -45,9 +46,9 @@ class _PostItemState extends State<PostItem> {
             ),
           ),
           subtitle: Text(widget.post.location),
-          trailing: IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () => log("Deleting Post"),
+          trailing: GestureDetector(
+            onTap: () => _showPostActions(context),
+            child: Icon(Icons.more_horiz),
           ),
         ),
         GestureDetector(
@@ -131,7 +132,7 @@ class _PostItemState extends State<PostItem> {
           margin: const EdgeInsets.only(left: 20),
           child: Text(
             "${getLikeCount()} Likes",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(height: 10),
@@ -158,5 +159,35 @@ class _PostItemState extends State<PostItem> {
         ),
       ),
     );
+  }
+
+  void _showPostActions(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        const textStyle = TextStyle(fontSize: 14, color: Colors.black);
+        return CupertinoActionSheet(
+          cancelButton: CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel', style: textStyle),
+          ),
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              onPressed: () {},
+              child: const Text('Delete', style: textStyle),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {},
+              child: const Text('Share', style: textStyle),
+            ),
+          ],
+        );
+      },
+    );
+    // return Scaffold.of(context).showBottomSheet((context) => Container(
+    //       color: Colors.red,
+    //     ));
   }
 }

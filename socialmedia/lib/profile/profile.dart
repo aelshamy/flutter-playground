@@ -36,7 +36,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header(title: widget.user.displayName),
+      appBar: Header(title: widget.user?.displayName),
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (BuildContext context, ProfileState state) {
           if (state is ProfileLoading) {
@@ -107,10 +107,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   CircleAvatar(
                     radius: 40,
                     backgroundColor: Colors.grey,
-                    backgroundImage: CachedNetworkImageProvider(widget.user.photoUrl),
+                    backgroundImage: CachedNetworkImageProvider(widget.user?.photoUrl),
                   ),
                   Text(
-                    widget.user.username,
+                    widget.user?.username,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,

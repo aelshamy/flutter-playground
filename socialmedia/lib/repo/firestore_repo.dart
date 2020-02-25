@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:socialmedia/common/model/comment.dart';
-import 'package:socialmedia/common/model/feed.dart';
+import 'package:socialmedia/common/model/notification.dart';
 import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
 
@@ -133,7 +133,7 @@ class FirestoreRepo {
           .collection("feedItems")
           .document()
           .setData({
-        "type": FeedType.like.toString(),
+        "type": NotificationType.like.toString(),
         "username": currentUser.username,
         "userId": currentUser.id,
         "userProfileImage": currentUser.photoUrl,
@@ -182,7 +182,7 @@ class FirestoreRepo {
           .collection("feedItems")
           .document()
           .setData({
-        "type": FeedType.comment.toString(),
+        "type": NotificationType.comment.toString(),
         "commentData": comment,
         "username": currentUser.username,
         "userId": currentUser.id,
@@ -199,7 +199,7 @@ class FirestoreRepo {
     }
   }
 
-  Stream<List<Feed>> getFeed(String userId) {
+  Stream<List<Notification>> getFeed(String userId) {
     // _firestoreInstance
     //     .collection('feed')
     //     .document(userId)
@@ -217,7 +217,7 @@ class FirestoreRepo {
         .orderBy("timestamp", descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.documents.map((doc) => Feed.fromDocument(doc)).toList();
+      return snapshot.documents.map((doc) => Notification.fromDocument(doc)).toList();
     });
   }
 }

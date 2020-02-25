@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-enum FeedType { like, comment, follow }
+enum NotificationType { like, comment, follow }
 
-class Feed extends Equatable {
-  final FeedType type;
+class Notification extends Equatable {
+  final NotificationType type;
   final String commentData;
   final String username;
   final String userId;
@@ -16,7 +16,7 @@ class Feed extends Equatable {
   final String postLocation;
   final Timestamp timestamp;
 
-  const Feed({
+  const Notification({
     this.type,
     this.commentData,
     this.username,
@@ -30,8 +30,8 @@ class Feed extends Equatable {
     this.timestamp,
   });
 
-  factory Feed.fromDocument(DocumentSnapshot doc) => Feed(
-        type: FeedType.values.firstWhere((e) => e.toString() == doc["type"]),
+  factory Notification.fromDocument(DocumentSnapshot doc) => Notification(
+        type: NotificationType.values.firstWhere((e) => e.toString() == doc["type"]),
         commentData: doc["commentData"].toString(),
         username: doc["username"].toString(),
         userId: doc["userId"].toString(),

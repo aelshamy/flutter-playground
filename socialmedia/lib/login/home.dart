@@ -6,9 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/auth/bloc/bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/route_aware_widget.dart';
-import 'package:socialmedia/feed/activity_feed.dart';
-import 'package:socialmedia/feed/bloc/bloc.dart';
-import 'package:socialmedia/feed/bloc/feed_bloc.dart';
+import 'package:socialmedia/notifications/bloc/notifications_bloc.dart';
+import 'package:socialmedia/notifications/notification_page.dart';
 import 'package:socialmedia/profile/bloc/bloc.dart';
 import 'package:socialmedia/profile/profile.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
@@ -40,10 +39,10 @@ class _HomeState extends State<Home> {
     user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
     _pages = [
       const RouteAwareWidget("Timeline", child: Timeline()),
-      BlocProvider<FeedBloc>(
-        create: (context) =>
-            FeedBloc(firestoreRepo: widget.firestoreRepo)..add(LoadFeed(userId: user.id)),
-        child: const RouteAwareWidget("ActivityFeed", child: ActivityFeed()),
+      BlocProvider<NotificationsBloc>(
+        create: (context) => NotificationsBloc(firestoreRepo: widget.firestoreRepo)
+          ..add(LoadNotifications(userId: user.id)),
+        child: const RouteAwareWidget("ActivityFeed", child: NotificationPage()),
       ),
       BlocProvider<UploadBloc>(
         create: (context) =>

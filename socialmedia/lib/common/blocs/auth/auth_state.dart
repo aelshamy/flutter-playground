@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
-import 'package:socialmedia/common/model/user.dart';
+part of 'auth_bloc.dart';
 
 @immutable
 abstract class AuthState extends Equatable {

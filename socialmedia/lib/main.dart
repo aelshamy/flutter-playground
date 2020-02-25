@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/app.dart';
-import 'package:socialmedia/auth/bloc/auth_event.dart';
-import 'package:socialmedia/auth/bloc/bloc.dart';
+import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
 
 import 'common/simple_bloc_delegate.dart';
@@ -29,7 +28,8 @@ void main() {
           create: (BuildContext context) => authBloc..add(AppStarted()),
         ),
         BlocProvider<LoginBloc>(
-          create: (BuildContext context) => LoginBloc(userRepository: userRepository, authBloc: authBloc),
+          create: (BuildContext context) =>
+              LoginBloc(userRepository: userRepository, authBloc: authBloc),
         ),
       ],
       child: App(firestoreRepo: firestoreRepo),

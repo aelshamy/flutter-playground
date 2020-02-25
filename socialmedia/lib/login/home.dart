@@ -3,7 +3,7 @@ import 'package:circle_bottom_navigation/widgets/tab_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialmedia/auth/bloc/bloc.dart';
+import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/route_aware_widget.dart';
 import 'package:socialmedia/notifications/bloc/notifications_bloc.dart';

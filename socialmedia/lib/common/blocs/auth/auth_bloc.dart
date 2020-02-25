@@ -1,24 +1,23 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
 import 'package:socialmedia/repo/user_repository.dart';
 
-import 'bloc.dart';
+part 'auth_event.dart';
+part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final UserRepository _userRepository;
-  final FirestoreRepo _firestoreRepo;
+  final UserRepository userRepository;
+  final FirestoreRepo firestoreRepo;
 
   StreamSubscription _userSubscription;
 
-  AuthBloc(
-      {@required UserRepository userRepository, FirestoreRepo firestoreRepo})
-      : assert(userRepository != null, firestoreRepo != null),
-        _userRepository = userRepository,
-        _firestoreRepo = firestoreRepo;
+  AuthBloc({@required this.userRepository, @required this.firestoreRepo})
+      : assert(userRepository != null, firestoreRepo != null);
 
   @override
   AuthState get initialState => Uninitialized();
@@ -40,9 +39,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Stream<AuthState> _mapAppStartedToState() async* {
     try {
-      await _userRepository.signInSilentlyWithGoogle();
+      await userRepository.signInSilentlyWithGoogle();
       _userSubscription?.cancel();
-      _userSubscription = _userRepository.getUser().listen((doc) {
+      _userSubscription = userRepository.getUser().listen((doc) {
         add(LoggedIn(user: User.fromDocument(doc)));
       });
     } catch (_) {
@@ -55,13 +54,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapLoggedOutToState() async* {
-    await _userRepository.signOut();
+    await userRepository.signOut();
     yield Unauthenticated();
   }
 
-  Stream<AuthState> _mapUpdateUserToState(
-      String userId, String displayName, String bio) async* {
-    await _firestoreRepo.updateUser(userId, displayName, bio);
+  Stream<AuthState> _mapUpdateUserToState(String userId, String displayName, String bio) async* {
+    await firestoreRepo.updateUser(userId, displayName, bio);
   }
 
   @override

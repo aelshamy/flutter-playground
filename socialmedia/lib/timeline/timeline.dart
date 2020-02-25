@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialmedia/auth/bloc/auth_bloc.dart';
-import 'package:socialmedia/auth/bloc/auth_event.dart';
+import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
 import 'package:socialmedia/common/widgets/header.dart';
 
 class Timeline extends StatefulWidget {

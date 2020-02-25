@@ -3,21 +3,20 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:socialmedia/auth/bloc/bloc.dart';
+import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/repo/user_repository.dart';
 
 import './bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final UserRepository _userRepository;
-  final AuthBloc _authBloc;
+  final UserRepository userRepository;
+  final AuthBloc authBloc;
 
   StreamSubscription _userSubscription;
 
-  LoginBloc({@required UserRepository userRepository, @required AuthBloc authBloc})
-      : _userRepository = userRepository ?? UserRepository(),
-        _authBloc = authBloc ?? AuthBloc(userRepository: userRepository);
+  LoginBloc({@required this.userRepository, @required this.authBloc})
+      : assert(userRepository != null, authBloc != null);
 
   @override
   LoginState get initialState => LoginInitial();
@@ -43,13 +42,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> _mapLoginWithGoogleToState() async* {
     yield LoginLoading();
     try {
-      await _userRepository.signInWithGoogle();
+      await userRepository.signInWithGoogle();
       _userSubscription?.cancel();
-      _userSubscription = _userRepository.getUser().listen((doc) {
+      _userSubscription = userRepository.getUser().listen((doc) {
         if (!doc.exists) {
           add(StartCreateUser());
         } else {
-          _authBloc.add(LoggedIn(user: User.fromDocument(doc)));
+          authBloc.add(LoggedIn(user: User.fromDocument(doc)));
         }
       });
     } catch (e) {
@@ -63,8 +62,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Stream<LoginState> _mapCreateuserToState(String username) async* {
     try {
-      final User user = await _userRepository.createUser(username);
-      _authBloc.add(LoggedIn(user: user));
+      final User user = await userRepository.createUser(username);
+      authBloc.add(LoggedIn(user: user));
       yield LoginInitial();
     } catch (e) {
       yield LoginFailure(error: e.toString());
@@ -73,8 +72,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Stream<LoginState> _mapLogoutToState() async* {
     try {
-      await _userRepository.signOut();
-      _authBloc.add(LoggedOut());
+      await userRepository.signOut();
+      authBloc.add(LoggedOut());
     } catch (e) {
       log(e.toString());
     }
@@ -82,7 +81,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   Future<void> close() {
-    _authBloc.close();
+    authBloc.close();
     _userSubscription.cancel();
     return super.close();
   }

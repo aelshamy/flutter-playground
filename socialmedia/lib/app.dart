@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
 import 'package:socialmedia/common/custom_route_observer.dart';
 import 'package:socialmedia/login/home.dart';
 import 'package:socialmedia/login/login.dart';
 import 'package:socialmedia/login/splash_screen.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
-
-import 'auth/bloc/bloc.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 

@@ -10,7 +10,6 @@ import 'package:socialmedia/comments/comments.dart';
 import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
-import 'package:socialmedia/profile/bloc/bloc.dart';
 import 'package:socialmedia/profile/bloc/profile_bloc.dart';
 
 class PostItem extends StatefulWidget {

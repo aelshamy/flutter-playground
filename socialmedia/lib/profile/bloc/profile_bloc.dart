@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
 
-import './bloc.dart';
+part 'profile_event.dart';
+part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final FirestoreRepo _firestoreRepo;

@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:socialmedia/common/model/post.dart';
-import 'package:socialmedia/common/model/user.dart';
+part of 'profile_bloc.dart';
 
 abstract class ProfileEvent extends Equatable {
   const ProfileEvent();

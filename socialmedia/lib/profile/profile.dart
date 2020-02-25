@@ -7,7 +7,7 @@ import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/header.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
-import 'package:socialmedia/profile/bloc/bloc.dart';
+import 'package:socialmedia/profile/bloc/profile_bloc.dart';
 
 import 'edit_profile.dart';
 import 'widgets/post_item.dart';

@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:socialmedia/common/model/post.dart';
+part of 'profile_bloc.dart';
 
 abstract class ProfileState extends Equatable {
   const ProfileState();

@@ -7,7 +7,7 @@ import 'package:socialmedia/auth/bloc/bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/route_aware_widget.dart';
 import 'package:socialmedia/notifications/bloc/notifications_bloc.dart';
-import 'package:socialmedia/notifications/notification_page.dart';
+import 'package:socialmedia/notifications/notifications_page.dart';
 import 'package:socialmedia/profile/bloc/bloc.dart';
 import 'package:socialmedia/profile/profile.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';

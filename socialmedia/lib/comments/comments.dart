@@ -8,6 +8,7 @@ import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/header.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
+import 'package:socialmedia/repo/firestore_repo.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Comments extends StatelessWidget {
@@ -20,40 +21,45 @@ class Comments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const Header(
-        title: "Comments",
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: buildComments(),
-          ),
-          const Divider(),
-          SafeArea(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15.0),
-                    child: TextFormField(
-                      controller: _controller,
-                      decoration: const InputDecoration.collapsed(hintText: 'Write a comment...'),
+    return BlocProvider<CommentsBloc>(
+      create: (context) =>
+          CommentsBloc(firestoreRepo: RepositoryProvider.of<FirestoreRepo>(context))
+            ..add(LoadComments(postId: post.postId)),
+      child: Scaffold(
+        appBar: const Header(
+          title: "Comments",
+        ),
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: buildComments(),
+            ),
+            const Divider(),
+            SafeArea(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: TextFormField(
+                        controller: _controller,
+                        decoration: const InputDecoration.collapsed(hintText: 'Write a comment...'),
+                      ),
                     ),
                   ),
-                ),
-                OutlineButton(
-                  borderSide: BorderSide.none,
-                  onPressed: () {
-                    addcomment(context);
-                  },
-                  child: Text("Post", style: TextStyle(color: Theme.of(context).accentColor)),
-                ),
-              ],
-            ),
-          )
-        ],
+                  OutlineButton(
+                    borderSide: BorderSide.none,
+                    onPressed: () {
+                      addcomment(context);
+                    },
+                    child: Text("Post", style: TextStyle(color: Theme.of(context).accentColor)),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

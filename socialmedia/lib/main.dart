@@ -19,20 +19,31 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
 
   final UserRepository userRepository = UserRepository();
-  final FirestoreRepo firestoreRepo = FirestoreRepo();
-  final AuthBloc authBloc = AuthBloc(userRepository: userRepository, firestoreRepo: firestoreRepo);
+  final FirestoreRepo firestoreepository = FirestoreRepo();
+  final AuthBloc authBloc =
+      AuthBloc(userRepository: userRepository, firestoreRepo: firestoreepository);
   runApp(
-    MultiBlocProvider(
+    MultiRepositoryProvider(
       providers: [
-        BlocProvider<AuthBloc>(
-          create: (BuildContext context) => authBloc..add(AppStarted()),
+        RepositoryProvider<UserRepository>(
+          create: (context) => userRepository,
         ),
-        BlocProvider<LoginBloc>(
-          create: (BuildContext context) =>
-              LoginBloc(userRepository: userRepository, authBloc: authBloc),
+        RepositoryProvider<FirestoreRepo>(
+          create: (context) => firestoreepository,
         ),
       ],
-      child: App(firestoreRepo: firestoreRepo),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthBloc>(
+            create: (BuildContext context) => authBloc..add(AppStarted()),
+          ),
+          BlocProvider<LoginBloc>(
+            create: (BuildContext context) =>
+                LoginBloc(userRepository: userRepository, authBloc: authBloc),
+          ),
+        ],
+        child: App(),
+      ),
     ),
   );
 }

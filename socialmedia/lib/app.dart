@@ -10,9 +10,6 @@ import 'package:socialmedia/repo/firestore_repo.dart';
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 class App extends StatelessWidget {
-  final FirestoreRepo firestoreRepo;
-
-  const App({Key key, this.firestoreRepo}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,7 +27,7 @@ class App extends StatelessWidget {
             return const SplashScreen();
           }
           if (state is Authenticated) {
-            return Home(firestoreRepo: firestoreRepo);
+            return Home(firestoreRepo: RepositoryProvider.of<FirestoreRepo>(context));
           }
           if (state is Unauthenticated) {
             return const Login();

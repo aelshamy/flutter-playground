@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:socialmedia/common/model/comment.dart';
 import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
@@ -11,10 +12,10 @@ part 'comments_event.dart';
 part 'comments_state.dart';
 
 class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
-  final FirestoreRepo _firestoreRepo;
+  final FirestoreRepo firestoreRepo;
   StreamSubscription _commentsSubscription;
 
-  CommentsBloc({FirestoreRepo firestoreRepo}) : _firestoreRepo = firestoreRepo ?? FirestoreRepo();
+  CommentsBloc({@required this.firestoreRepo}) : assert(firestoreRepo != null);
   @override
   CommentsState get initialState => CommentsLoading();
 
@@ -36,7 +37,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
   Stream<CommentsState> _mapLoadCommentsToState(String postId) async* {
     try {
       _commentsSubscription?.cancel();
-      _commentsSubscription = _firestoreRepo.getPostComments(postId).listen(
+      _commentsSubscription = firestoreRepo.getPostComments(postId).listen(
             (comments) => add(CommentsLoaded(comments: comments)),
           );
     } catch (e) {
@@ -49,9 +50,9 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
   }
 
   Stream<CommentsState> _mapAddCommentToState(AddComment event) async* {
-    await _firestoreRepo.addComment(event.post, event.user, event.comment);
+    await firestoreRepo.addComment(event.post, event.user, event.comment);
     // if (event.post.owner != event.user.id) {
-    await _firestoreRepo.addCommentToFeed(event.post, event.user, event.comment);
+    await firestoreRepo.addCommentToFeed(event.post, event.user, event.comment);
     // }
   }
 

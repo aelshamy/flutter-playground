@@ -5,7 +5,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialmedia/comments/bloc/comments_bloc.dart';
 import 'package:socialmedia/comments/comments.dart';
 import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
@@ -152,10 +151,7 @@ class _PostItemState extends State<PostItem> {
   void showComments(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (BuildContext context) => BlocProvider<CommentsBloc>(
-          create: (context) => CommentsBloc()..add(LoadComments(postId: widget.post.postId)),
-          child: Comments(post: widget.post),
-        ),
+        builder: (BuildContext context) => Comments(post: widget.post),
         settings: const RouteSettings(name: "Comments"),
       ),
     );

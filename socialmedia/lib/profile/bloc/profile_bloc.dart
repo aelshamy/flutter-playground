@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
@@ -10,10 +11,10 @@ part 'profile_event.dart';
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final FirestoreRepo _firestoreRepo;
+  final FirestoreRepo firestoreRepo;
   StreamSubscription _postsSubscription;
 
-  ProfileBloc({FirestoreRepo firestoreRepo}) : _firestoreRepo = firestoreRepo ?? FirestoreRepo();
+  ProfileBloc({@required this.firestoreRepo}) : assert(firestoreRepo != null);
 
   @override
   ProfileState get initialState => ProfileLoading();
@@ -36,7 +37,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Stream<ProfileState> _mapLoadPostsToState(String userId) async* {
     try {
       _postsSubscription?.cancel();
-      _postsSubscription = _firestoreRepo.getUserPosts(userId).listen(
+      _postsSubscription = firestoreRepo.getUserPosts(userId).listen(
             (posts) => add(PostsLoaded(posts: posts)),
           );
     } catch (e) {
@@ -51,12 +52,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Stream<ProfileState> _mapLikePostToState(Post post, User user) async* {
-    await _firestoreRepo.likePost(post, user);
+    await firestoreRepo.likePost(post, user);
     // if (post.owner != user.id) {
     if (post.likes[user.id] == true) {
-      await _firestoreRepo.addLikesToFeed(post, user);
+      await firestoreRepo.addLikesToFeed(post, user);
     } else {
-      await _firestoreRepo.removeLikesToFeed(post, user);
+      await firestoreRepo.removeLikesToFeed(post, user);
     }
     // }
   }

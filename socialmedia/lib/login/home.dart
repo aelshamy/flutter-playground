@@ -8,7 +8,6 @@ import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/route_aware_widget.dart';
 import 'package:socialmedia/notifications/bloc/notifications_bloc.dart';
 import 'package:socialmedia/notifications/notifications_page.dart';
-import 'package:socialmedia/profile/bloc/profile_bloc.dart';
 import 'package:socialmedia/profile/profile.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
 import 'package:socialmedia/repo/storage_repo.dart';
@@ -53,11 +52,7 @@ class _HomeState extends State<Home> {
         create: (context) => SearchBloc(fireStoreRepo: widget.firestoreRepo),
         child: RouteAwareWidget("Search", child: Search()),
       ),
-      BlocProvider<ProfileBloc>(
-        create: (context) =>
-            ProfileBloc(firestoreRepo: widget.firestoreRepo)..add(LoadPosts(userId: user.id)),
-        child: RouteAwareWidget("Profile", child: Profile(user: user)),
-      ),
+      RouteAwareWidget("Profile", child: ProfilePage(user: user)),
     ];
   }
 

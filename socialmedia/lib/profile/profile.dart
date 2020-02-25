@@ -8,52 +8,42 @@ import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/header.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/profile/bloc/profile_bloc.dart';
+import 'package:socialmedia/repo/firestore_repo.dart';
 
 import 'edit_profile.dart';
 import 'widgets/post_item.dart';
 import 'widgets/post_tile.dart';
 
-class Profile extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   final User user;
 
-  const Profile({Key key, this.user}) : super(key: key);
-
-  @override
-  _ProfileState createState() => _ProfileState();
-}
-
-class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  const ProfilePage({Key key, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: Header(title: widget.user?.displayName),
-      body: BlocBuilder<ProfileBloc, ProfileState>(
-        builder: (BuildContext context, ProfileState state) {
-          if (state is ProfileLoading) {
-            return const Center(child: CircularProgress());
-          }
-          if (state is ProfileLoadError) {
-            return Center(child: Text(state.error));
-          }
-          final List<Post> posts = (state as ProfileLoaded).posts;
-          return Column(
-            // physics: ClampingScrollPhysics(),
-            children: <Widget>[
-              buildProfileHeader(posts.length),
-              _buildPostsTabs(context, posts),
-            ],
-          );
-        },
+    return BlocProvider<ProfileBloc>(
+      create: (context) => ProfileBloc(firestoreRepo: RepositoryProvider.of<FirestoreRepo>(context))
+        ..add(LoadPosts(userId: user.id)),
+      child: Scaffold(
+        appBar: Header(title: user?.username),
+        body: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (BuildContext context, ProfileState state) {
+            if (state is ProfileLoading) {
+              return const Center(child: CircularProgress());
+            }
+            if (state is ProfileLoadError) {
+              return Center(child: Text(state.error));
+            }
+            final List<Post> posts = (state as ProfileLoaded).posts;
+            return Column(
+              // physics: ClampingScrollPhysics(),
+              children: <Widget>[
+                buildProfileHeader(context, posts.length),
+                _buildPostsTabs(context, posts),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -93,7 +83,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget buildProfileHeader(int postsCount) {
+  Widget buildProfileHeader(BuildContext context, int postsCount) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -107,22 +97,22 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   CircleAvatar(
                     radius: 40,
                     backgroundColor: Colors.grey,
-                    backgroundImage: CachedNetworkImageProvider(widget.user?.photoUrl),
+                    backgroundImage: CachedNetworkImageProvider(user?.photoUrl),
                   ),
-                  Text(
-                    widget.user?.username,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  // const SizedBox(height: 4),
                   // Text(
-                  //   widget.user.displayName,
+                  //   user?.username,
                   //   style: const TextStyle(
                   //     fontWeight: FontWeight.bold,
+                  //     fontSize: 16,
                   //   ),
                   // ),
+                  // const SizedBox(height: 4),
+                  Text(
+                    user.displayName,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
               Expanded(
@@ -142,7 +132,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                 ],
                               ),
                               const SizedBox(height: 12),
-                              buildProfileButton(),
+                              buildProfileButton(context),
                             ],
                           ),
                         ),
@@ -155,7 +145,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
           ),
           const SizedBox(height: 12),
           Text(
-            widget.user.bio,
+            user.bio,
             style: const TextStyle(height: 1.5),
           ),
         ],
@@ -185,21 +175,22 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget buildProfileButton() {
+  Widget buildProfileButton(BuildContext context) {
     final User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
-    final bool isProfileOwner = user.id == widget.user.id;
+    final bool isProfileOwner = user.id == user.id;
     if (isProfileOwner) {
       return buildButton(
+        context,
         text: "Edit Profile",
         function: () {
-          editProfile(user);
+          editProfile(context, user);
         },
       );
     }
     return const Text('Profile button');
   }
 
-  Widget buildButton({String text, void Function() function}) {
+  Widget buildButton(BuildContext context, {String text, void Function() function}) {
     return Container(
       padding: const EdgeInsets.only(top: 2),
       child: FlatButton(
@@ -221,7 +212,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     );
   }
 
-  void editProfile(User user) {
+  void editProfile(BuildContext context, User user) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -236,7 +227,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       padding: const EdgeInsets.only(bottom: 30),
       itemBuilder: (BuildContext context, int index) {
         final Post post = posts[index];
-        return PostItem(post: post, user: widget.user);
+        return PostItem(post: post, user: user);
       },
       itemCount: posts.length,
       separatorBuilder: (BuildContext context, int index) => Padding(

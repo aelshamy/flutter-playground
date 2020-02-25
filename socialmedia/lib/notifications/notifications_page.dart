@@ -84,7 +84,7 @@ class NotificationPage extends StatelessWidget {
                                   MaterialPageRoute(
                                     builder: (BuildContext context) => const RouteAwareWidget(
                                         "Profile",
-                                        child: Profile(user: null)),
+                                        child: ProfilePage(user: null)),
                                   ),
                                 );
                               },

@@ -11,17 +11,24 @@ class Feed extends Equatable {
   final String userProfileImage;
   final String postId;
   final String mediaUrl;
+  final dynamic postLikes;
+  final String postDescription;
+  final String postLocation;
   final Timestamp timestamp;
 
-  const Feed(
-      {this.type,
-      this.commentData,
-      this.username,
-      this.userId,
-      this.userProfileImage,
-      this.postId,
-      this.mediaUrl,
-      this.timestamp});
+  const Feed({
+    this.type,
+    this.commentData,
+    this.username,
+    this.userId,
+    this.userProfileImage,
+    this.postId,
+    this.mediaUrl,
+    this.postLikes,
+    this.postDescription,
+    this.postLocation,
+    this.timestamp,
+  });
 
   factory Feed.fromDocument(DocumentSnapshot doc) => Feed(
         type: FeedType.values.firstWhere((e) => e.toString() == doc["type"]),
@@ -31,10 +38,24 @@ class Feed extends Equatable {
         userProfileImage: doc["userProfileImage"].toString(),
         postId: doc["postId"].toString(),
         mediaUrl: doc["mediaUrl"].toString(),
+        postLikes: doc["postLikes"],
+        postDescription: doc["postDescription"].toString(),
+        postLocation: doc["postLocation"].toString(),
         timestamp: doc["timestamp"] as Timestamp,
       );
 
   @override
-  List<Object> get props =>
-      [type, commentData, username, userId, userProfileImage, postId, mediaUrl, timestamp];
+  List<Object> get props => [
+        type,
+        commentData,
+        username,
+        userId,
+        userProfileImage,
+        postId,
+        mediaUrl,
+        postLikes,
+        postDescription,
+        postLocation,
+        timestamp
+      ];
 }

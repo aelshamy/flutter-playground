@@ -139,6 +139,9 @@ class FirestoreRepo {
         "userProfileImage": currentUser.photoUrl,
         "postId": post.postId,
         "mediaUrl": post.mediaUrl,
+        "postLikes": post.likes,
+        "postDescription": post.description,
+        "postLocation": post.location,
         "timestamp": DateTime.now(),
       });
     } catch (e) {
@@ -186,6 +189,9 @@ class FirestoreRepo {
         "userProfileImage": currentUser.photoUrl,
         "postId": post.postId,
         "mediaUrl": post.mediaUrl,
+        "postLikes": post.likes,
+        "postDescription": post.description,
+        "postLocation": post.location,
         "timestamp": DateTime.now(),
       });
     } catch (e) {

@@ -5,6 +5,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/common/model/feed.dart';
+import 'package:socialmedia/common/model/post.dart';
+import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/header.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/feed/bloc/bloc.dart';
@@ -36,7 +38,7 @@ class ActivityFeed extends StatelessWidget {
               final Feed feed = feeds[index];
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () => _goToPost(context),
+                onTap: () => _goToPost(context, feed),
                 child: ListTile(
                   dense: true,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
@@ -72,10 +74,20 @@ class ActivityFeed extends StatelessWidget {
     );
   }
 
-  void _goToPost(BuildContext context) {
+  void _goToPost(BuildContext context, Feed feed) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (BuildContext context) => const PostPage(),
+        builder: (BuildContext context) => PostPage(
+          user: User(
+            username: feed.username,
+            photoUrl: feed.userProfileImage,
+          ),
+          post: Post(
+              mediaUrl: feed.mediaUrl,
+              location: feed.postLocation,
+              likes: feed.postLikes,
+              description: feed.postDescription),
+        ),
         settings: const RouteSettings(name: "PostPage"),
       ),
     );

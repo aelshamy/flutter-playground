@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
 
-import './bloc.dart';
+part 'search_event.dart';
+part 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final FirestoreRepo _fireStoreRepo;

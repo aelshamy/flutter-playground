@@ -5,9 +5,6 @@ import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/search/bloc/search_bloc.dart';
 
-import 'bloc/bloc.dart';
-import 'bloc/search_state.dart';
-
 class Search extends StatelessWidget {
   final TextEditingController _controller;
 

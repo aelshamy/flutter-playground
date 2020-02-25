@@ -12,7 +12,7 @@ import 'package:socialmedia/profile/bloc/profile_bloc.dart';
 import 'package:socialmedia/profile/profile.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
 import 'package:socialmedia/repo/storage_repo.dart';
-import 'package:socialmedia/search/bloc/bloc.dart';
+import 'package:socialmedia/search/bloc/search_bloc.dart';
 import 'package:socialmedia/search/search.dart';
 import 'package:socialmedia/timeline/timeline.dart';
 import 'package:socialmedia/upload/bloc/bloc.dart';

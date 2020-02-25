@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:socialmedia/common/model/notification.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
 
@@ -9,11 +10,10 @@ part 'notifications_event.dart';
 part 'notifications_state.dart';
 
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
-  final FirestoreRepo _firestoreRepo;
+  final FirestoreRepo firestoreRepo;
   StreamSubscription _commentsSubscription;
 
-  NotificationsBloc({FirestoreRepo firestoreRepo})
-      : _firestoreRepo = firestoreRepo ?? FirestoreRepo();
+  NotificationsBloc({@required this.firestoreRepo}) : assert(firestoreRepo != null);
 
   @override
   NotificationsState get initialState => NotificationsInitial();
@@ -23,10 +23,10 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     NotificationsEvent event,
   ) async* {
     if (event is LoadNotifications) {
-      yield* _mapLoadFeedsToState(event.userId);
+      yield* _mapLoadNotificationsToState(event.userId);
     }
     if (event is NotificationsLoaded) {
-      yield* _mapFeedLoadedToState(event.notifications);
+      yield* _mapNotificationsLoadedToState(event.notifications);
     }
 
     if (event is NotificationsShowPost) {
@@ -34,10 +34,10 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     }
   }
 
-  Stream<NotificationsState> _mapLoadFeedsToState(String userId) async* {
+  Stream<NotificationsState> _mapLoadNotificationsToState(String userId) async* {
     try {
       _commentsSubscription?.cancel();
-      _commentsSubscription = _firestoreRepo.getFeed(userId).listen(
+      _commentsSubscription = firestoreRepo.getFeed(userId).listen(
             (notifications) => add(NotificationsLoaded(notifications: notifications)),
           );
     } catch (e) {
@@ -45,8 +45,9 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     }
   }
 
-  Stream<NotificationsState> _mapFeedLoadedToState(List<Notification> feeds) async* {
-    yield FeedRecieved(notifications: feeds);
+  Stream<NotificationsState> _mapNotificationsLoadedToState(
+      List<Notification> notifications) async* {
+    yield NotificationsRecieved(notifications: notifications);
   }
 
   @override

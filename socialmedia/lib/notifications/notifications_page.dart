@@ -51,7 +51,7 @@ class NotificationPage extends StatelessWidget {
           if (state is NotificationsLoadError) {
             return Center(child: Text(state.error));
           }
-          if (state is FeedRecieved) {
+          if (state is NotificationsRecieved) {
             final notifications = state.notifications;
 
             return ListView.separated(

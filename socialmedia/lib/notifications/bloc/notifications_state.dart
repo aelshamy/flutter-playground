@@ -9,10 +9,10 @@ class NotificationsInitial extends NotificationsState {
   List<Object> get props => [];
 }
 
-class FeedRecieved extends NotificationsState {
+class NotificationsRecieved extends NotificationsState {
   final List<Notification> notifications;
 
-  const FeedRecieved({this.notifications});
+  const NotificationsRecieved({this.notifications});
 
   @override
   List<Object> get props => [notifications];

@@ -1,6 +1,4 @@
-import 'dart:io';
-
-import 'package:equatable/equatable.dart';
+part of 'upload_bloc.dart';
 
 abstract class UploadState extends Equatable {
   const UploadState();

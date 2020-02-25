@@ -7,10 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
-import 'package:socialmedia/upload/bloc/upload_state.dart';
-
-import 'bloc/bloc.dart';
-import 'bloc/upload_bloc.dart';
+import 'package:socialmedia/upload/bloc/upload_bloc.dart';
 
 class Upload extends StatelessWidget {
   final TextEditingController locationController = TextEditingController();

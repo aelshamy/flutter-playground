@@ -15,7 +15,7 @@ import 'package:socialmedia/repo/storage_repo.dart';
 import 'package:socialmedia/search/bloc/search_bloc.dart';
 import 'package:socialmedia/search/search.dart';
 import 'package:socialmedia/timeline/timeline.dart';
-import 'package:socialmedia/upload/bloc/bloc.dart';
+import 'package:socialmedia/upload/bloc/upload_bloc.dart';
 import 'package:socialmedia/upload/upload.dart';
 
 class Home extends StatefulWidget {

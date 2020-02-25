@@ -2,15 +2,19 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:meta/meta.dart';
+import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/repo/storage_repo.dart';
 
-import './bloc.dart';
+part 'upload_event.dart';
+part 'upload_state.dart';
 
 class UploadBloc extends Bloc<UploadEvent, UploadState> {
-  final StorageRepo _storageRepo;
+  final StorageRepo storageRepo;
 
-  UploadBloc({StorageRepo storageRepo}) : _storageRepo = storageRepo ?? StorageRepo();
+  UploadBloc({@required this.storageRepo}) : assert(storageRepo != null);
 
   @override
   UploadState get initialState => UploadInitial();
@@ -42,7 +46,7 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
   }
 
   Stream<UploadState> _mapCreatePostToState(CreatePost event) async* {
-    await _storageRepo.uploadAssetToStorage(
+    await storageRepo.uploadAssetToStorage(
         image: event.image,
         user: event.user,
         description: event.description,

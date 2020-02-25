@@ -1,8 +1,4 @@
-import 'dart:io';
-
-import 'package:equatable/equatable.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:socialmedia/common/model/user.dart';
+part of 'upload_bloc.dart';
 
 abstract class UploadEvent extends Equatable {
   const UploadEvent();

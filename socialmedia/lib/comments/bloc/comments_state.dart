@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:socialmedia/common/model/comment.dart';
+part of 'comments_bloc.dart';
 
 abstract class CommentsState extends Equatable {
   const CommentsState();

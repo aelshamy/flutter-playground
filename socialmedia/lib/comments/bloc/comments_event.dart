@@ -1,7 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:socialmedia/common/model/comment.dart';
-import 'package:socialmedia/common/model/post.dart';
-import 'package:socialmedia/common/model/user.dart';
+part of 'comments_bloc.dart';
 
 abstract class CommentsEvent extends Equatable {
   const CommentsEvent();

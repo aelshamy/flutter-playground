@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialmedia/comments/bloc/bloc.dart';
 import 'package:socialmedia/comments/bloc/comments_bloc.dart';
 import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
 import 'package:socialmedia/common/model/comment.dart';

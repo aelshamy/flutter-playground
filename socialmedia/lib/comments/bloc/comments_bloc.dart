@@ -1,8 +1,14 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:socialmedia/common/model/comment.dart';
+import 'package:socialmedia/common/model/post.dart';
+import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
-import './bloc.dart';
+
+part 'comments_event.dart';
+part 'comments_state.dart';
 
 class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
   final FirestoreRepo _firestoreRepo;

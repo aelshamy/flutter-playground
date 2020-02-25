@@ -30,3 +30,12 @@ class NotificationsShowPost extends NotificationsEvent {
   @override
   List<Object> get props => [notification];
 }
+
+class NotificationsShowComment extends NotificationsEvent {
+  final Notification notification;
+
+  const NotificationsShowComment({this.notification});
+
+  @override
+  List<Object> get props => [notification];
+}

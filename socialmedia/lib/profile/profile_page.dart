@@ -21,12 +21,14 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final profileBloc = ProfileBloc(firestoreRepo: RepositoryProvider.of<FirestoreRepo>(context))
+      ..add(LoadPosts(userId: user.id));
     return BlocProvider<ProfileBloc>(
-      create: (context) => ProfileBloc(firestoreRepo: RepositoryProvider.of<FirestoreRepo>(context))
-        ..add(LoadPosts(userId: user.id)),
+      create: (context) => profileBloc,
       child: Scaffold(
         appBar: Header(title: user?.username),
         body: BlocBuilder<ProfileBloc, ProfileState>(
+          bloc: profileBloc,
           builder: (BuildContext context, ProfileState state) {
             if (state is ProfileLoading) {
               return const Center(child: CircularProgress());
@@ -35,6 +37,7 @@ class ProfilePage extends StatelessWidget {
               return Center(child: Text(state.error));
             }
             final List<Post> posts = (state as ProfileLoaded).posts;
+
             return Column(
               // physics: ClampingScrollPhysics(),
               children: <Widget>[
@@ -107,12 +110,12 @@ class ProfilePage extends StatelessWidget {
                   //   ),
                   // ),
                   // const SizedBox(height: 4),
-                  Text(
-                    user.displayName,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  // Text(
+                  //   user?.displayName,
+                  //   style: const TextStyle(
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
                 ],
               ),
               Expanded(
@@ -145,7 +148,7 @@ class ProfilePage extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            user.bio,
+            user.bio ?? '',
             style: const TextStyle(height: 1.5),
           ),
         ],

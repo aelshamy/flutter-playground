@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialmedia/comments/comments.dart';
 import 'package:socialmedia/common/model/notification.dart' as model;
 import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
@@ -12,7 +13,7 @@ import 'package:socialmedia/common/widgets/progress.dart';
 import 'package:socialmedia/common/widgets/route_aware_widget.dart';
 import 'package:socialmedia/notifications/bloc/notifications_bloc.dart';
 import 'package:socialmedia/profile/post_page.dart';
-import 'package:socialmedia/profile/profile.dart';
+import 'package:socialmedia/profile/profile_page.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationPage extends StatelessWidget {
@@ -29,6 +30,7 @@ class NotificationPage extends StatelessWidget {
               MaterialPageRoute(
                 builder: (BuildContext context) => PostPage(
                   user: User(
+                    id: state.notification.userId,
                     username: state.notification.username,
                     photoUrl: state.notification.userProfileImage,
                   ),
@@ -42,8 +44,24 @@ class NotificationPage extends StatelessWidget {
               ),
             );
           }
+          if (state is NotificationsGoToComment) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) => Comments(
+                  post: Post(
+                    postId: state.notification.postId,
+                    likes: state.notification.postLikes,
+                    owner: state.notification.userId,
+                    location: state.notification.postLocation,
+                  ),
+                ),
+                settings: const RouteSettings(name: "Comments"),
+              ),
+            );
+          }
         },
-        buildWhen: (previous, current) => current is! NotificationsGoToPost,
+        buildWhen: (previous, current) =>
+            current is! NotificationsGoToPost && current is! NotificationsGoToComment,
         builder: (context, state) {
           if (state is NotificationsInitial) {
             return const CircularProgress();
@@ -61,8 +79,18 @@ class NotificationPage extends StatelessWidget {
                 final model.Notification notification = notifications[index];
                 return GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTap: () => BlocProvider.of<NotificationsBloc>(context)
-                      .add(NotificationsShowPost(notification: notification)),
+                  onTap: () => {
+                    if (notification.type == model.NotificationType.like)
+                      {
+                        BlocProvider.of<NotificationsBloc>(context)
+                            .add(NotificationsShowPost(notification: notification))
+                      }
+                    else if (notification.type == model.NotificationType.comment)
+                      {
+                        BlocProvider.of<NotificationsBloc>(context)
+                            .add(NotificationsShowComment(notification: notification))
+                      }
+                  },
                   child: ListTile(
                     dense: true,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
@@ -82,9 +110,16 @@ class NotificationPage extends StatelessWidget {
                                 log('clicked');
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (BuildContext context) => const RouteAwareWidget(
-                                        "Profile",
-                                        child: ProfilePage(user: null)),
+                                    builder: (BuildContext context) => RouteAwareWidget(
+                                      "Profile",
+                                      child: ProfilePage(
+                                        user: User(
+                                          id: notification.userId,
+                                          username: notification.username,
+                                          photoUrl: notification.userProfileImage,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 );
                               },

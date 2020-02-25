@@ -33,3 +33,11 @@ class NotificationsGoToPost extends NotificationsState {
   @override
   List<Object> get props => [notification];
 }
+
+class NotificationsGoToComment extends NotificationsState {
+  final Notification notification;
+
+  const NotificationsGoToComment({this.notification});
+  @override
+  List<Object> get props => [notification];
+}

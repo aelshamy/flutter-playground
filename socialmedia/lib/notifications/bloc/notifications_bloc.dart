@@ -32,6 +32,9 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     if (event is NotificationsShowPost) {
       yield NotificationsGoToPost(notification: event.notification);
     }
+    if (event is NotificationsShowComment) {
+      yield NotificationsGoToComment(notification: event.notification);
+    }
   }
 
   Stream<NotificationsState> _mapLoadNotificationsToState(String userId) async* {

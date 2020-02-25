@@ -50,7 +50,7 @@ class _HomeState extends State<Home> {
         child: RouteAwareWidget("Upload", child: Upload()),
       ),
       BlocProvider<SearchBloc>(
-        create: (context) => SearchBloc(firestoreRepo: widget.firestoreRepo),
+        create: (context) => SearchBloc(fireStoreRepo: widget.firestoreRepo),
         child: RouteAwareWidget("Search", child: Search()),
       ),
       BlocProvider<ProfileBloc>(

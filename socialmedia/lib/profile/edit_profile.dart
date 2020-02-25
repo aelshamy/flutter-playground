@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/header.dart';
-import 'package:socialmedia/login/bloc/bloc.dart';
+import 'package:socialmedia/login/bloc/login_bloc.dart';
 
 class EditProfile extends StatefulWidget {
   static const String screenName = 'EditProfile';

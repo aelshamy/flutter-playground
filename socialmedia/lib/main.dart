@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/app.dart';
 import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
+import 'package:socialmedia/login/bloc/login_bloc.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
 
 import 'common/simple_bloc_delegate.dart';
-import 'login/bloc/bloc.dart';
 import 'repo/user_repository.dart';
 
 void main() {

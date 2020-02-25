@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+part of 'login_bloc.dart';
 
 @immutable
 abstract class LoginState extends Equatable {

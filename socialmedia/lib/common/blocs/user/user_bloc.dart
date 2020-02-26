@@ -21,7 +21,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       : assert(userRepository != null, firestoreRepo != null);
 
   @override
-  UserState get initialState => Uninitialized();
+  UserState get initialState => UserUninitialized();
 
   @override
   Stream<UserState> mapEventToState(
@@ -29,8 +29,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   ) async* {
     if (event is AppStarted) {
       yield* _mapAppStartedToState();
-    } else if (event is LoggedIn) {
-      yield* _mapLoggedInToState(event.user);
+    } else if (event is LoginWithGoogle) {
+      yield* _mapLoginWithGoogleToState();
+    } else if (event is NavigateToCreateUserScreen) {
+      yield UserNotExists();
+    } else if (event is CreateUser) {
+      yield* _mapCreateuserToState(event.username);
+    } else if (event is LoginUser) {
+      yield UserAuthenticated(user: event.user);
     } else if (event is LoggedOut) {
       yield* _mapLoggedOutToState();
     } else if (event is UpdateUser) {
@@ -43,21 +49,47 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       await userRepository.signInSilentlyWithGoogle();
       _userSubscription?.cancel();
       _userSubscription = userRepository.getUser().listen((doc) {
-        add(LoggedIn(user: User.fromDocument(doc)));
+        if (!doc.exists) {
+          add(NavigateToCreateUserScreen());
+        } else {
+          add(LoginUser(user: User.fromDocument(doc)));
+        }
       });
     } catch (_) {
-      yield Unauthenticated();
+      yield UserUnauthenticated();
     }
   }
 
-  Stream<UserState> _mapLoggedInToState(User user) async* {
-    yield Authenticated(user: user);
+  Stream<UserState> _mapLoginWithGoogleToState() async* {
+    yield UserLoadding();
+    try {
+      await userRepository.signInWithGoogle();
+      _userSubscription?.cancel();
+      _userSubscription = userRepository.getUser().listen((doc) {
+        if (!doc.exists) {
+          add(NavigateToCreateUserScreen());
+        } else {
+          add(LoginUser(user: User.fromDocument(doc)));
+        }
+      });
+    } catch (e) {
+      yield UserError(error: e.toString());
+    }
+  }
+
+  Stream<UserState> _mapCreateuserToState(String username) async* {
+    try {
+      final User user = await userRepository.createUser(username);
+      yield UserAuthenticated(user: user);
+    } catch (e) {
+      yield UserError(error: e.toString());
+    }
   }
 
   Stream<UserState> _mapLoggedOutToState() async* {
     try {
       await userRepository.signOut();
-      yield Unauthenticated();
+      yield UserUnauthenticated();
     } catch (e) {
       log(e.toString());
     }

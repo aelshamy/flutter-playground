@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialmedia/login/bloc/login_bloc.dart';
+import 'package:socialmedia/common/blocs/user/user_bloc.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({Key key}) : super(key: key);
@@ -54,7 +54,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   colorBrightness: Brightness.dark,
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      BlocProvider.of<LoginBloc>(context).add(Createuser(_controller.text));
+                      BlocProvider.of<UserBloc>(context).add(CreateUser(_controller.text));
                     }
                   },
                   child: const Text('Submit'),

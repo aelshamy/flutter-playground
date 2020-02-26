@@ -61,7 +61,7 @@ class Upload extends StatelessWidget {
 
   Widget _buildUploadForm(BuildContext context, File image) {
     final UploadBloc uploadBloc = BlocProvider.of<UploadBloc>(context);
-    final User user = (BlocProvider.of<UserBloc>(context).state as Authenticated).user;
+    final User user = (BlocProvider.of<UserBloc>(context).state as UserAuthenticated).user;
 
     return Scaffold(
       appBar: AppBar(

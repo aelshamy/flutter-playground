@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
-    user = (BlocProvider.of<UserBloc>(context).state as Authenticated).user;
+    user = (BlocProvider.of<UserBloc>(context).state as UserAuthenticated).user;
     _pages = [
       const RouteAwareWidget("Timeline", child: Timeline()),
       BlocProvider<NotificationsBloc>(

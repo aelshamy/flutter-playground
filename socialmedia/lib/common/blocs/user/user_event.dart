@@ -9,10 +9,29 @@ class AppStarted extends UserEvent {
   List<Object> get props => [];
 }
 
-class LoggedIn extends UserEvent {
+class LoginWithGoogle extends UserEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class NavigateToCreateUserScreen extends UserEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class CreateUser extends UserEvent {
+  final String username;
+
+  const CreateUser(this.username);
+
+  @override
+  List<Object> get props => [username];
+}
+
+class LoginUser extends UserEvent {
   final User user;
 
-  const LoggedIn({this.user});
+  const LoginUser({this.user});
   @override
   List<Object> get props => [user];
 }

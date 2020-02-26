@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/common/blocs/user/user_bloc.dart';
 import 'package:socialmedia/common/custom_route_observer.dart';
+import 'package:socialmedia/login/create_account.dart';
 import 'package:socialmedia/login/home.dart';
 import 'package:socialmedia/login/login.dart';
 import 'package:socialmedia/login/splash_screen.dart';
@@ -23,14 +24,17 @@ class App extends StatelessWidget {
       ),
       home: BlocBuilder<UserBloc, UserState>(
         builder: (BuildContext context, UserState state) {
-          if (state is Uninitialized) {
+          if (state is UserUninitialized) {
             return const SplashScreen();
           }
-          if (state is Authenticated) {
+          if (state is UserAuthenticated) {
             return Home(firestoreRepo: RepositoryProvider.of<FirestoreRepo>(context));
           }
-          if (state is Unauthenticated) {
+          if (state is UserUnauthenticated) {
             return const Login();
+          }
+          if (state is UserNotExists) {
+            return const CreateAccount();
           }
           return const SizedBox();
         },

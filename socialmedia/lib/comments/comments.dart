@@ -65,7 +65,7 @@ class Comments extends StatelessWidget {
   }
 
   void addcomment(BuildContext context) {
-    final User user = (BlocProvider.of<UserBloc>(context).state as Authenticated).user;
+    final User user = (BlocProvider.of<UserBloc>(context).state as UserAuthenticated).user;
     BlocProvider.of<CommentsBloc>(context)
         .add(AddComment(post: post, user: user, comment: _controller.text));
     _controller.clear();

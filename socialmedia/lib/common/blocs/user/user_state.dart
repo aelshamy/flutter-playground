@@ -5,15 +5,30 @@ abstract class UserState extends Equatable {
   const UserState();
 }
 
-class Uninitialized extends UserState {
+class UserUninitialized extends UserState {
   @override
   List<Object> get props => [];
 }
 
-class Authenticated extends UserState {
+class UserUnauthenticated extends UserState {
+  @override
+  List<Object> get props => [];
+}
+
+class UserLoadding extends UserState {
+  @override
+  List<Object> get props => [];
+}
+
+class UserNotExists extends UserState {
+  @override
+  List<Object> get props => [];
+}
+
+class UserAuthenticated extends UserState {
   final User user;
 
-  const Authenticated({this.user});
+  const UserAuthenticated({this.user});
 
   @override
   String toString() => 'Authenticated: $user';
@@ -22,7 +37,14 @@ class Authenticated extends UserState {
   List<Object> get props => [user];
 }
 
-class Unauthenticated extends UserState {
+class UserError extends UserState {
+  final String error;
+
+  const UserError({@required this.error});
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [error];
+
+  @override
+  String toString() => 'LoginFailure { error: $error }';
 }

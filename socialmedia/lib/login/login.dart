@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/common/blocs/user/user_bloc.dart';
-import 'package:socialmedia/login/bloc/login_bloc.dart';
 
 import 'create_account.dart';
 
@@ -11,15 +10,11 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginBloc, LoginState>(
-      listener: (BuildContext context, LoginState state) {
-        if (state is UserLoggedIn) {
-          BlocProvider.of<UserBloc>(context).add(LoggedIn(user: state.user));
-        }
-      },
-      bloc: BlocProvider.of<LoginBloc>(context),
-      builder: (BuildContext context, LoginState state) {
-        if (state is LoginCreateUser) {
+    return BlocConsumer<UserBloc, UserState>(
+      listener: (BuildContext context, UserState state) {},
+      bloc: BlocProvider.of<UserBloc>(context),
+      builder: (BuildContext context, UserState state) {
+        if (state is NavigateToCreateUserScreen) {
           return const CreateAccount();
         }
         return Scaffold(
@@ -49,7 +44,7 @@ class Login extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    BlocProvider.of<LoginBloc>(context).add(LoginWithGoogle());
+                    BlocProvider.of<UserBloc>(context).add(LoginWithGoogle());
                   },
                   child: Container(
                     width: 260,

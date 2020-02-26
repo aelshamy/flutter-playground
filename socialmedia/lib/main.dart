@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/app.dart';
 import 'package:socialmedia/common/blocs/user/user_bloc.dart';
-import 'package:socialmedia/login/bloc/login_bloc.dart';
 import 'package:socialmedia/repo/firestore_repo.dart';
 
 import 'common/simple_bloc_delegate.dart';
@@ -31,17 +30,10 @@ void main() {
           create: (context) => firestoreepository,
         ),
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<UserBloc>(
-            create: (BuildContext context) =>
-                UserBloc(userRepository: userRepository, firestoreRepo: firestoreepository)
-                  ..add(AppStarted()),
-          ),
-          BlocProvider<LoginBloc>(
-            create: (BuildContext context) => LoginBloc(userRepository: userRepository),
-          ),
-        ],
+      child: BlocProvider<UserBloc>(
+        create: (BuildContext context) =>
+            UserBloc(userRepository: userRepository, firestoreRepo: firestoreepository)
+              ..add(AppStarted()),
         child: App(),
       ),
     ),

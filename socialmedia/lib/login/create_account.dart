@@ -23,7 +23,7 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Setup your profile'),
+        title: const Text('Setup your username'),
       ),
       body: SingleChildScrollView(
         child: Padding(

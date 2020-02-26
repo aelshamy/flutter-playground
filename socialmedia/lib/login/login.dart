@@ -10,9 +10,7 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UserBloc, UserState>(
-      listener: (BuildContext context, UserState state) {},
-      bloc: BlocProvider.of<UserBloc>(context),
+    return BlocBuilder<UserBloc, UserState>(
       builder: (BuildContext context, UserState state) {
         if (state is NavigateToCreateUserScreen) {
           return const CreateAccount();

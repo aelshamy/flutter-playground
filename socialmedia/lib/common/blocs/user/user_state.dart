@@ -1,16 +1,16 @@
-part of 'auth_bloc.dart';
+part of 'user_bloc.dart';
 
 @immutable
-abstract class AuthState extends Equatable {
-  const AuthState();
+abstract class UserState extends Equatable {
+  const UserState();
 }
 
-class Uninitialized extends AuthState {
+class Uninitialized extends UserState {
   @override
   List<Object> get props => [];
 }
 
-class Authenticated extends AuthState {
+class Authenticated extends UserState {
   final User user;
 
   const Authenticated({this.user});
@@ -22,7 +22,7 @@ class Authenticated extends AuthState {
   List<Object> get props => [user];
 }
 
-class Unauthenticated extends AuthState {
+class Unauthenticated extends UserState {
   @override
   List<Object> get props => [];
 }

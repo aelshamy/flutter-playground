@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
+import 'package:socialmedia/common/blocs/user/user_bloc.dart';
 import 'package:socialmedia/common/widgets/header.dart';
 
 class Timeline extends StatefulWidget {
@@ -19,7 +19,7 @@ class _TimelineState extends State<Timeline> {
         actions: <Widget>[
           FlatButton(
             onPressed: () {
-              BlocProvider.of<AuthBloc>(context).add(LoggedOut());
+              BlocProvider.of<UserBloc>(context).add(LoggedOut());
               // Future.delayed(const Duration(seconds: 1))
               //     .then((_) => throw Exception());
             },

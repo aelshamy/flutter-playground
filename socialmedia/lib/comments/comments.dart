@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/comments/bloc/comments_bloc.dart';
-import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
+import 'package:socialmedia/common/blocs/user/user_bloc.dart';
 import 'package:socialmedia/common/model/comment.dart';
 import 'package:socialmedia/common/model/post.dart';
 import 'package:socialmedia/common/model/user.dart';
@@ -65,7 +65,7 @@ class Comments extends StatelessWidget {
   }
 
   void addcomment(BuildContext context) {
-    final User user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+    final User user = (BlocProvider.of<UserBloc>(context).state as Authenticated).user;
     BlocProvider.of<CommentsBloc>(context)
         .add(AddComment(post: post, user: user, comment: _controller.text));
     _controller.clear();

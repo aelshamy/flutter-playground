@@ -9,6 +9,14 @@ class LoginWithGoogle extends LoginEvent {
   List<Object> get props => [];
 }
 
+class AuthenticateUser extends LoginEvent {
+  final User user;
+
+  const AuthenticateUser({this.user});
+  @override
+  List<Object> get props => [user];
+}
+
 class Logout extends LoginEvent {
   @override
   List<Object> get props => [];

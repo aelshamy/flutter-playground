@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/repo/user_repository.dart';
 
@@ -13,12 +11,10 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;
-  final AuthBloc authBloc;
 
   StreamSubscription _userSubscription;
 
-  LoginBloc({@required this.userRepository, @required this.authBloc})
-      : assert(userRepository != null, authBloc != null);
+  LoginBloc({@required this.userRepository}) : assert(userRepository != null);
 
   @override
   LoginState get initialState => LoginInitial();
@@ -31,13 +27,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield* _mapLoginWithGoogleToState();
     }
     if (event is StartCreateUser) {
-      yield* _mapStartCreateuserToState();
+      yield LoginCreateUser();
+    }
+    if (event is AuthenticateUser) {
+      yield UserLoggedIn(user: event.user);
     }
     if (event is Createuser) {
       yield* _mapCreateuserToState(event.username);
-    }
-    if (event is Logout) {
-      yield* _mapLogoutToState();
     }
   }
 
@@ -50,7 +46,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (!doc.exists) {
           add(StartCreateUser());
         } else {
-          authBloc.add(LoggedIn(user: User.fromDocument(doc)));
+          add(AuthenticateUser(user: User.fromDocument(doc)));
         }
       });
     } catch (e) {
@@ -58,32 +54,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Stream<LoginState> _mapStartCreateuserToState() async* {
-    yield LoginCreateUser();
-  }
-
   Stream<LoginState> _mapCreateuserToState(String username) async* {
     try {
       final User user = await userRepository.createUser(username);
-      authBloc.add(LoggedIn(user: user));
-      yield LoginInitial();
+      yield UserLoggedIn(user: user);
     } catch (e) {
       yield LoginFailure(error: e.toString());
     }
   }
 
-  Stream<LoginState> _mapLogoutToState() async* {
-    try {
-      await userRepository.signOut();
-      authBloc.add(LoggedOut());
-    } catch (e) {
-      log(e.toString());
-    }
-  }
-
   @override
   Future<void> close() {
-    authBloc.close();
     _userSubscription.cancel();
     return super.close();
   }

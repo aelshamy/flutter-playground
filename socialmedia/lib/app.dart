@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
+import 'package:socialmedia/common/blocs/user/user_bloc.dart';
 import 'package:socialmedia/common/custom_route_observer.dart';
 import 'package:socialmedia/login/home.dart';
 import 'package:socialmedia/login/login.dart';
@@ -21,8 +21,8 @@ class App extends StatelessWidget {
         accentColor: Colors.redAccent,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: BlocBuilder<AuthBloc, AuthState>(
-        builder: (BuildContext context, AuthState state) {
+      home: BlocBuilder<UserBloc, UserState>(
+        builder: (BuildContext context, UserState state) {
           if (state is Uninitialized) {
             return const SplashScreen();
           }

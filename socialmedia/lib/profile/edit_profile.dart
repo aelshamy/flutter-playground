@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
+import 'package:socialmedia/common/blocs/user/user_bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/header.dart';
-import 'package:socialmedia/login/bloc/login_bloc.dart';
 
 class EditProfile extends StatefulWidget {
   static const String screenName = 'EditProfile';
@@ -43,7 +42,7 @@ class _EditProfileState extends State<EditProfile> {
             ),
             onPressed: () {
               Navigator.pop(context);
-              BlocProvider.of<LoginBloc>(context).add(Logout());
+              BlocProvider.of<UserBloc>(context).add(LoggedOut());
             },
           )
         ],
@@ -124,7 +123,7 @@ class _EditProfileState extends State<EditProfile> {
 
   void updateProfileData() {
     if (_formKey.currentState.validate()) {
-      BlocProvider.of<AuthBloc>(context).add(UpdateUser(
+      BlocProvider.of<UserBloc>(context).add(UpdateUser(
           userId: widget.user.id,
           displayName: _displayNameController.text,
           bio: _bioController.text));

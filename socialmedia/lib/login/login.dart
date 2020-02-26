@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialmedia/common/blocs/user/user_bloc.dart';
 import 'package:socialmedia/login/bloc/login_bloc.dart';
 
 import 'create_account.dart';
@@ -10,7 +11,12 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocConsumer<LoginBloc, LoginState>(
+      listener: (BuildContext context, LoginState state) {
+        if (state is UserLoggedIn) {
+          BlocProvider.of<UserBloc>(context).add(LoggedIn(user: state.user));
+        }
+      },
       bloc: BlocProvider.of<LoginBloc>(context),
       builder: (BuildContext context, LoginState state) {
         if (state is LoginCreateUser) {

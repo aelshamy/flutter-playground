@@ -112,13 +112,7 @@ class NotificationPage extends StatelessWidget {
                                   MaterialPageRoute(
                                     builder: (BuildContext context) => RouteAwareWidget(
                                       "Profile",
-                                      child: ProfilePage(
-                                        user: User(
-                                          id: notification.userId,
-                                          username: notification.username,
-                                          photoUrl: notification.userProfileImage,
-                                        ),
-                                      ),
+                                      child: ProfilePage(userId: notification.userId),
                                     ),
                                   ),
                                 );

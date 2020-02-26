@@ -3,7 +3,7 @@ import 'package:circle_bottom_navigation/widgets/tab_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialmedia/common/blocs/auth/auth_bloc.dart';
+import 'package:socialmedia/common/blocs/user/user_bloc.dart';
 import 'package:socialmedia/common/model/user.dart';
 import 'package:socialmedia/common/widgets/route_aware_widget.dart';
 import 'package:socialmedia/notifications/bloc/notifications_bloc.dart';
@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
-    user = (BlocProvider.of<AuthBloc>(context).state as Authenticated).user;
+    user = (BlocProvider.of<UserBloc>(context).state as Authenticated).user;
     _pages = [
       const RouteAwareWidget("Timeline", child: Timeline()),
       BlocProvider<NotificationsBloc>(
@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
         create: (context) => SearchBloc(fireStoreRepo: widget.firestoreRepo),
         child: RouteAwareWidget("Search", child: Search()),
       ),
-      RouteAwareWidget("Profile", child: ProfilePage(user: user)),
+      RouteAwareWidget("Profile", child: ProfilePage(userId: user.id)),
     ];
   }
 

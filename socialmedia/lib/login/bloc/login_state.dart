@@ -20,6 +20,14 @@ class LoginCreateUser extends LoginState {
   List<Object> get props => [];
 }
 
+class UserLoggedIn extends LoginState {
+  final User user;
+
+  const UserLoggedIn({this.user});
+  @override
+  List<Object> get props => [user];
+}
+
 class LoginFailure extends LoginState {
   final String error;
 

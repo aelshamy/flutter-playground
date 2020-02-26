@@ -45,6 +45,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Stream<UserState> _mapAppStartedToState() async* {
+    yield UserLoadding();
     try {
       await userRepository.signInSilentlyWithGoogle();
       _userSubscription?.cancel();

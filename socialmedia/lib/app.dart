@@ -22,21 +22,43 @@ class App extends StatelessWidget {
         accentColor: Colors.redAccent,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: BlocBuilder<UserBloc, UserState>(
+      home: BlocConsumer<UserBloc, UserState>(
+        listener: (BuildContext context, UserState state) {
+          if (state is UserError) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                // return object of type Dialog
+                return AlertDialog(
+                  title: const Text("There was a problem"),
+                  content: Text(state.error),
+                  actions: <Widget>[
+                    // usually buttons at the bottom of the dialog
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text("Close"),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        },
+        buildWhen: (UserState prev, UserState current) => current is! UserError,
         builder: (BuildContext context, UserState state) {
           if (state is UserLoadding) {
             return const SplashScreen();
-          }
-          if (state is UserAuthenticated) {
+          } else if (state is UserAuthenticated) {
             return Home(firestoreRepo: RepositoryProvider.of<FirestoreRepo>(context));
-          }
-          if (state is UserNotAuthenticated) {
+          } else if (state is UserNotAuthenticated) {
             return const Login();
-          }
-          if (state is UserDoesNotExists) {
+          } else if (state is UserDoesNotExists) {
             return const CreateAccount();
+          } else {
+            return const SizedBox();
           }
-          return const SizedBox();
         },
       ),
     );

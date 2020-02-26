@@ -24,7 +24,7 @@ class App extends StatelessWidget {
       ),
       home: BlocBuilder<UserBloc, UserState>(
         builder: (BuildContext context, UserState state) {
-          if (state is UserUninitialized) {
+          if (state is UserLoadding) {
             return const SplashScreen();
           }
           if (state is UserAuthenticated) {

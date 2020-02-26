@@ -21,7 +21,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       : assert(userRepository != null, firestoreRepo != null);
 
   @override
-  UserState get initialState => UserUninitialized();
+  UserState get initialState => UserLoadding();
 
   @override
   Stream<UserState> mapEventToState(

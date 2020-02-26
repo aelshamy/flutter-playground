@@ -5,11 +5,6 @@ abstract class UserState extends Equatable {
   const UserState();
 }
 
-class UserUninitialized extends UserState {
-  @override
-  List<Object> get props => [];
-}
-
 class UserLoadding extends UserState {
   @override
   List<Object> get props => [];

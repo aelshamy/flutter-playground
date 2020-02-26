@@ -30,10 +30,10 @@ class App extends StatelessWidget {
           if (state is UserAuthenticated) {
             return Home(firestoreRepo: RepositoryProvider.of<FirestoreRepo>(context));
           }
-          if (state is UserUnauthenticated) {
+          if (state is UserNotAuthenticated) {
             return const Login();
           }
-          if (state is UserNotExists) {
+          if (state is UserDoesNotExists) {
             return const CreateAccount();
           }
           return const SizedBox();

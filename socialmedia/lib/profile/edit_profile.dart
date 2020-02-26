@@ -42,7 +42,7 @@ class _EditProfileState extends State<EditProfile> {
             ),
             onPressed: () {
               Navigator.pop(context);
-              BlocProvider.of<UserBloc>(context).add(LoggedOut());
+              BlocProvider.of<UserBloc>(context).add(LogoutUser());
             },
           )
         ],

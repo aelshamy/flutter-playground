@@ -10,17 +10,17 @@ class UserUninitialized extends UserState {
   List<Object> get props => [];
 }
 
-class UserUnauthenticated extends UserState {
-  @override
-  List<Object> get props => [];
-}
-
 class UserLoadding extends UserState {
   @override
   List<Object> get props => [];
 }
 
-class UserNotExists extends UserState {
+class UserDoesNotExists extends UserState {
+  @override
+  List<Object> get props => [];
+}
+
+class UserNotAuthenticated extends UserState {
   @override
   List<Object> get props => [];
 }

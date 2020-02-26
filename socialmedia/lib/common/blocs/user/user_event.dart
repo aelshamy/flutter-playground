@@ -14,15 +14,15 @@ class LoginWithGoogle extends UserEvent {
   List<Object> get props => [];
 }
 
-class NavigateToCreateUserScreen extends UserEvent {
+class CreateUser extends UserEvent {
   @override
   List<Object> get props => [];
 }
 
-class CreateUser extends UserEvent {
+class CreateUsername extends UserEvent {
   final String username;
 
-  const CreateUser(this.username);
+  const CreateUsername(this.username);
 
   @override
   List<Object> get props => [username];
@@ -36,7 +36,7 @@ class LoginUser extends UserEvent {
   List<Object> get props => [user];
 }
 
-class LoggedOut extends UserEvent {
+class LogoutUser extends UserEvent {
   @override
   List<Object> get props => [];
 }

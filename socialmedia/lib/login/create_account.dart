@@ -54,7 +54,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   colorBrightness: Brightness.dark,
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      BlocProvider.of<UserBloc>(context).add(CreateUser(_controller.text));
+                      BlocProvider.of<UserBloc>(context).add(CreateUsername(_controller.text));
                     }
                   },
                   child: const Text('Submit'),

@@ -31,13 +31,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       yield* _mapAppStartedToState();
     } else if (event is LoginWithGoogle) {
       yield* _mapLoginWithGoogleToState();
-    } else if (event is NavigateToCreateUserScreen) {
-      yield UserNotExists();
     } else if (event is CreateUser) {
+      yield UserDoesNotExists();
+    } else if (event is CreateUsername) {
       yield* _mapCreateuserToState(event.username);
     } else if (event is LoginUser) {
       yield UserAuthenticated(user: event.user);
-    } else if (event is LoggedOut) {
+    } else if (event is LogoutUser) {
       yield* _mapLoggedOutToState();
     } else if (event is UpdateUser) {
       yield* _mapUpdateUserToState(event.userId, event.displayName, event.bio);
@@ -50,13 +50,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       _userSubscription?.cancel();
       _userSubscription = userRepository.getUser().listen((doc) {
         if (!doc.exists) {
-          add(NavigateToCreateUserScreen());
+          add(CreateUser());
         } else {
           add(LoginUser(user: User.fromDocument(doc)));
         }
       });
     } catch (_) {
-      yield UserUnauthenticated();
+      yield UserNotAuthenticated();
     }
   }
 
@@ -67,7 +67,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       _userSubscription?.cancel();
       _userSubscription = userRepository.getUser().listen((doc) {
         if (!doc.exists) {
-          add(NavigateToCreateUserScreen());
+          add(CreateUser());
         } else {
           add(LoginUser(user: User.fromDocument(doc)));
         }
@@ -89,7 +89,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<UserState> _mapLoggedOutToState() async* {
     try {
       await userRepository.signOut();
-      yield UserUnauthenticated();
+      yield UserNotAuthenticated();
     } catch (e) {
       log(e.toString());
     }

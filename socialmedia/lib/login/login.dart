@@ -12,7 +12,7 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(
       builder: (BuildContext context, UserState state) {
-        if (state is NavigateToCreateUserScreen) {
+        if (state is CreateUser) {
           return const CreateAccount();
         }
         return Scaffold(

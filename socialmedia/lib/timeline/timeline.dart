@@ -19,7 +19,7 @@ class _TimelineState extends State<Timeline> {
         actions: <Widget>[
           FlatButton(
             onPressed: () {
-              BlocProvider.of<UserBloc>(context).add(LoggedOut());
+              BlocProvider.of<UserBloc>(context).add(LogoutUser());
               // Future.delayed(const Duration(seconds: 1))
               //     .then((_) => throw Exception());
             },

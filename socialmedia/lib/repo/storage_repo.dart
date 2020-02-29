@@ -17,10 +17,12 @@ class StorageRepo {
       : _storage = storage ?? FirebaseStorage.instance.ref(),
         _fireStoreRepo = fireStoreRepo ?? FirestoreRepo();
 
-  Future<void> uploadAssetToStorage({File image, String description, String location, User user}) async {
+  Future<void> uploadAssetToStorage(
+      {File image, String description, String location, User user}) async {
     final File compressedImageFile = await _compressImage(image);
     final String mediaUrl = await _uploadImage(compressedImageFile);
-    await _fireStoreRepo.createPost(id: _postId, mediaUrl: mediaUrl, description: description, location: location, user: user);
+    await _fireStoreRepo.createPost(
+        id: _postId, mediaUrl: mediaUrl, description: description, location: location, user: user);
     _postId = Uuid().v4();
   }
 
@@ -28,7 +30,8 @@ class StorageRepo {
     final tempDir = await getTemporaryDirectory();
     final path = tempDir.path;
     final im.Image imageFile = im.decodeImage(image.readAsBytesSync());
-    final compressedImageFile = File('$path/image_$_postId.jpg')..writeAsBytesSync(im.encodeJpg(imageFile, quality: 85));
+    final compressedImageFile = File('$path/image_$_postId.jpg')
+      ..writeAsBytesSync(im.encodeJpg(imageFile, quality: 85));
     return compressedImageFile;
   }
 

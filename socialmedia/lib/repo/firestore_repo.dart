@@ -48,14 +48,19 @@ class FirestoreRepo {
   Future<void> createPost(
       {String id, String mediaUrl, String location, String description, User user}) async {
     final Map<String, dynamic> data = {
-      "postId": id,
-      "owner": user.id,
-      "username": user.username,
+      "creationDate": DateTime.now(),
+      "commentsCount": 0,
+      "likesCount": 0,
+      "author": {
+        "userId": user.id,
+        "username": user.username,
+        "photoUrl": user.photoUrl,
+      },
       "mediaUrl": mediaUrl,
       "description": description,
       "location": location,
-      "timestamp": DateTime.now(),
       "likes": {},
+      "comments": {},
     };
     return _firestoreInstance
         .collection('posts')

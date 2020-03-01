@@ -8,6 +8,9 @@ import 'package:path_provider/path_provider.dart';
 //TODO: fix id for uploaded image
 //TODO: remove statfull widget
 //TODO: consildate common code
+//TODO: fix bottom sheet for appointments
+//TODO: build android and ios variants
+//TODO: enhance the UI
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

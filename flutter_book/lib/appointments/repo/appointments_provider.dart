@@ -1,5 +1,5 @@
 import 'package:flutter_book/appointments/appointment.dart';
-import 'package:flutter_book/utils.dart' as utils;
+import 'package:flutter_book/config.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -15,7 +15,7 @@ class AppointmentsProvider {
   }
 
   Future<Database> init() async {
-    String path = join(utils.docsDir.path, "$_tableName.db");
+    String path = join(AppConfig.docsDir.path, "$_tableName.db");
     Database db = await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database inDB, int inVersion) async {
       await inDB.execute("CREATE TABLE IF NOT EXISTS $_tableName ("

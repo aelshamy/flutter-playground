@@ -1,4 +1,4 @@
-import 'package:flutter_book/notes/model/note.dart';
+import 'package:flutter_book/notes/note.dart';
 import 'package:flutter_book/utils.dart' as utils;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';

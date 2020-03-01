@@ -1,5 +1,5 @@
-import 'package:flutter_book/tasks/model/task.dart';
 import 'package:flutter_book/tasks/repo/tasks_provider.dart';
+import 'package:flutter_book/tasks/task.dart';
 
 class TasksRepo {
   final TasksProvider _tasksProvider;

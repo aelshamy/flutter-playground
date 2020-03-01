@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_book/notes/bloc/notes_bloc.dart';
-import 'package:flutter_book/notes/note_item.dart';
-
-import 'model/note.dart';
+import 'package:flutter_book/notes/note.dart';
+import 'package:flutter_book/notes/ui/note_item.dart';
 
 class NotesList extends StatelessWidget {
   const NotesList({Key key}) : super(key: key);

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_book/notes/bloc/notes_bloc.dart';
-import 'package:flutter_book/notes/notes_list.dart';
+import 'package:flutter_book/notes/ui/notes_list.dart';
 import 'package:flutter_book/tasks/bloc/tasks_bloc.dart';
-import 'package:flutter_book/tasks/tasks_list.dart';
+import 'package:flutter_book/tasks/ui/tasks_list.dart';
 
 class FlutterBook extends StatelessWidget {
   Widget build(BuildContext inContext) {

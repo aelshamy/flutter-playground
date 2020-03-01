@@ -1,4 +1,4 @@
-import 'package:flutter_book/notes/model/note.dart';
+import 'package:flutter_book/notes/note.dart';
 import 'package:flutter_book/notes/repo/notes_provider.dart';
 
 class NotesRepo {

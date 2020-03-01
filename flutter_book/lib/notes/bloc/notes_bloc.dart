@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_book/notes/model/note.dart';
+import 'package:flutter_book/notes/note.dart';
 import 'package:flutter_book/notes/repo/notes_repo.dart';
 
 part 'notes_event.dart';

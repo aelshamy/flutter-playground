@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_book/tasks/model/task.dart';
 import 'package:flutter_book/tasks/repo/task_reop.dart';
+import 'package:flutter_book/tasks/task.dart';
 import 'package:intl/intl.dart';
 
 part 'tasks_event.dart';

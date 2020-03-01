@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_book/tasks/bloc/tasks_bloc.dart';
-import 'package:flutter_book/tasks/model/task.dart';
+import 'package:flutter_book/tasks/task.dart';
 import 'package:intl/intl.dart';
 
 class TaskItem extends StatefulWidget {

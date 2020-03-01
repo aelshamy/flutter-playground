@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_book/tasks/bloc/tasks_bloc.dart';
-import 'package:flutter_book/tasks/model/task.dart';
-import 'package:flutter_book/tasks/task_item.dart';
+import 'package:flutter_book/tasks/task.dart';
+import 'package:flutter_book/tasks/ui/task_item.dart';
 
 class TasksList extends StatelessWidget {
   const TasksList({Key key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_book/notes/bloc/notes_bloc.dart';
-import 'package:flutter_book/notes/model/note.dart';
+import 'package:flutter_book/notes/note.dart';
 
 class NoteItem extends StatefulWidget {
   final Note note;

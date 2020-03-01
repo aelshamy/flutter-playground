@@ -34,6 +34,19 @@ class Note extends Equatable {
     };
   }
 
+  Note copyWith({
+    int id,
+    String title,
+    String content,
+    String color,
+  }) =>
+      Note(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        content: content ?? this.content,
+        color: color ?? this.color,
+      );
+
   @override
   String toString() {
     return "{ id=$id, title=$title, content=$content, color=$color }";

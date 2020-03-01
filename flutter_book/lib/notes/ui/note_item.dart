@@ -145,8 +145,7 @@ class _NoteItemState extends State<NoteItem> {
       } else {
         BlocProvider.of<NotesBloc>(context).add(
           UpdateNote(
-            note: Note(
-              id: widget.note.id,
+            note: widget.note.copyWith(
               content: _contentEditingController.text,
               color: currentColor,
               title: _titleEditingController.text,

@@ -23,16 +23,12 @@ class AppointmentsBloc extends Bloc<AppointmentsEvent, AppointmentsState> {
   ) async* {
     if (event is LoadAppointments) {
       yield* _mapLoadAppointmentsToState();
-    }
-
-    if (event is AddAppointment) {
+    } else if (event is AddAppointment) {
       yield* _mapAddAppointmentToState(event.appointment);
-    }
-    if (event is UpdateAppointment) {
-      yield* _mapUpdateAddAppointmentToState(event.appointment);
-    }
-    if (event is DeleteAppointment) {
-      yield* _mapDeleteAddAppointmentToState(event.appointmentId);
+    } else if (event is UpdateAppointment) {
+      yield* _mapUpdateAppointmentToState(event.appointment);
+    } else if (event is DeleteAppointment) {
+      yield* _mapDeleteAppointmentToState(event.appointmentId);
     }
   }
 
@@ -47,13 +43,13 @@ class AppointmentsBloc extends Bloc<AppointmentsEvent, AppointmentsState> {
     yield AppointmentsLoaded(appointments: appointments);
   }
 
-  Stream<AppointmentsState> _mapUpdateAddAppointmentToState(Appointment appointment) async* {
+  Stream<AppointmentsState> _mapUpdateAppointmentToState(Appointment appointment) async* {
     await _appointmentsRepo.updateAppointment(appointment);
     final appointments = await _appointmentsRepo.getAll();
     yield AppointmentsLoaded(appointments: appointments);
   }
 
-  Stream<AppointmentsState> _mapDeleteAddAppointmentToState(int appointmentId) async* {
+  Stream<AppointmentsState> _mapDeleteAppointmentToState(int appointmentId) async* {
     await _appointmentsRepo.deleteAppointment(appointmentId);
     final appointments = await _appointmentsRepo.getAll();
     yield AppointmentsLoaded(appointments: appointments);

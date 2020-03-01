@@ -114,8 +114,7 @@ class _TaskItemState extends State<TaskItem> {
       } else {
         BlocProvider.of<TasksBloc>(context).add(
           UpdateTask(
-            task: Task(
-              id: widget.task.id,
+            task: widget.task.copyWith(
               description: _descriptionEditingController.text,
               dueDate: _dueDateEditingController.text,
             ),

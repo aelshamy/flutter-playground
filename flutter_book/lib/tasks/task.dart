@@ -24,6 +24,19 @@ class Task extends Equatable {
     };
   }
 
+  Task copyWith({
+    int id,
+    String description,
+    String dueDate,
+    bool completed,
+  }) =>
+      Task(
+        id: id ?? this.id,
+        description: description ?? this.description,
+        dueDate: dueDate ?? this.dueDate,
+        completed: completed ?? this.completed,
+      );
+
   @override
   String toString() {
     return "{ id=$id, description=$description, dueDate=$dueDate, completed=$completed }";

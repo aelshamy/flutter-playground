@@ -184,8 +184,7 @@ class _AppointmentItemState extends State<AppointmentItem> {
       } else {
         BlocProvider.of<AppointmentsBloc>(context).add(
           UpdateAppointment(
-            appointment: Appointment(
-              id: widget.appointment.id,
+            appointment: widget.appointment.copyWith(
               title: _titleEditingController.text,
               description: _descriptionEditingController.text,
               appointmentDate: _appointmentDateEditingController.text,

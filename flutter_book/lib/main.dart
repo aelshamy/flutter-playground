@@ -5,6 +5,10 @@ import 'package:flutter_book/app.dart';
 import 'package:flutter_book/config.dart';
 import 'package:path_provider/path_provider.dart';
 
+//TODO: fix id for uploaded image
+//TODO: remove statfull widget
+//TODO: consildate common code
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Directory docsDir = await getApplicationDocumentsDirectory();

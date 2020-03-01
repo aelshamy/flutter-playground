@@ -35,12 +35,7 @@ class TasksList extends StatelessWidget {
                       onChanged: (inValue) async {
                         BlocProvider.of<TasksBloc>(context).add(
                           UpdateTask(
-                            task: Task(
-                              id: task.id,
-                              description: task.description,
-                              dueDate: task.dueDate,
-                              completed: inValue,
-                            ),
+                            task: task.copyWith(completed: inValue),
                           ),
                         );
                       },

@@ -268,4 +268,13 @@ class _ContactItemState extends State<ContactItem> {
       Navigator.of(context).pop();
     }
   }
+
+  @override
+  void dispose() {
+    _nameEditingController.dispose();
+    _phoneEditingController.dispose();
+    _emailEditingController.dispose();
+    _birthdayEditingController.dispose();
+    super.dispose();
+  }
 }

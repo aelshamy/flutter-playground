@@ -206,4 +206,12 @@ class _AppointmentItemState extends State<AppointmentItem> {
       Navigator.of(context).pop();
     }
   }
+
+  void dispose() {
+    _titleEditingController.dispose();
+    _descriptionEditingController.dispose();
+    _appointmentDateEditingController.dispose();
+    _appointmentTimeEditingController.dispose();
+    super.dispose();
+  }
 }

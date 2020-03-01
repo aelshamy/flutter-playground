@@ -166,4 +166,10 @@ class _NoteItemState extends State<NoteItem> {
       Navigator.of(context).pop();
     }
   }
+
+  void dispose() {
+    _contentEditingController.dispose();
+    _titleEditingController.dispose();
+    super.dispose();
+  }
 }

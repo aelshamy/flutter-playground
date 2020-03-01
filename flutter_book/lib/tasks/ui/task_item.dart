@@ -150,4 +150,11 @@ class _TaskItemState extends State<TaskItem> {
     }
     return null;
   }
+
+  @override
+  void dispose() {
+    _descriptionEditingController.dispose();
+    _dueDateEditingController.dispose();
+    super.dispose();
+  }
 }

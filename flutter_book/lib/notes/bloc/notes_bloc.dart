@@ -23,9 +23,6 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     if (event is LoadNotes) {
       yield* _mapLoadNotesToState();
     }
-    // if (event is NotesSetColor) {
-    //   yield NotesInitial();
-    // }
 
     if (event is AddNote) {
       yield* _mapAddNoteToState(event.note);

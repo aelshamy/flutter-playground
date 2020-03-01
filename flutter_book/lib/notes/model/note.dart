@@ -12,32 +12,31 @@ class Note extends Equatable {
     "green": Colors.green,
     "blue": Colors.blue,
     "orange": Colors.orange,
-    "grey": Colors.grey,
+    "pink": Colors.pink,
     "purple": Colors.purple,
   };
 
   Note({this.id, this.title, this.content, this.color});
 
-  @override
-  String toString() {
-    return "{ id=$id, title=$title, "
-        "content=$content, color=$color }";
-  }
-
-  factory Note.fromJson(Map inMap) => Note(
+  factory Note.fromMap(Map inMap) => Note(
         id: inMap["id"],
         title: inMap["title"],
         content: inMap["content"],
         color: inMap["color"],
       );
 
-  Map<String, dynamic> toJson(Note note) {
+  Map<String, dynamic> toMap(Note note) {
     return {
       "id": note.id,
       "title": note.title,
       "content": note.content,
       "color": note.color,
     };
+  }
+
+  @override
+  String toString() {
+    return "{ id=$id, title=$title, content=$content, color=$color }";
   }
 
   @override

@@ -20,7 +20,13 @@ class NotesList extends StatelessWidget {
                 Note note = state.notes[inIndex];
                 return Dismissible(
                   key: ValueKey(note.id),
-                  background: Container(color: Colors.red),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    color: Colors.red,
+                    padding: EdgeInsets.only(right: 10),
+                    alignment: Alignment.centerRight,
+                    child: Icon(Icons.delete),
+                  ),
                   confirmDismiss: (direction) => _confirmDismiss(context, note.title),
                   onDismissed: (direction) => _deleteNote(context, note),
                   child: Card(

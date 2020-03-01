@@ -43,13 +43,13 @@ class NotesProvider {
   Future<Note> get(int inID) async {
     Database db = await database;
     var rec = await db.query("notes", where: "id = ?", whereArgs: [inID]);
-    return Note.fromJson(rec.first);
+    return Note.fromMap(rec.first);
   }
 
   Future<List<Note>> getAll() async {
     Database db = await database;
     List<Map<String, dynamic>> notes = await db.query("notes");
-    List<Note> list = notes.isNotEmpty ? notes.map((m) => Note.fromJson(m)).toList() : [];
+    List<Note> list = notes.isNotEmpty ? notes.map((m) => Note.fromMap(m)).toList() : [];
     return list;
   }
 
@@ -57,13 +57,13 @@ class NotesProvider {
     Database db = await database;
     return await db.update(
       "notes",
-      inNote.toJson(inNote),
+      inNote.toMap(inNote),
       where: "id = ?",
       whereArgs: [inNote.id],
     );
   }
 
-  Future<int> deleteNote(int noteId) async {
+  Future<int> delete(int noteId) async {
     Database db = await database;
     return await db.delete(
       "notes",

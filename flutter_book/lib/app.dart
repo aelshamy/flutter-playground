@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_book/notes/bloc/notes_bloc.dart';
 import 'package:flutter_book/notes/notes_list.dart';
+import 'package:flutter_book/tasks/bloc/tasks_bloc.dart';
+import 'package:flutter_book/tasks/tasks_list.dart';
 
 class FlutterBook extends StatelessWidget {
   Widget build(BuildContext inContext) {
     return MaterialApp(
       home: DefaultTabController(
-        length: 1,
+        length: 2,
         child: Scaffold(
           appBar: AppBar(
             title: Text("FlutterBook"),
@@ -16,7 +18,7 @@ class FlutterBook extends StatelessWidget {
                 // Tab(icon: Icon(Icons.date_range), text: "Appointments"),
                 // Tab(icon: Icon(Icons.contacts), text: "Contacts"),
                 Tab(icon: Icon(Icons.note), text: "Notes"),
-                // Tab(icon: Icon(Icons.assignment_turned_in), text: "Tasks")
+                Tab(icon: Icon(Icons.assignment_turned_in), text: "Tasks")
               ],
             ),
           ),
@@ -27,6 +29,10 @@ class FlutterBook extends StatelessWidget {
               BlocProvider<NotesBloc>(
                 create: (context) => NotesBloc()..add(LoadNotes()),
                 child: NotesList(),
+              ),
+              BlocProvider<TasksBloc>(
+                create: (context) => TasksBloc()..add(LoadTasks()),
+                child: TasksList(),
               ),
               // Tasks(),
             ],

@@ -18,6 +18,6 @@ class NotesRepo {
   }
 
   Future<int> deleteNote(int noteId) {
-    return _notesProvider.deleteNote(noteId);
+    return _notesProvider.delete(noteId);
   }
 }

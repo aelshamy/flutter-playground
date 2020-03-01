@@ -6,6 +6,8 @@ import 'package:sqflite/sqflite.dart';
 class TasksProvider {
   Database _db;
 
+  String _tableName = "tasks";
+
   Future get database async {
     if (_db == null) {
       _db = await init();
@@ -14,10 +16,10 @@ class TasksProvider {
   }
 
   Future<Database> init() async {
-    String path = join(utils.docsDir.path, "tasks.db");
+    String path = join(utils.docsDir.path, "$_tableName.db");
     Database db = await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database inDB, int inVersion) async {
-      await inDB.execute("CREATE TABLE IF NOT EXISTS tasks ("
+      await inDB.execute("CREATE TABLE IF NOT EXISTS $_tableName ("
           "id INTEGER PRIMARY KEY,"
           "description TEXT,"
           "dueDate TEXT,"
@@ -29,26 +31,26 @@ class TasksProvider {
 
   Future<int> create(Task task) async {
     Database db = await database;
-    var val = await db.rawQuery("SELECT MAX(id) + 1 AS id FROM tasks");
+    var val = await db.rawQuery("SELECT MAX(id) + 1 AS id FROM $_tableName");
     int id = val.first["id"];
     if (id == null) {
       id = 1;
     }
     return await db.rawInsert(
-        "INSERT INTO tasks (id, description, dueDate, completed) "
+        "INSERT INTO $_tableName (id, description, dueDate, completed) "
         "VALUES (?, ?, ?, ?)",
         [id, task.description, task.dueDate, task.completed]);
   }
 
   Future<Task> get(int taskId) async {
     Database db = await database;
-    var rec = await db.query("tasks", where: "id = ?", whereArgs: [taskId]);
+    var rec = await db.query(_tableName, where: "id = ?", whereArgs: [taskId]);
     return Task.fromMap(rec.first);
   }
 
   Future<List<Task>> getAll() async {
     Database db = await database;
-    List<Map<String, dynamic>> tasks = await db.query("tasks");
+    List<Map<String, dynamic>> tasks = await db.query(_tableName);
     List<Task> list = tasks.isNotEmpty ? tasks.map((m) => Task.fromMap(m)).toList() : [];
     return list;
   }
@@ -56,7 +58,7 @@ class TasksProvider {
   Future<int> update(Task task) async {
     Database db = await database;
     return await db.update(
-      "tasks",
+      _tableName,
       task.toMap(task),
       where: "id = ?",
       whereArgs: [task.id],
@@ -66,7 +68,7 @@ class TasksProvider {
   Future<int> delete(int taskId) async {
     Database db = await database;
     return await db.delete(
-      "tasks",
+      _tableName,
       where: "id = ?",
       whereArgs: [taskId],
     );

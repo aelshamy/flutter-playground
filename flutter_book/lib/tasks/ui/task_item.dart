@@ -56,7 +56,7 @@ class _TaskItemState extends State<TaskItem> {
                     icon: Icon(Icons.edit),
                     color: Colors.blue,
                     onPressed: () async {
-                      String selectedDate = await selectDate(context);
+                      String selectedDate = await _selectDate(context);
                       _dueDateEditingController.text = selectedDate;
                     },
                   ),
@@ -136,7 +136,7 @@ class _TaskItemState extends State<TaskItem> {
     }
   }
 
-  Future<String> selectDate(BuildContext context) async {
+  Future<String> _selectDate(BuildContext context) async {
     DateTime initialDate = DateTime.now();
     if (widget.task.dueDate != null) {
       initialDate = DateFormat.yMMMMd("en_US").parse(widget.task.dueDate);

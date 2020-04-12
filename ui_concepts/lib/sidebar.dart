@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const subColor = const Color(0xFF1BB5fD);
-const mainColor = const Color(0xFF262AAA);
+const Color subColor = Color(0xFF1BB5fD);
+const mainColor = Color(0xFF262AAA);
 // const mainColor = Colors.black87;
 
 class SideBar extends StatefulWidget {
@@ -13,7 +13,7 @@ class SideBar extends StatefulWidget {
 
 class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<SideBar> {
   bool _isSidebarOpened;
-  Duration _animationDuration = Duration(milliseconds: 500);
+  final Duration _animationDuration = const Duration(milliseconds: 500);
   AnimationController _controller;
 
   @override
@@ -34,7 +34,7 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
     final screenWidth = MediaQuery.of(context).size.width;
 
     return AnimatedPositioned(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       top: 0,
       bottom: 0,
       left: _isSidebarOpened ? 0 : -screenWidth,
@@ -49,7 +49,7 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(height: 70),
+                    const SizedBox(height: 70),
                     ListTile(
                       title: Text(
                         'Amr Elshamy',
@@ -59,7 +59,7 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      subtitle: Text(
+                      subtitle: const Text(
                         'email@emailprovider.com',
                         style: TextStyle(
                           color: subColor,
@@ -100,7 +100,7 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
             ),
           ),
           Align(
-            alignment: Alignment(0, -0.85),
+            alignment: const Alignment(0, -0.85),
             child: GestureDetector(
               onTap: () {
                 final animationStatus = _controller.status;
@@ -147,7 +147,7 @@ class MenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -156,7 +156,7 @@ class MenuItem extends StatelessWidget {
             color: subColor,
             size: 30,
           ),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Text(
             title,
             style: TextStyle(
@@ -174,9 +174,9 @@ class MenuItem extends StatelessWidget {
 class MenuHandlerClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    Path path = Path();
-    double width = size.width;
-    double height = size.height;
+    final path = Path();
+    final double width = size.width;
+    final double height = size.height;
 
     path.quadraticBezierTo(0, 8, 10, 16);
     path.quadraticBezierTo(width - 1, height / 2 - 20, width, height / 2);

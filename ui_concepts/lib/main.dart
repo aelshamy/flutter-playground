@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui_concepts/netflix/home.dart';
+import 'package:ui_concepts/sidebar.dart';
 
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -20,9 +20,9 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         body: Stack(
           children: <Widget>[
-            NetflixHome(),
+            // NetflixHome(),
             // Meditation(),
-            // SideBar(),
+            SideBar(),
           ],
         ),
       ),

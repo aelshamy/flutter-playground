@@ -1,10 +1,12 @@
 part of 'stories_bloc.dart';
 
-abstract class StoriesState extends Equatable {
-  const StoriesState();
-}
+class StoriesState extends Equatable {
+  final bool loading;
+  final List<int> data;
+  final String error;
 
-class StoriesInitial extends StoriesState {
+  const StoriesState({this.loading, this.data, this.error});
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [loading, data, error];
 }

@@ -13,7 +13,7 @@ class App extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: BlocProvider<StoriesBloc>(
-        create: (context) => StoriesBloc(),
+        create: (context) => StoriesBloc()..add(LoadStories()),
         child: NewsList(),
       ),
     );

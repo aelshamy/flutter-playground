@@ -12,9 +12,13 @@ class ApiProvider implements Source {
 
   @override
   Future<List<int>> fetchTopIds() async {
-    final response = await _client.get("$baseUrl/topstories.json");
-    final ids = jsonDecode(response.body);
-    return ids.cast<int>();
+    try {
+      final response = await _client.get("$baseUrl/topstories.json");
+      final ids = jsonDecode(response.body);
+      return ids.cast<int>();
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override

@@ -8,7 +8,7 @@ class Repository {
   final List<Source> _sources;
   final List<Cache> _caches;
 
-  Repository(List<Source> sources, List<Cache> caches)
+  Repository({List<Source> sources, List<Cache> caches})
       : _sources = sources ?? [DbProvider.instance, ApiProvider()],
         _caches = caches ?? [DbProvider.instance];
 
@@ -24,15 +24,6 @@ class Repository {
   }
 
   Future<ItemModel> fetchItem(int id) async {
-    // var item = await _dbProvider.fetchItem(id);
-    // if (item != null) {
-    //   return item;
-    // }
-
-    // item = await _apiProvider.fetchItem(id);
-    // _dbProvider.addItem(item);
-    // return item;
-
     ItemModel item;
     Source source;
 
@@ -48,5 +39,11 @@ class Repository {
     }
 
     return item;
+  }
+
+  Future<void> clearCache() async {
+    for (var cache in _caches) {
+      await cache.clear();
+    }
   }
 }

@@ -9,6 +9,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DbProvider implements Source, Cache {
   Database db;
+  final _dbName = "Items";
 
   static final DbProvider instance = DbProvider._internal();
 
@@ -18,7 +19,7 @@ class DbProvider implements Source, Cache {
 
   init() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentDirectory.path, "item.db");
+    final path = join(documentDirectory.path, "$_dbName.db");
 
     db = await openDatabase(path, version: 1, onCreate: (Database newDb, int version) {
       newDb.execute(""" 
@@ -45,7 +46,7 @@ class DbProvider implements Source, Cache {
   @override
   Future<ItemModel> fetchItem(int id) async {
     final maps = await db.query(
-      "Items",
+      _dbName,
       columns: null,
       where: "id = ?",
       whereArgs: [id],
@@ -56,11 +57,20 @@ class DbProvider implements Source, Cache {
 
   @override
   Future<int> addItem(ItemModel item) {
-    return db.insert("Items", item.toMap());
+    return db.insert(
+      _dbName,
+      item.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
   }
 
   @override
   Future<List<int>> fetchTopIds() {
     return null;
+  }
+
+  @override
+  Future<int> clear() {
+    return db.delete(_dbName);
   }
 }

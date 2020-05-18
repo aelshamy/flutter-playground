@@ -9,9 +9,15 @@ class NewsList extends StatelessWidget {
       appBar: AppBar(title: Text('Top News')),
       body: BlocBuilder<StoriesBloc, StoriesState>(
         builder: (BuildContext context, StoriesState state) {
-          return Center(
-            child: Text('Show some news here!'),
-          );
+          if (state.data != null) {
+            return ListView.builder(
+              itemCount: state.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Text(state.data[index].toString());
+              },
+            );
+          }
+          return Center(child: CircularProgressIndicator());
         },
       ),
     );

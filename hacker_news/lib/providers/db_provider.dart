@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:hacker_news/models/item_model.dart';
@@ -8,22 +9,30 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DbProvider implements Source, Cache {
-  Database db;
-  final _dbName = "Items";
+  static final _databaseName = "Items.db";
+  static final _databaseVersion = 1;
+  final _tableName = "items";
 
-  static final DbProvider instance = DbProvider._internal();
+  DbProvider._privateConstructor();
+  static final DbProvider instance = DbProvider._privateConstructor();
 
-  DbProvider._internal() {
-    init();
+  static Database _database;
+
+  Future<Database> get database async {
+    if (_database != null) return _database;
+    _database = await _initDatabase();
+    return _database;
   }
 
-  init() async {
+  Future<Database> _initDatabase() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentDirectory.path, "$_dbName.db");
+    final path = join(documentDirectory.path, _databaseName);
+    return await openDatabase(path, version: _databaseVersion, onCreate: _onCreate);
+  }
 
-    db = await openDatabase(path, version: 1, onCreate: (Database newDb, int version) {
-      newDb.execute(""" 
-        CREATE TABLE Items
+  FutureOr<void> _onCreate(Database newDb, int version) async {
+    await newDb.execute(""" 
+        CREATE TABLE $_tableName
         (
           id INTEGER PRIMARY KEY,
           type TEXT,
@@ -40,13 +49,12 @@ class DbProvider implements Source, Cache {
           descendants INTEGER
         )
         """);
-    });
   }
 
   @override
   Future<ItemModel> fetchItem(int id) async {
-    final maps = await db.query(
-      _dbName,
+    final maps = await _database.query(
+      _tableName,
       columns: null,
       where: "id = ?",
       whereArgs: [id],
@@ -57,8 +65,8 @@ class DbProvider implements Source, Cache {
 
   @override
   Future<int> addItem(ItemModel item) {
-    return db.insert(
-      _dbName,
+    return _database.insert(
+      _tableName,
       item.toMap(),
       conflictAlgorithm: ConflictAlgorithm.ignore,
     );
@@ -71,6 +79,6 @@ class DbProvider implements Source, Cache {
 
   @override
   Future<int> clear() {
-    return db.delete(_dbName);
+    return _database.delete(_tableName);
   }
 }

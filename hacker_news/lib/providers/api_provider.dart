@@ -23,6 +23,7 @@ class ApiProvider implements Source {
 
   @override
   Future<ItemModel> fetchItem(int id) async {
+    print(id);
     final response = await _client.get("$baseUrl/item/$id.json");
     final parsedJson = jsonDecode(response.body);
     return ItemModel.fromJson(parsedJson);

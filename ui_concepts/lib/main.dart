@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui_concepts/sidebar.dart';
+import 'package:ui_concepts/stacked_item_listview.dart';
 
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,8 @@ class _MyAppState extends State<MyApp> {
           children: <Widget>[
             // NetflixHome(),
             // Meditation(),
-            SideBar(),
+            // SideBar(),
+            StackedItemListView()
           ],
         ),
       ),

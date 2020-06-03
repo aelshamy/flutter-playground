@@ -23,11 +23,11 @@ class DbProvider implements Source, Cache {
 
     db = await openDatabase(path, version: 1, onCreate: (Database newDb, int version) {
       newDb.execute(""" 
-        CREATE TABLE Items
+        CREATE TABLE IF NOT EXISTS $_dbName
         (
           id INTEGER PRIMARY KEY,
           type TEXT,
-          by TEXT
+          by TEXT,
           time INTEGER,
           text TEXT,
           parent INTEGER,

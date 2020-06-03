@@ -16,6 +16,20 @@ class StoriesBloc extends Bloc<StoriesEvent, StoriesState> {
   @override
   StoriesState get initialState => StoriesState();
 
+  // @override
+  // Stream<Transition<StoriesEvent, StoriesState>> transformTransitions(
+  //     Stream<Transition<StoriesEvent, StoriesState>> transitions) {
+  //   return transitions.transform(_itemsTransformers());
+  //   // return super.transformTransitions(newTransitions);
+  // }
+
+  //   Stream<Transition<StoriesEvent, StoriesState>> _itemsTransformers() {
+  //   return ScanStreamTransformer((Map<int, Future<ItemModel>> cache, int id, index) {
+  //     cache[id] = _repository.fetchItem(id);
+  //     return cache;
+  //   }, <int, Future<ItemModel>>{});
+  // }
+
   @override
   Stream<StoriesState> mapEventToState(StoriesEvent event) async* {
     if (event is LoadStories) {
@@ -26,9 +40,10 @@ class StoriesBloc extends Bloc<StoriesEvent, StoriesState> {
   }
 
   Stream<StoriesState> _mapLoadStoriesToState() async* {
-    yield StoriesState(loading: true);
+    // yield StoriesState(loading: true);
     try {
       final ids = await _repository.fetchTopIds();
+      // final futureList = ids.map((id) => _repository.fetchItem(id)).toList();
       yield StoriesState(data: ids);
     } catch (e) {
       print(e);

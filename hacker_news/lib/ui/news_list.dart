@@ -13,7 +13,17 @@ class NewsList extends StatelessWidget {
             return ListView.builder(
               itemCount: state.data.length,
               itemBuilder: (BuildContext context, int index) {
-                return Text(state.data[index].toString());
+                print(state.data[index]);
+                return SizedBox();
+                // return FutureBuilder(
+                //   future: state.data[index],
+                //   builder: (BuildContext context, AsyncSnapshot<ItemModel> snapshot) {
+                //     if (snapshot.hasData) {
+                //       return ListTile(title: Text(snapshot.data.title));
+                //     }
+                //     return SizedBox();
+                //   },
+                // );
               },
             );
           }

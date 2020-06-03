@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'home.dart';
+import 'menu.dart';
 
 class MoviePage extends StatelessWidget {
   @override
@@ -10,70 +11,7 @@ class MoviePage extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Container(
-                width: 60,
-                color: Colors.black,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
-                      child: GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Image.asset('assets/logo.png')),
-                    ),
-                    Expanded(
-                      child: Container(),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 10),
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border(right: BorderSide(color: Colors.red, width: 3)),
-                      ),
-                      child: Icon(Icons.home, color: Colors.white),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 10),
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border(right: BorderSide(color: Colors.black, width: 3)),
-                      ),
-                      child: Icon(Icons.search, color: Colors.grey),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 10),
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border(right: BorderSide(color: Colors.black, width: 3)),
-                      ),
-                      child: Icon(Icons.slideshow, color: Colors.grey),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 10),
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border(right: BorderSide(color: Colors.black, width: 3)),
-                      ),
-                      child: Icon(Icons.save_alt, color: Colors.grey),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 10),
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border(right: BorderSide(color: Colors.black, width: 3)),
-                      ),
-                      child: Icon(Icons.menu, color: Colors.grey),
-                    ),
-                  ],
-                ),
-              ),
+              Menu(),
               Column(
                 children: <Widget>[
                   Container(
@@ -205,6 +143,7 @@ class MoviePage extends StatelessWidget {
                     width: MediaQuery.of(context).size.width - 60,
                     color: Colors.white,
                     child: GridView.count(
+                      shrinkWrap: true,
                       crossAxisCount: 3,
                       childAspectRatio: 1 / 1.435,
                       children: _getGridViewItems(context),

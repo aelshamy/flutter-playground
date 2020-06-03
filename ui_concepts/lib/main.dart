@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ui_concepts/stacked_item_listview.dart';
+
+import 'netflix/home.dart';
 
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -20,10 +21,10 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         body: Stack(
           children: <Widget>[
-            // NetflixHome(),
+            NetflixHome(),
             // Meditation(),
             // SideBar(),
-            StackedItemListView()
+            // StackedItemListView()
           ],
         ),
       ),

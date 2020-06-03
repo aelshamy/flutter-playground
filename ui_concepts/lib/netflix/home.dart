@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_carousel/carousel.dart';
 
+import 'menu.dart';
 import 'movie.dart';
 
 final List<String> genres = const [
@@ -21,20 +22,14 @@ final List<String> movies = const [
   'assets/movie6.jpg',
 ];
 
-class NetflixHome extends StatefulWidget {
+class NetflixHome extends StatelessWidget {
   const NetflixHome({Key key}) : super(key: key);
 
-  @override
-  _NetflixHomeState createState() => _NetflixHomeState();
-}
-
-class _NetflixHomeState extends State<NetflixHome> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(
         children: <Widget>[
-          _getNavBar(),
+          Menu(),
           Expanded(
             child: ListView(
               children: <Widget>[
@@ -140,24 +135,23 @@ class _NetflixHomeState extends State<NetflixHome> {
       showIndicator: false,
       arrowColor: Colors.transparent,
       axis: Axis.horizontal,
-      children: List.generate(
-        movies.length,
-        (index) => Center(
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => MoviePage()));
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(movies[index]),
-                  fit: BoxFit.cover,
+      children: movies
+          .map((movie) => Center(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MoviePage()));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(movie),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-        ),
-      ),
+              ))
+          .toList(),
       width: MediaQuery.of(context).size.width - 60,
     );
   }
@@ -198,42 +192,6 @@ class _NetflixHomeState extends State<NetflixHome> {
           ),
         ),
       ],
-    );
-  }
-
-  Container _getNavBar() {
-    return Container(
-      width: 60,
-      color: Colors.black,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
-            child: Image.asset('assets/logo.png'),
-          ),
-          Spacer(),
-          _menuItem(active: true, icon: Icons.home),
-          _menuItem(icon: Icons.search),
-          _menuItem(icon: Icons.slideshow),
-          _menuItem(icon: Icons.save_alt),
-          _menuItem(icon: Icons.menu),
-        ],
-      ),
-    );
-  }
-
-  Container _menuItem({bool active = false, IconData icon}) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      padding: EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        border: Border(right: BorderSide(color: active ? Colors.red : Colors.black, width: 3)),
-      ),
-      child: Icon(
-        icon,
-        color: active ? Colors.white : Colors.grey,
-      ),
     );
   }
 }

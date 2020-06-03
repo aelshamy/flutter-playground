@@ -12,13 +12,14 @@ class ApiProvider implements Source {
 
   @override
   Future<List<int>> fetchTopIds() async {
+    List<dynamic> ids;
     try {
       final response = await _client.get("$baseUrl/topstories.json");
-      final ids = jsonDecode(response.body);
-      return ids.cast<int>();
+      ids = jsonDecode(response.body);
     } catch (e) {
       print(e);
     }
+    return ids.cast<int>();
   }
 
   @override

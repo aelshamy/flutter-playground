@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class RadioFormField extends FormField<bool> {
   RadioFormField({
+    String label = "My Label",
     IconData icon = Icons.add,
     FormFieldSetter<bool> onSaved,
     FormFieldValidator<bool> validator,
@@ -52,7 +53,7 @@ class RadioFormField extends FormField<bool> {
                         Container(
                           padding: EdgeInsets.only(top: 15.0),
                           child: Text(
-                            "My Label",
+                            label,
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 11.0),
                           ),

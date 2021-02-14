@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inputs/router.dart';
+import 'package:flutter_inputs/app_router.dart';
 
 class InputsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Futter Inputs'),
+        title: Text('Flutter Inputs'),
       ),
       body: ListView(
         shrinkWrap: true,
@@ -24,7 +24,7 @@ class InputsApp extends StatelessWidget {
               ],
             ),
             onTap: () {
-              Navigator.pushNamed(context, Router.checkboxesRoute);
+              Navigator.pushNamed(context, AppRouter.checkboxesRoute);
             },
           ),
           ListTile(
@@ -39,7 +39,7 @@ class InputsApp extends StatelessWidget {
               ],
             ),
             onTap: () {
-              Navigator.pushNamed(context, Router.radiosRoute);
+              Navigator.pushNamed(context, AppRouter.radiosRoute);
             },
           ),
           ListTile(
@@ -55,7 +55,7 @@ class InputsApp extends StatelessWidget {
               ],
             ),
             onTap: () {
-              Navigator.pushNamed(context, Router.switchesRoute);
+              Navigator.pushNamed(context, AppRouter.switchesRoute);
             },
           ),
           ListTile(
@@ -71,7 +71,7 @@ class InputsApp extends StatelessWidget {
               ],
             ),
             onTap: () {
-              Navigator.pushNamed(context, Router.slidersRoute);
+              Navigator.pushNamed(context, AppRouter.slidersRoute);
             },
           ),
           ListTile(
@@ -87,7 +87,23 @@ class InputsApp extends StatelessWidget {
               ],
             ),
             onTap: () {
-              Navigator.pushNamed(context, Router.datePickerRoute);
+              Navigator.pushNamed(context, AppRouter.datePickerRoute);
+            },
+          ),
+          ListTile(
+            title: Text('Custom FormField'),
+            subtitle: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    'Demonstrate create custom form fields',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, AppRouter.customFormFields);
             },
           ),
           ListTile(
@@ -103,7 +119,7 @@ class InputsApp extends StatelessWidget {
               ],
             ),
             onTap: () {
-              Navigator.pushNamed(context, Router.directionalityRoute);
+              Navigator.pushNamed(context, AppRouter.directionalityRoute);
             },
           ),
         ],

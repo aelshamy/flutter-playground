@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inputs/ui/custom_radio.dart';
+import 'package:flutter_inputs/ui/forms/form_fields/radio_form_field.dart';
 
 class RadiosExample extends StatefulWidget {
   @override
@@ -19,7 +19,10 @@ class _RadiosExampleState extends State<RadiosExample> {
     for (int i = 0; i < 3; i++) {
       list.add(GestureDetector(
         child: Row(
-          children: <Widget>[Radio(value: i, groupValue: _value1, onChanged: _setValue1), Text('Item ${i + 1}')],
+          children: <Widget>[
+            Radio(value: i, groupValue: _value1, onChanged: _setValue1),
+            Text('Item ${i + 1}')
+          ],
         ),
         onTap: () {
           _setValue1(i);
@@ -38,21 +41,22 @@ class _RadiosExampleState extends State<RadiosExample> {
     List<Widget> list = List<Widget>();
 
     for (int i = 0; i < 3; i++) {
-      list.add(RadioListTile(
-        value: i,
-        groupValue: _value2,
-        onChanged: _setValue2,
-        activeColor: Colors.green,
-        controlAffinity: ListTileControlAffinity.trailing,
-        title: Text('Item: ${i + 1}'),
-        subtitle: Text('sub title ${i + 1}'),
-      ));
+      list.add(
+        RadioListTile(
+          value: i,
+          groupValue: _value2,
+          onChanged: _setValue2,
+          activeColor: Colors.green,
+          controlAffinity: ListTileControlAffinity.trailing,
+          title: Text('Item: ${i + 1}'),
+          subtitle: Text('sub title ${i + 1}'),
+        ),
+      );
     }
 
-    Column column = Column(
+    return Column(
       children: list,
     );
-    return column;
   }
 
   @override
@@ -68,11 +72,14 @@ class _RadiosExampleState extends State<RadiosExample> {
             children: <Widget>[
               _makeMaterialRadios(),
               _makeRadioTiles(),
-              CustomRadio<String>(
-                value: "10",
-                onChanged: (String value) {
-                  print(value);
-                },
+              // CustomRadio<String>(
+              //   value: "10",
+              //   onChanged: (dynamic value) {
+              //     print(value);
+              //   },
+              // ),
+              RadioFormField(
+                icon: Icons.ac_unit_sharp,
               ),
             ],
           ),

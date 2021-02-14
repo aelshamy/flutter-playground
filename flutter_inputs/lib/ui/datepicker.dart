@@ -15,8 +15,8 @@ class _DatePickerExampleState extends State<DatePickerExample> {
     DateTime picked = await showDatePicker(
       context: context,
       initialDate: initialDate,
-      firstDate: DateTime(2016),
-      lastDate: DateTime(2020),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2025),
     );
     if (picked != null) setState(() => _value = picked.toString());
   }
@@ -88,8 +88,10 @@ class _DatePickerExampleState extends State<DatePickerExample> {
             children: <Widget>[
               Text(_value),
               RaisedButton(
-                onPressed: _selectDate,
-                child: Text('Show datepicker'),
+                onPressed: () {
+                  _selectDate();
+                },
+                child: Text('Show date picker'),
               ),
               RaisedButton(
                 onPressed: _selectTime,
@@ -99,7 +101,7 @@ class _DatePickerExampleState extends State<DatePickerExample> {
                 onPressed: () {
                   _showCupertinoDatePicker(context);
                 },
-                child: Text('Show Cupertino datepicker'),
+                child: Text('Show Cupertino date picker'),
               ),
               RaisedButton(
                 onPressed: () {

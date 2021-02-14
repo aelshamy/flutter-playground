@@ -2,36 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inputs/ui/checkbox.dart';
 import 'package:flutter_inputs/ui/datepicker.dart';
 import 'package:flutter_inputs/ui/directionality.dart';
+import 'package:flutter_inputs/ui/forms/confirm_password_form.dart';
 import 'package:flutter_inputs/ui/radios.dart';
 import 'package:flutter_inputs/ui/slider.dart';
 import 'package:flutter_inputs/ui/switches.dart';
 
 import 'app.dart';
 
-class Router {
+class AppRouter {
   static const String homeRoute = '/';
   static const String checkboxesRoute = '/checkboxs';
   static const String radiosRoute = '/radios';
   static const String slidersRoute = '/sliders';
   static const String switchesRoute = '/switches';
   static const String datePickerRoute = '/datepicker';
+  static const String customFormFields = '/customFormFields';
   static const String directionalityRoute = '/directionality';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case Router.homeRoute:
+      case AppRouter.homeRoute:
         return MaterialPageRoute(builder: (_) => InputsApp());
-      case Router.checkboxesRoute:
+      case AppRouter.checkboxesRoute:
         return MaterialPageRoute(builder: (_) => CheckboxExample());
-      case Router.radiosRoute:
+      case AppRouter.radiosRoute:
         return MaterialPageRoute(builder: (_) => RadiosExample());
-      case Router.slidersRoute:
+      case AppRouter.slidersRoute:
         return MaterialPageRoute(builder: (_) => SliderExample());
-      case Router.switchesRoute:
+      case AppRouter.switchesRoute:
         return MaterialPageRoute(builder: (_) => SwitchesExample());
-      case Router.datePickerRoute:
+      case AppRouter.datePickerRoute:
         return MaterialPageRoute(builder: (_) => DatePickerExample());
-      case Router.directionalityRoute:
+      case AppRouter.customFormFields:
+        return MaterialPageRoute(builder: (_) => ConfirmPasswordForm());
+      case AppRouter.directionalityRoute:
         return MaterialPageRoute(builder: (_) => DirectionalityExample());
       default:
         return MaterialPageRoute(

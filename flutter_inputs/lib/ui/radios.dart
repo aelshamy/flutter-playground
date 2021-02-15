@@ -80,6 +80,7 @@ class _RadiosExampleState extends State<RadiosExample> {
               // ),
               RadioFormField(
                 icon: Icons.ac_unit_sharp,
+                initialValue: 'tv',
               ),
             ],
           ),

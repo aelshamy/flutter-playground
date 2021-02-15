@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inputs/ui/checkbox.dart';
+import 'package:flutter_inputs/ui/checkboxs.dart';
 import 'package:flutter_inputs/ui/datepicker.dart';
 import 'package:flutter_inputs/ui/directionality.dart';
 import 'package:flutter_inputs/ui/forms/confirm_password_form.dart';

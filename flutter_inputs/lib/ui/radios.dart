@@ -78,9 +78,9 @@ class _RadiosExampleState extends State<RadiosExample> {
               //     print(value);
               //   },
               // ),
-              RadioFormField(
+              RadioFormField<String>(
                 icon: Icons.ac_unit_sharp,
-                initialValue: 'tv',
+                value: 'tv',
               ),
             ],
           ),

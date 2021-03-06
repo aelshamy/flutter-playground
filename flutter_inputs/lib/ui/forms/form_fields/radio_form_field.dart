@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 
-class RadioFormField extends FormField<bool> {
+class RadioFormField<T> extends FormField<T> {
   RadioFormField({
     String label = "My Label",
     IconData icon = Icons.add,
-    FormFieldSetter<bool> onSaved,
-    FormFieldValidator<bool> validator,
-    bool initialValue = false,
+    FormFieldSetter<T> onSaved,
+    FormFieldValidator<T> validator,
+    T value,
+    bool selected = false,
     AutovalidateMode autovalidateMode = AutovalidateMode.disabled,
   }) : super(
           onSaved: onSaved,
           validator: validator,
-          initialValue: initialValue,
+          initialValue: value,
           autovalidateMode: autovalidateMode,
-          builder: (FormFieldState<bool> state) {
+          builder: (FormFieldState<T> state) {
             return Container(
               child: Column(
                 children: [
                   GestureDetector(
                     onTap: () {
-                      state.didChange(!state.value);
+                      state.didChange(state.value);
+                      selected = !selected;
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -41,7 +43,7 @@ class RadioFormField extends FormField<bool> {
                               Container(
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: state.value
+                                  color: selected
                                       ? Colors.green
                                       : Colors.transparent,
                                 ),

@@ -87,23 +87,23 @@ class _DatePickerExampleState extends State<DatePickerExample> {
           child: Column(
             children: <Widget>[
               Text(_value),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   _selectDate();
                 },
                 child: Text('Show date picker'),
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: _selectTime,
                 child: Text('Show timePicker'),
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   _showCupertinoDatePicker(context);
                 },
                 child: Text('Show Cupertino date picker'),
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   _showCupertinoTimePicker(context);
                 },

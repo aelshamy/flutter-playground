@@ -7,7 +7,7 @@ class CupertinoSwitchListTile extends StatelessWidget {
   const CupertinoSwitchListTile({
     Key? key,
     required this.value,
-    required this.onChanged,
+    this.onChanged,
     this.activeColor,
     this.title,
     this.subtitle,
@@ -15,11 +15,7 @@ class CupertinoSwitchListTile extends StatelessWidget {
     this.dense,
     this.secondary,
     this.selected: false,
-  })  : assert(value != null),
-        assert(isThreeLine != null),
-        assert(!isThreeLine || subtitle != null),
-        assert(selected != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// Whether this switch is checked.
   ///
@@ -49,7 +45,7 @@ class CupertinoSwitchListTile extends StatelessWidget {
   ///   title: new Text('Lights'),
   /// )
   /// ```
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool>? onChanged;
 
   /// The color to use when this switch is on.
   ///
@@ -112,7 +108,7 @@ class CupertinoSwitchListTile extends StatelessWidget {
           enabled: onChanged != null,
           onTap: onChanged != null
               ? () {
-                  onChanged(!value);
+                  onChanged!(!value);
                 }
               : null,
           selected: selected,

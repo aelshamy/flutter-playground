@@ -55,7 +55,7 @@ class ConfirmPasswordForm extends StatelessWidget {
                 ),
               ),
             ),
-            RaisedButton(
+            ElevatedButton(
               child: Text("Submit"),
               onPressed: () {
                 if (formKey.currentState!.validate()) {

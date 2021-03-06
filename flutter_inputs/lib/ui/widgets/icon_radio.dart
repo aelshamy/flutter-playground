@@ -7,18 +7,14 @@ class IconRadio<T> extends StatefulWidget {
   /// [icon] and [value] must not be null.
   const IconRadio({
     Key? key,
-    this.icon,
-    this.value,
+    required this.icon,
+    required this.value,
     this.groupValue,
     this.color = const Color(0xFF58C140),
     this.label,
     this.semanticsLabel,
     this.onChange,
-  })  : assert(
-          icon != null,
-          value != null,
-        ),
-        super(key: key);
+  }) : super(key: key);
 
   /// The color of the radio button when it is selected.
   final Color color;

@@ -14,7 +14,7 @@ class _RadiosExampleState extends State<RadiosExample> {
   void _setValue2(int? value) => setState(() => _value2 = value);
 
   Widget _makeMaterialRadios() {
-    List<Widget> list = List<Widget>();
+    List<Widget> list = [];
 
     for (int i = 0; i < 3; i++) {
       list.add(GestureDetector(
@@ -38,7 +38,7 @@ class _RadiosExampleState extends State<RadiosExample> {
   }
 
   Widget _makeRadioTiles() {
-    List<Widget> list = List<Widget>();
+    List<Widget> list = [];
 
     for (int i = 0; i < 3; i++) {
       list.add(

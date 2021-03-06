@@ -1,7 +1,7 @@
 class Passwords {
-  String password;
-  String confirmPassword;
-  int length;
+  String? password;
+  String? confirmPassword;
+  late int length;
 
   Passwords() {
     password = "";
@@ -11,9 +11,9 @@ class Passwords {
 
   bool nonEmpty() {
     return password != null &&
-        password.length > 0 &&
+        password!.length > 0 &&
         confirmPassword != null &&
-        confirmPassword.length > 0;
+        confirmPassword!.length > 0;
   }
 
   bool match() {
@@ -21,6 +21,6 @@ class Passwords {
   }
 
   bool valid() {
-    return password.length >= length;
+    return password!.length >= length;
   }
 }

@@ -12,7 +12,7 @@ class _DatePickerExampleState extends State<DatePickerExample> {
   DateTime initialDate = DateTime.now();
 
   void _selectDate() async {
-    DateTime picked = await showDatePicker(
+    DateTime? picked = await showDatePicker(
       context: context,
       initialDate: initialDate,
       firstDate: DateTime(2020),
@@ -22,7 +22,7 @@ class _DatePickerExampleState extends State<DatePickerExample> {
   }
 
   void _selectTime() async {
-    TimeOfDay picked = await showTimePicker(
+    TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );

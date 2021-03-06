@@ -7,11 +7,11 @@ class RadiosExample extends StatefulWidget {
 }
 
 class _RadiosExampleState extends State<RadiosExample> {
-  int _value1 = 0;
-  int _value2 = 0;
+  int? _value1 = 0;
+  int? _value2 = 0;
 
-  void _setValue1(int value) => setState(() => _value1 = value);
-  void _setValue2(int value) => setState(() => _value2 = value);
+  void _setValue1(int? value) => setState(() => _value1 = value);
+  void _setValue2(int? value) => setState(() => _value2 = value);
 
   Widget _makeMaterialRadios() {
     List<Widget> list = List<Widget>();

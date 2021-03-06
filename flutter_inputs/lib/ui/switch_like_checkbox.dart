@@ -20,10 +20,10 @@ class CustomSwitch extends StatefulWidget {
 }
 
 class _CustomSwitchState extends State<CustomSwitch> with SingleTickerProviderStateMixin {
-  bool _checked;
-  String _text;
-  AnimationController _controller;
-  SwitchAnimation _animation;
+  late bool _checked;
+  late String _text;
+  late AnimationController _controller;
+  late SwitchAnimation _animation;
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _CustomSwitchState extends State<CustomSwitch> with SingleTickerProviderSt
       onTap: _onClick,
       child: AnimatedBuilder(
         animation: _animation.controller,
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           return Container(
             width: 100,
             padding: EdgeInsets.all(5),
@@ -95,7 +95,7 @@ class _CustomSwitchState extends State<CustomSwitch> with SingleTickerProviderSt
 }
 
 class SwitchAnimation {
-  SwitchAnimation(this.controller, {this.activeColor, this.inactiveColor})
+  SwitchAnimation(this.controller, {required this.activeColor, required this.inactiveColor})
       : handlerAlignment = AlignmentTween(begin: Alignment.centerLeft, end: Alignment.centerRight).animate(controller),
         handlerRotation = Tween<double>(begin: -2 * pi, end: 0).animate(controller),
         handlerColor = ColorTween(begin: inactiveColor, end: activeColor).animate(controller),
@@ -106,9 +106,9 @@ class SwitchAnimation {
   final AnimationController controller;
   final Animation<Alignment> handlerAlignment;
   final Animation<double> handlerRotation;
-  final Animation<Color> handlerColor;
-  final Animation<Color> handlerTextColor;
-  final Animation<Border> containerBorder;
+  final Animation<Color?> handlerColor;
+  final Animation<Color?> handlerTextColor;
+  final Animation<Border?> containerBorder;
   final Color activeColor;
   final Color inactiveColor;
 }

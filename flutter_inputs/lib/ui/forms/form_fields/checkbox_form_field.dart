@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class CheckboxFormField extends FormField<bool> {
   CheckboxFormField({
     String title = "",
-    FormFieldSetter<bool> onSaved,
-    FormFieldValidator<bool> validator,
+    FormFieldSetter<bool>? onSaved,
+    FormFieldValidator<bool>? validator,
     bool initialValue = false,
     AutovalidateMode autovalidateMode = AutovalidateMode.disabled,
   }) : super(
@@ -19,12 +19,12 @@ class CheckboxFormField extends FormField<bool> {
                   CheckboxListTile(
                       title: Text(title),
                       value: state.value,
-                      onChanged: (bool value) {
+                      onChanged: (bool? value) {
                         state.didChange(value);
                       }),
                   if (state.hasError)
                     Text(
-                      state.errorText,
+                      state.errorText!,
                       style: TextStyle(color: Colors.red),
                     )
                 ],

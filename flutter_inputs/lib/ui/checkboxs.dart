@@ -6,11 +6,11 @@ class CheckboxExample extends StatefulWidget {
 }
 
 class _CheckboxExampleState extends State<CheckboxExample> {
-  bool _value1 = false;
-  bool _value2 = false;
+  bool? _value1 = false;
+  bool? _value2 = false;
 
-  void _value1Changed(bool value) => setState(() => _value1 = value);
-  void _value2Changed(bool value) => setState(() => _value2 = value);
+  void _value1Changed(bool? value) => setState(() => _value1 = value);
+  void _value2Changed(bool? value) => setState(() => _value2 = value);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class _CheckboxExampleState extends State<CheckboxExample> {
                   ],
                 ),
                 onTap: () {
-                  _value1Changed(!_value1);
+                  _value1Changed(!_value1!);
                 },
               ),
               CheckboxListTile(

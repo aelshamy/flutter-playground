@@ -4,9 +4,9 @@ class RadioFormField<T> extends FormField<T> {
   RadioFormField({
     String label = "My Label",
     IconData icon = Icons.add,
-    FormFieldSetter<T> onSaved,
-    FormFieldValidator<T> validator,
-    T value,
+    FormFieldSetter<T>? onSaved,
+    FormFieldValidator<T>? validator,
+    T? value,
     bool selected = false,
     AutovalidateMode autovalidateMode = AutovalidateMode.disabled,
   }) : super(
@@ -65,7 +65,7 @@ class RadioFormField<T> extends FormField<T> {
                   ),
                   if (state.hasError)
                     Text(
-                      state.errorText,
+                      state.errorText!,
                       style: TextStyle(color: Colors.red),
                     )
                 ],

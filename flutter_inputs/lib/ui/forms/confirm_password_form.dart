@@ -24,11 +24,11 @@ class ConfirmPasswordForm extends StatelessWidget {
                   children: [
                     ConfirmPasswordFormField(
                       initialValue: Passwords(),
-                      onSaved: (Passwords passwords) {
-                        print("Password: ${passwords.password}");
+                      onSaved: (Passwords? passwords) {
+                        print("Password: ${passwords!.password}");
                       },
-                      validator: (Passwords passwords) {
-                        if (passwords.nonEmpty()) {
+                      validator: (Passwords? passwords) {
+                        if (passwords!.nonEmpty()) {
                           if (passwords.match()) {
                             if (passwords.valid()) {
                               return null;
@@ -43,11 +43,11 @@ class ConfirmPasswordForm extends StatelessWidget {
                     ),
                     CheckboxFormField(
                       title: "I agree to change password",
-                      onSaved: (bool checked) {
+                      onSaved: (bool? checked) {
                         print("Checkbox: $checked");
                       },
-                      validator: (bool value) {
-                        return value ? null : "You must check this";
+                      validator: (bool? value) {
+                        return value! ? null : "You must check this";
                       },
                       autovalidateMode: AutovalidateMode.always,
                     )
@@ -58,8 +58,8 @@ class ConfirmPasswordForm extends StatelessWidget {
             RaisedButton(
               child: Text("Submit"),
               onPressed: () {
-                if (formKey.currentState.validate()) {
-                  formKey.currentState.save();
+                if (formKey.currentState!.validate()) {
+                  formKey.currentState!.save();
                 }
               },
             )

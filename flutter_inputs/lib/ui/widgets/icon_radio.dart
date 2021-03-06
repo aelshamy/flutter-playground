@@ -6,9 +6,9 @@ class IconRadio<T> extends StatefulWidget {
   ///
   /// [icon] and [value] must not be null.
   const IconRadio({
-    Key key,
-    @required this.icon,
-    @required this.value,
+    Key? key,
+    this.icon,
+    this.value,
     this.groupValue,
     this.color = const Color(0xFF58C140),
     this.label,
@@ -27,17 +27,17 @@ class IconRadio<T> extends StatefulWidget {
   final IconData icon;
 
   /// Optional text to display under the radio button.
-  final String label;
+  final String? label;
 
   /// Optional semantics-specific label, otherwise it will read [label].
-  final String semanticsLabel;
+  final String? semanticsLabel;
 
   /// The value of this radio button.
   final T value;
 
-  final T groupValue;
+  final T? groupValue;
 
-  final void Function(String value) onChange;
+  final void Function(String value)? onChange;
 
   @override
   _IconRadioState createState() => _IconRadioState();
@@ -45,7 +45,7 @@ class IconRadio<T> extends StatefulWidget {
 
 class _IconRadioState extends State<IconRadio>
     with SingleTickerProviderStateMixin {
-  AnimationController _animation;
+  late AnimationController _animation;
   bool selected = false;
 
   @override
@@ -75,7 +75,7 @@ class _IconRadioState extends State<IconRadio>
     }
     return GestureDetector(
       onTap: () {
-        widget.onChange(widget.value);
+        widget.onChange!(widget.value);
       },
       child: Column(
         children: <Widget>[
@@ -121,7 +121,7 @@ class _IconRadioState extends State<IconRadio>
                 excludeSemantics: true,
                 label: widget.semanticsLabel,
                 child: Text(
-                  widget.label,
+                  widget.label!,
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 14),
                 ),

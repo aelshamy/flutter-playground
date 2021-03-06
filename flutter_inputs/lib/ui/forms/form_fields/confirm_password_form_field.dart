@@ -4,9 +4,9 @@ import 'package:flutter_inputs/ui/forms/models/passwords.dart';
 
 class ConfirmPasswordFormField extends FormField<Passwords> {
   ConfirmPasswordFormField({
-    FormFieldSetter<Passwords> onSaved,
-    FormFieldValidator<Passwords> validator,
-    Passwords initialValue,
+    FormFieldSetter<Passwords>? onSaved,
+    FormFieldValidator<Passwords>? validator,
+    Passwords? initialValue,
     AutovalidateMode autovalidateMode = AutovalidateMode.disabled,
   }) : super(
           onSaved: onSaved,
@@ -20,7 +20,7 @@ class ConfirmPasswordFormField extends FormField<Passwords> {
                   obscureText: true,
                   decoration: InputDecoration(labelText: "Password"),
                   onChanged: (String value) {
-                    state.value.password = value;
+                    state.value!.password = value;
                     state.didChange(state.value);
                   },
                 ),
@@ -28,13 +28,13 @@ class ConfirmPasswordFormField extends FormField<Passwords> {
                   obscureText: true,
                   decoration: InputDecoration(labelText: "Confirm Password"),
                   onChanged: (String value) {
-                    state.value.confirmPassword = value;
+                    state.value!.confirmPassword = value;
                     state.didChange(state.value);
                   },
                 ),
                 if (state.hasError)
                   Text(
-                    state.errorText,
+                    state.errorText!,
                     style: TextStyle(color: Colors.red),
                   )
               ],

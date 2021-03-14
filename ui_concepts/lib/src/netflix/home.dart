@@ -63,7 +63,8 @@ class NetflixHome extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('Trending', style: TextStyle(fontWeight: FontWeight.w500)),
+                      Text('Trending',
+                          style: TextStyle(fontWeight: FontWeight.w500)),
                       Icon(Icons.arrow_forward)
                     ],
                   ),
@@ -94,7 +95,8 @@ class NetflixHome extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('Trailer', style: TextStyle(fontWeight: FontWeight.w500)),
+                      Text('Trailer',
+                          style: TextStyle(fontWeight: FontWeight.w500)),
                       Icon(Icons.arrow_forward)
                     ],
                   ),
@@ -113,7 +115,8 @@ class NetflixHome extends StatelessWidget {
                           color: Colors.grey.shade300,
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage(movies[movies.length - index - 1]),
+                            image:
+                                AssetImage(movies[movies.length - index - 1]),
                           ),
                         ),
                       );
@@ -131,6 +134,7 @@ class NetflixHome extends StatelessWidget {
   Carousel _getCarousel(BuildContext context) {
     return Carousel(
       height: 350,
+      initialPage: 0,
       type: 'slideswiper',
       showIndicator: false,
       arrowColor: Colors.transparent,
@@ -139,7 +143,8 @@ class NetflixHome extends StatelessWidget {
           .map((movie) => Center(
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => MoviePage()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MoviePage()));
                   },
                   child: Container(
                     decoration: BoxDecoration(

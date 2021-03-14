@@ -27,8 +27,13 @@ class _StackedItemListViewState extends State<StackedItemListView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+      ),
+      body: Container(
         child: Column(
           children: [
             AnimatedOpacity(
@@ -67,15 +72,20 @@ class _StackedItemListViewState extends State<StackedItemListView> {
                         alignment: Alignment.topCenter,
                         child: Container(
                           height: 150,
-                          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
                               color: Colors.white,
                               boxShadow: [
-                                BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
+                                BoxShadow(
+                                    color: Colors.black.withAlpha(100),
+                                    blurRadius: 10.0),
                               ]),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -85,11 +95,13 @@ class _StackedItemListViewState extends State<StackedItemListView> {
                                     Text(
                                       item["name"],
                                       style: const TextStyle(
-                                          fontSize: 28, fontWeight: FontWeight.bold),
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     Text(
                                       item["brand"],
-                                      style: const TextStyle(fontSize: 17, color: Colors.grey),
+                                      style: const TextStyle(
+                                          fontSize: 17, color: Colors.grey),
                                     ),
                                     SizedBox(
                                       height: 10,
@@ -141,7 +153,8 @@ class CategoriesScroller extends StatelessWidget {
               children: [
                 _getCategoryItem("Most\nFavorites", Colors.orange.shade400),
                 _getCategoryItem("Newest", Colors.blue.shade400),
-                _getCategoryItem("Super\nSaving", Colors.lightBlueAccent.shade400),
+                _getCategoryItem(
+                    "Super\nSaving", Colors.lightBlueAccent.shade400),
               ],
             ),
           ),

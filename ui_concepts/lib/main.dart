@@ -77,69 +77,61 @@ class HomePage extends StatelessWidget {
             builder: (context) {
               return CustomBottomSheet(
                 children: [
-                  ListTile(
+                  SwitchListTile.adaptive(
+                    value: true,
                     title: DefaultTextStyle(
                       child: Text(
                         'Total Task',
                       ),
                       style: theme.textTheme.headline6,
                     ),
-                    leading: Icon(
+                    secondary: Icon(
                       Icons.check_circle_outline,
                       color: theme.iconTheme.color,
                     ),
-                    trailing: Switch.adaptive(
-                      value: true,
-                      onChanged: (value) {},
-                    ),
+                    onChanged: (value) {},
                   ),
-                  ListTile(
+                  SwitchListTile.adaptive(
+                    value: false,
                     title: DefaultTextStyle(
                       child: Text(
                         'Due Soon',
                       ),
                       style: theme.textTheme.headline6,
                     ),
-                    leading: Icon(
+                    secondary: Icon(
                       Icons.inbox,
                       color: theme.iconTheme.color,
                     ),
-                    trailing: Switch.adaptive(
-                      value: false,
-                      onChanged: (value) {},
-                    ),
+                    onChanged: (value) {},
                   ),
-                  ListTile(
+                  SwitchListTile.adaptive(
+                    value: false,
                     title: DefaultTextStyle(
                       child: Text(
                         'Completed',
                       ),
                       style: theme.textTheme.headline6,
                     ),
-                    leading: Icon(
+                    secondary: Icon(
                       Icons.check_circle,
                       color: theme.iconTheme.color,
                     ),
-                    trailing: Switch.adaptive(
-                      value: false,
-                      onChanged: (value) {},
-                    ),
+                    onChanged: (value) {},
                   ),
-                  ListTile(
+                  SwitchListTile.adaptive(
+                    value: false,
                     title: DefaultTextStyle(
                       child: Text(
                         'Working On',
                       ),
                       style: theme.textTheme.headline6,
                     ),
-                    leading: Icon(
+                    secondary: Icon(
                       Icons.flag,
                       color: theme.iconTheme.color,
                     ),
-                    trailing: Switch.adaptive(
-                      value: false,
-                      onChanged: (value) {},
-                    ),
+                    onChanged: (value) {},
                   ),
                 ],
               );

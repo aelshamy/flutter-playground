@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ui_concepts/src/custom_bottom_sheet.dart';
 import 'package:ui_concepts/src/meditation.dart';
 import 'package:ui_concepts/src/netflix/home.dart';
 import 'package:ui_concepts/src/sidebar.dart';
 import 'package:ui_concepts/src/stacked_item_listview.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // SystemChrome.setEnabledSystemUIOverlays([]);
   runApp(UIConcepts());
 }
 
@@ -14,12 +13,8 @@ class UIConcepts extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('UI Concepts'),
-        ),
-        body: HomePage(),
-      ),
+      theme: ThemeData.light(),
+      home: HomePage(),
     );
   }
 }
@@ -31,6 +26,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final widgets = [
       ListTile(
         title: Text('Netflix'),
@@ -72,11 +68,95 @@ class HomePage extends StatelessWidget {
           );
         },
       ),
+      ListTile(
+        title: Text('Custom Bottom Sheet'),
+        onTap: () {
+          showModalBottomSheet<int>(
+            backgroundColor: Colors.transparent,
+            context: context,
+            builder: (context) {
+              return CustomBottomSheet(
+                children: [
+                  ListTile(
+                    title: DefaultTextStyle(
+                      child: Text(
+                        'Total Task',
+                      ),
+                      style: theme.textTheme.headline6,
+                    ),
+                    leading: Icon(
+                      Icons.check_circle_outline,
+                      color: theme.iconTheme.color,
+                    ),
+                    trailing: Switch.adaptive(
+                      value: true,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                  ListTile(
+                    title: DefaultTextStyle(
+                      child: Text(
+                        'Due Soon',
+                      ),
+                      style: theme.textTheme.headline6,
+                    ),
+                    leading: Icon(
+                      Icons.inbox,
+                      color: theme.iconTheme.color,
+                    ),
+                    trailing: Switch.adaptive(
+                      value: false,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                  ListTile(
+                    title: DefaultTextStyle(
+                      child: Text(
+                        'Completed',
+                      ),
+                      style: theme.textTheme.headline6,
+                    ),
+                    leading: Icon(
+                      Icons.check_circle,
+                      color: theme.iconTheme.color,
+                    ),
+                    trailing: Switch.adaptive(
+                      value: false,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                  ListTile(
+                    title: DefaultTextStyle(
+                      child: Text(
+                        'Working On',
+                      ),
+                      style: theme.textTheme.headline6,
+                    ),
+                    leading: Icon(
+                      Icons.flag,
+                      color: theme.iconTheme.color,
+                    ),
+                    trailing: Switch.adaptive(
+                      value: false,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
     ];
-    return ListView.separated(
-      itemCount: widgets.length,
-      separatorBuilder: (BuildContext context, int index) => Divider(),
-      itemBuilder: (BuildContext context, int index) => widgets[index],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('UI Concepts'),
+      ),
+      body: ListView.separated(
+        itemCount: widgets.length,
+        separatorBuilder: (BuildContext context, int index) => Divider(),
+        itemBuilder: (BuildContext context, int index) => widgets[index],
+      ),
     );
   }
 }

@@ -19,7 +19,8 @@ class MoviePage extends StatelessWidget {
                     width: MediaQuery.of(context).size.width - 60,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            fit: BoxFit.cover, image: AssetImage('assets/joker.jpg'))),
+                            fit: BoxFit.cover,
+                            image: AssetImage('assets/joker.jpg'))),
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height * 0.35,
@@ -28,22 +29,28 @@ class MoviePage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('Joker', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
+                        Text('Joker',
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.w500)),
                         Text('Horror . Action . Thriller',
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+                            style: TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.w500)),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 30),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Container(
-                                  padding: EdgeInsets.symmetric(vertical: 6, horizontal: 15),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 6, horizontal: 15),
                                   decoration: BoxDecoration(
                                       color: Colors.grey.shade300,
                                       borderRadius: BorderRadius.circular(15)),
                                   child: Text(
                                     '2014',
-                                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700),
                                   ),
                                 ),
                                 CircleAvatar(
@@ -51,13 +58,16 @@ class MoviePage extends StatelessWidget {
                                   backgroundColor: Colors.black87,
                                 ),
                                 Container(
-                                  padding: EdgeInsets.symmetric(vertical: 6, horizontal: 15),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 6, horizontal: 15),
                                   decoration: BoxDecoration(
                                       color: Colors.grey.shade300,
                                       borderRadius: BorderRadius.circular(15)),
                                   child: Text(
                                     '16+',
-                                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700),
                                   ),
                                 ),
                                 CircleAvatar(
@@ -65,13 +75,16 @@ class MoviePage extends StatelessWidget {
                                   backgroundColor: Colors.black87,
                                 ),
                                 Container(
-                                  padding: EdgeInsets.symmetric(vertical: 6, horizontal: 15),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 6, horizontal: 15),
                                   decoration: BoxDecoration(
                                       color: Colors.grey.shade300,
                                       borderRadius: BorderRadius.circular(15)),
                                   child: Text(
                                     '1h 47min',
-                                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700),
                                   ),
                                 ),
                               ]),
@@ -85,28 +98,37 @@ class MoviePage extends StatelessWidget {
                                 children: <Widget>[
                                   Icon(Icons.add, color: Colors.red),
                                   Text('My List',
-                                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500))
                                 ],
                               ),
                               Column(
                                 children: <Widget>[
-                                  Icon(Icons.favorite_border, color: Colors.red),
+                                  Icon(Icons.favorite_border,
+                                      color: Colors.red),
                                   Text('Rate',
-                                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500))
                                 ],
                               ),
                               Column(
                                 children: <Widget>[
                                   Icon(Icons.share, color: Colors.red),
                                   Text('Share',
-                                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500))
                                 ],
                               ),
                               Column(
                                 children: <Widget>[
                                   Icon(Icons.save_alt, color: Colors.red),
                                   Text('Download',
-                                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500))
                                 ],
                               ),
                             ],
@@ -120,7 +142,8 @@ class MoviePage extends StatelessWidget {
                         Row(
                           children: <Widget>[
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 15),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
                               child: Text(
                                 'MORE LIKE THIS',
                                 style: TextStyle(fontWeight: FontWeight.w800),
@@ -181,7 +204,7 @@ class MoviePage extends StatelessWidget {
 }
 
 _getGridViewItems(context) {
-  List<Widget> allWidgets = List<Widget>();
+  List<Widget> allWidgets = [];
 
   for (int i = 0; i < movies.length; i++) {
     var widget = _getGridItem(context, i);
@@ -195,6 +218,7 @@ _getGridItem(context, index) {
     margin: EdgeInsets.all(5),
     decoration: BoxDecoration(
         color: Colors.grey.withOpacity(0.3),
-        image: DecorationImage(fit: BoxFit.cover, image: AssetImage(movies[index]))),
+        image: DecorationImage(
+            fit: BoxFit.cover, image: AssetImage(movies[index]))),
   );
 }

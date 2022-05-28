@@ -23,9 +23,10 @@ class ChangeNotifierDemo extends StatelessWidget {
               'You have pushed the button this many times:',
             ),
             Consumer<Counter>(
-              builder: (BuildContext context, Counter counter, Widget child) => Text(
+              builder: (BuildContext context, Counter counter, Widget child) =>
+                  Text(
                 '${counter.value}',
-                style: Theme.of(context).textTheme.display1,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
           ],

@@ -4,7 +4,7 @@ class CustomBottomSheet extends StatelessWidget {
   final List<Widget> children;
 
   const CustomBottomSheet({
-    Key key,
+    Key? key,
     this.children = const [],
   }) : super(key: key);
 

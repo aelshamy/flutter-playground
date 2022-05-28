@@ -27,7 +27,8 @@ class TasksList extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: Icon(Icons.delete),
                   ),
-                  confirmDismiss: (direction) => _confirmDismiss(context, task.description),
+                  confirmDismiss: (direction) =>
+                      _confirmDismiss(context, task.description),
                   onDismissed: (direction) => _deleteTask(context, task),
                   child: ListTile(
                     leading: Checkbox(
@@ -46,7 +47,9 @@ class TasksList extends StatelessWidget {
                           ? TextStyle(
                               color: Theme.of(context).disabledColor,
                               decoration: TextDecoration.lineThrough)
-                          : TextStyle(color: Theme.of(context).textTheme.title.color),
+                          : TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.headline1.color),
                     ),
                     subtitle: task.dueDate == null
                         ? null
@@ -56,7 +59,11 @@ class TasksList extends StatelessWidget {
                                 ? TextStyle(
                                     color: Theme.of(context).disabledColor,
                                     decoration: TextDecoration.lineThrough)
-                                : TextStyle(color: Theme.of(context).textTheme.title.color),
+                                : TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline1
+                                        .color),
                           ),
                     onTap: () async {
                       Navigator.of(context).push(
@@ -94,7 +101,7 @@ class TasksList extends StatelessWidget {
 
   void _deleteTask(BuildContext context, Task task) async {
     BlocProvider.of<TasksBloc>(context).add(DeleteTask(taskId: task.id));
-    Scaffold.of(context).showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.red,
         duration: Duration(seconds: 2),
@@ -103,7 +110,8 @@ class TasksList extends StatelessWidget {
     );
   }
 
-  Future<bool> _confirmDismiss(BuildContext context, String taskDescription) async {
+  Future<bool> _confirmDismiss(
+      BuildContext context, String taskDescription) async {
     return await showDialog(
       context: context,
       barrierDismissible: false,
@@ -115,19 +123,21 @@ class TasksList extends StatelessWidget {
               style: TextStyle(color: Colors.black),
               children: <TextSpan>[
                 TextSpan(text: 'Are you sure you want to delete "'),
-                TextSpan(text: "$taskDescription", style: TextStyle(fontWeight: FontWeight.bold)),
+                TextSpan(
+                    text: "$taskDescription",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 TextSpan(text: '"?'),
               ],
             ),
           ),
           actions: [
-            FlatButton(
+            TextButton(
               child: Text("Cancel"),
               onPressed: () {
                 Navigator.of(inAlertContext).pop(false);
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text("Delete"),
               onPressed: () async {
                 Navigator.of(inAlertContext).pop(true);

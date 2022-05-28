@@ -21,9 +21,11 @@ class ValueNotifierDemo extends StatelessWidget {
               'You have pushed the button this many times:',
             ),
             Consumer<ValueNotifier<int>>(
-              builder: (BuildContext context, ValueNotifier<int> counter, Widget child) => Text(
+              builder: (BuildContext context, ValueNotifier<int> counter,
+                      Widget child) =>
+                  Text(
                 '${counter.value}',
-                style: Theme.of(context).textTheme.display1,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
           ],

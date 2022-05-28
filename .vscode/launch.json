@@ -1,0 +1,508 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "animated_floating_action_menu",
+            "cwd": "animated_floating_action_menu",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "animated_floating_action_menu (profile mode)",
+            "cwd": "animated_floating_action_menu",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "animated_floating_action_menu (release mode)",
+            "cwd": "animated_floating_action_menu",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "bmi_calculator",
+            "cwd": "bmi_calculator",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "bmi_calculator (profile mode)",
+            "cwd": "bmi_calculator",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "bmi_calculator (release mode)",
+            "cwd": "bmi_calculator",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "draggable_scrollable_sheet",
+            "cwd": "draggable_scrollable_sheet",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "draggable_scrollable_sheet (profile mode)",
+            "cwd": "draggable_scrollable_sheet",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "draggable_scrollable_sheet (release mode)",
+            "cwd": "draggable_scrollable_sheet",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "dynamic_theme",
+            "cwd": "dynamic_theme",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "dynamic_theme (profile mode)",
+            "cwd": "dynamic_theme",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "dynamic_theme (release mode)",
+            "cwd": "dynamic_theme",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "e-commerce",
+            "cwd": "e-commerce",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "e-commerce (profile mode)",
+            "cwd": "e-commerce",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "e-commerce (release mode)",
+            "cwd": "e-commerce",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flavors",
+            "cwd": "flavors",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flavors (profile mode)",
+            "cwd": "flavors",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flavors (release mode)",
+            "cwd": "flavors",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flutter_bloc",
+            "cwd": "flutter_bloc",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter_bloc (profile mode)",
+            "cwd": "flutter_bloc",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter_bloc (release mode)",
+            "cwd": "flutter_bloc",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flutter_book",
+            "cwd": "flutter_book",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter_book (profile mode)",
+            "cwd": "flutter_book",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter_book (release mode)",
+            "cwd": "flutter_book",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flutter_dnd",
+            "cwd": "flutter_dnd",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter_dnd (profile mode)",
+            "cwd": "flutter_dnd",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter_dnd (release mode)",
+            "cwd": "flutter_dnd",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flutter_inputs",
+            "cwd": "flutter_inputs",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter_inputs (profile mode)",
+            "cwd": "flutter_inputs",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter_inputs (release mode)",
+            "cwd": "flutter_inputs",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flutter_provider",
+            "cwd": "flutter_provider",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter_provider (profile mode)",
+            "cwd": "flutter_provider",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter_provider (release mode)",
+            "cwd": "flutter_provider",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "hacker_news",
+            "cwd": "hacker_news",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "hacker_news (profile mode)",
+            "cwd": "hacker_news",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "hacker_news (release mode)",
+            "cwd": "hacker_news",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "handle_error",
+            "cwd": "handle_error",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "handle_error (profile mode)",
+            "cwd": "handle_error",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "handle_error (release mode)",
+            "cwd": "handle_error",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "local_keys",
+            "cwd": "local_keys",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "local_keys (profile mode)",
+            "cwd": "local_keys",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "local_keys (release mode)",
+            "cwd": "local_keys",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "persisting_data",
+            "cwd": "persisting_data",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "persisting_data (profile mode)",
+            "cwd": "persisting_data",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "persisting_data (release mode)",
+            "cwd": "persisting_data",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "platform_widgets",
+            "cwd": "platform_widgets",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "platform_widgets (profile mode)",
+            "cwd": "platform_widgets",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "platform_widgets (release mode)",
+            "cwd": "platform_widgets",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "scroll_animations",
+            "cwd": "scroll_animations",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "scroll_animations (profile mode)",
+            "cwd": "scroll_animations",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "scroll_animations (release mode)",
+            "cwd": "scroll_animations",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "shapes",
+            "cwd": "shapes",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "shapes (profile mode)",
+            "cwd": "shapes",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "shapes (release mode)",
+            "cwd": "shapes",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "socialmedia",
+            "cwd": "socialmedia",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "socialmedia (profile mode)",
+            "cwd": "socialmedia",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "socialmedia (release mode)",
+            "cwd": "socialmedia",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "staggered_animation",
+            "cwd": "staggered_animation",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "staggered_animation (profile mode)",
+            "cwd": "staggered_animation",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "staggered_animation (release mode)",
+            "cwd": "staggered_animation",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "stepper_component",
+            "cwd": "stepper_component",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "stepper_component (profile mode)",
+            "cwd": "stepper_component",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "stepper_component (release mode)",
+            "cwd": "stepper_component",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "test_super_enum",
+            "cwd": "test_super_enum",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "test_super_enum (profile mode)",
+            "cwd": "test_super_enum",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "test_super_enum (release mode)",
+            "cwd": "test_super_enum",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "toogle_buttons",
+            "cwd": "toogle_buttons",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "toogle_buttons (profile mode)",
+            "cwd": "toogle_buttons",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "toogle_buttons (release mode)",
+            "cwd": "toogle_buttons",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "ui_concepts",
+            "cwd": "ui_concepts",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "ui_concepts (profile mode)",
+            "cwd": "ui_concepts",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "ui_concepts (release mode)",
+            "cwd": "ui_concepts",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "zoom_slider",
+            "cwd": "zoom_slider",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "zoom_slider (profile mode)",
+            "cwd": "zoom_slider",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "zoom_slider (release mode)",
+            "cwd": "zoom_slider",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

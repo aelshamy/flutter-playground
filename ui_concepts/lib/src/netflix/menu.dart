@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
-  const Menu({Key key}) : super(key: key);
+  const Menu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +26,14 @@ class Menu extends StatelessWidget {
     );
   }
 
-  Container _menuItem({bool active = false, IconData icon}) {
+  Container _menuItem({bool active = false, required IconData icon}) {
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        border: Border(right: BorderSide(color: active ? Colors.red : Colors.black, width: 3)),
+        border: Border(
+            right: BorderSide(
+                color: active ? Colors.red : Colors.black, width: 3)),
       ),
       child: Icon(
         icon,

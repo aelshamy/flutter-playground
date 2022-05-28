@@ -12,14 +12,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 enum Gender { male, female }
 
 class InputPage extends StatefulWidget {
-  InputPage({Key key}) : super(key: key);
+  InputPage({Key? key}) : super(key: key);
 
   @override
   _InputPageState createState() => _InputPageState();
 }
 
 class _InputPageState extends State<InputPage> {
-  Gender selectedGender;
+  Gender selectedGender = Gender.male;
   int height = 180;
   int weight = 60;
   int initialAge = 19;

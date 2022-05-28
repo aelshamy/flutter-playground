@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class StackedItemListView extends StatefulWidget {
-  StackedItemListView({Key key}) : super(key: key);
+  StackedItemListView({Key? key}) : super(key: key);
 
   @override
   _StackedItemListViewState createState() => _StackedItemListViewState();
@@ -135,7 +135,7 @@ class _StackedItemListViewState extends State<StackedItemListView> {
 }
 
 class CategoriesScroller extends StatelessWidget {
-  const CategoriesScroller({Key key}) : super(key: key);
+  const CategoriesScroller({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +196,7 @@ class CategoriesScroller extends StatelessWidget {
   }
 }
 
-const FOOD_DATA = [
+const FOOD_DATA = <Map<String, dynamic>>[
   {
     "name": "Burger",
     "brand": "Hawkers",

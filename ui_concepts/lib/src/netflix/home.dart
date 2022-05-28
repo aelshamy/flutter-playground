@@ -23,7 +23,7 @@ final List<String> movies = const [
 ];
 
 class NetflixHome extends StatelessWidget {
-  const NetflixHome({Key key}) : super(key: key);
+  const NetflixHome({Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
     return Scaffold(

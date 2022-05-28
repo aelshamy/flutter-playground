@@ -5,7 +5,7 @@ const mainColor = Color(0xFF262AAA);
 // const mainColor = Colors.black87;
 
 class SideBar extends StatefulWidget {
-  const SideBar({Key key}) : super(key: key);
+  const SideBar({Key? key}) : super(key: key);
 
   @override
   _SideBarState createState() => _SideBarState();
@@ -13,9 +13,9 @@ class SideBar extends StatefulWidget {
 
 class _SideBarState extends State<SideBar>
     with SingleTickerProviderStateMixin<SideBar> {
-  bool _isSidebarOpened;
+  late bool _isSidebarOpened;
   final Duration _animationDuration = const Duration(milliseconds: 500);
-  AnimationController _controller;
+  late final AnimationController _controller;
 
   @override
   void initState() {
@@ -159,7 +159,8 @@ class MenuItem extends StatelessWidget {
   final IconData icon;
   final String title;
 
-  const MenuItem({Key key, this.icon, this.title}) : super(key: key);
+  const MenuItem({Key? key, required this.icon, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

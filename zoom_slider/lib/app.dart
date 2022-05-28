@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:zoom_slider/config.dart';
+
+import 'package:flutter/material.dart';
 import 'package:zoom_slider/circle_image_container.dart';
+import 'package:zoom_slider/config.dart';
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -29,7 +30,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   double viewPortFraction = 0.5;
 
-  PageController pageController;
+  late final PageController pageController;
 
   int currentPage = 2;
   double page = 2.0;
@@ -43,7 +44,8 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   void initState() {
-    pageController = PageController(initialPage: currentPage, viewportFraction: viewPortFraction);
+    pageController = PageController(
+        initialPage: currentPage, viewportFraction: viewPortFraction);
     super.initState();
   }
 
@@ -62,9 +64,11 @@ class _MyHomePageState extends State<MyHomePage> {
               onNotification: (ScrollNotification notification) {
                 if (notification is ScrollUpdateNotification) {
                   setState(() {
-                    page = pageController.page;
+                    page = pageController.page!;
                   });
+                  return true;
                 }
+                return false;
               },
               child: PageView.builder(
                 onPageChanged: (pos) {
@@ -76,8 +80,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 controller: pageController,
                 itemCount: listOfItems.length,
                 itemBuilder: (context, index) {
-                  final scale = max(SCALE_FRACTION, (FULL_SCALE - (index - page).abs()) + viewPortFraction);
-                  return CircleImageContainer(image: listOfItems[index]['image'], scale: scale);
+                  final scale = max(SCALE_FRACTION,
+                      (FULL_SCALE - (index - page).abs()) + viewPortFraction);
+                  return CircleImageContainer(
+                    image: listOfItems[index]['image']!,
+                    scale: scale,
+                  );
                 },
               ),
             ),
@@ -85,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Text(
-              listOfItems[currentPage]['name'],
+              listOfItems[currentPage]['name']!,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20),
             ),

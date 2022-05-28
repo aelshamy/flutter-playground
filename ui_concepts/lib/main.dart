@@ -21,7 +21,7 @@ class UIConcepts extends StatelessWidget {
 
 class HomePage extends StatelessWidget {
   const HomePage({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -83,7 +83,7 @@ class HomePage extends StatelessWidget {
                       child: Text(
                         'Total Task',
                       ),
-                      style: theme.textTheme.headline6,
+                      style: theme.textTheme.headline6!,
                     ),
                     secondary: Icon(
                       Icons.check_circle_outline,
@@ -97,7 +97,7 @@ class HomePage extends StatelessWidget {
                       child: Text(
                         'Due Soon',
                       ),
-                      style: theme.textTheme.headline6,
+                      style: theme.textTheme.headline6!,
                     ),
                     secondary: Icon(
                       Icons.inbox,
@@ -111,7 +111,7 @@ class HomePage extends StatelessWidget {
                       child: Text(
                         'Completed',
                       ),
-                      style: theme.textTheme.headline6,
+                      style: theme.textTheme.headline6!,
                     ),
                     secondary: Icon(
                       Icons.check_circle,
@@ -125,7 +125,7 @@ class HomePage extends StatelessWidget {
                       child: Text(
                         'Working On',
                       ),
-                      style: theme.textTheme.headline6,
+                      style: theme.textTheme.headline6!,
                     ),
                     secondary: Icon(
                       Icons.flag,

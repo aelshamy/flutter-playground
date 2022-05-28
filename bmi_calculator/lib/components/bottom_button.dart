@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 class BottomButton extends StatelessWidget {
   final String text;
-  final Function onPress;
+  final VoidCallback onPress;
 
   const BottomButton({
-    @required this.text,
-    @required this.onPress,
+    required this.text,
+    required this.onPress,
   });
 
   @override

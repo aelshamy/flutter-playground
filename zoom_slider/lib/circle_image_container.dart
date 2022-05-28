@@ -5,7 +5,8 @@ class CircleImageContainer extends StatelessWidget {
   final String image;
   final double scale;
 
-  CircleImageContainer({Key key, this.image, this.scale}) : super(key: key);
+  CircleImageContainer({Key? key, required this.image, required this.scale})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,8 @@ class CircleImageContainer extends StatelessWidget {
         child: Card(
           elevation: 4,
           clipBehavior: Clip.antiAlias,
-          shape: CircleBorder(side: BorderSide(color: Colors.grey.shade200, width: 5)),
+          shape: CircleBorder(
+              side: BorderSide(color: Colors.grey.shade200, width: 5)),
           child: Image.asset(
             image,
             fit: BoxFit.cover,

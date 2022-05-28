@@ -74,9 +74,9 @@ class Section extends StatelessWidget {
   final ImageProvider img;
 
   const Section({
-    this.headline,
-    this.description,
-    this.img,
+    required this.headline,
+    required this.description,
+    required this.img,
   });
   @override
   Widget build(BuildContext context) {

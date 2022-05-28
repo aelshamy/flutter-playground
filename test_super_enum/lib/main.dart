@@ -18,16 +18,31 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  final StreamController<WeatherState> _resultController =
-      StreamController<WeatherState>();
+class MyHomePage extends StatefulWidget {
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  late final StreamController<WeatherState> _resultController;
+
+  @override
+  void initState() {
+    super.initState();
+    _resultController = StreamController<WeatherState>();
+  }
+
+  @override
+  void dispose() {
+    _resultController.close();
+  }
 
   @override
   Widget build(BuildContext context) {
     _resultController.add(WeatherState.initial());
     return Scaffold(
       appBar: AppBar(
-        title: Text("Supper Enum"),
+        title: const Text("Supper Enum"),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -38,12 +53,12 @@ class MyHomePage extends StatelessWidget {
               if (snapshot.hasData) {
                 return snapshot.data!.when(
                   error: (e) => Text(e.message),
-                  initial: (_) => Text('State just initialized'),
+                  initial: () => const Text('State just initialized'),
                   loaded: (data) => Text(data.weather.toString()),
-                  loading: (_) => CircularProgressIndicator(),
+                  loading: () => const CircularProgressIndicator(),
                 );
               }
-              return CircularProgressIndicator.adaptive();
+              return const CircularProgressIndicator.adaptive();
             },
           ),
           ButtonBar(
@@ -53,21 +68,21 @@ class MyHomePage extends StatelessWidget {
                 onPressed: () {
                   _resultController.add(WeatherState.loading());
                 },
-                child: Text('Add loading to state'),
+                child: const Text('Add loading to state'),
               ),
               ElevatedButton(
                 onPressed: () {
                   _resultController
                       .add(WeatherState.loaded(weather: Weather()));
                 },
-                child: Text('load data to state'),
+                child: const Text('load data to state'),
               ),
               ElevatedButton(
                 onPressed: () {
                   _resultController
                       .add(WeatherState.error(message: "an error occurred"));
                 },
-                child: Text('Add error to state'),
+                child: const Text('Add error to state'),
               )
             ],
           )

@@ -1,6 +1,6 @@
 import 'package:super_enum/super_enum.dart';
 
-part "weather_state.g.dart";
+part "weather_state.super.dart";
 
 @superEnum
 enum _WeatherState {

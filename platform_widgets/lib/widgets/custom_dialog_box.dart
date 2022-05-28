@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:platform_widgets/widgets/constants.dart';
 
@@ -11,11 +8,11 @@ class CustomDialogBox extends StatefulWidget {
   final Image img;
 
   const CustomDialogBox({
-    Key key,
-    this.title,
-    this.descriptions,
-    this.text,
-    this.img,
+    Key? key,
+    required this.title,
+    required this.descriptions,
+    required this.text,
+    required this.img,
   }) : super(key: key);
 
   @override

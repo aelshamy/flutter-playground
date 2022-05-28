@@ -36,14 +36,14 @@ class HomePage extends StatelessWidget {
 class StepperComponent extends StatefulWidget {
   final Function(int value) onValueChanged;
 
-  StepperComponent({Key key, this.onValueChanged}) : super(key: key);
+  StepperComponent({Key? key, required this.onValueChanged}) : super(key: key);
 
   @override
   _StepperComponentState createState() => _StepperComponentState();
 }
 
 class _StepperComponentState extends State<StepperComponent> {
-  TextEditingController _controller;
+  late final TextEditingController _controller;
   int _value = 0;
 
   void initState() {
@@ -86,7 +86,7 @@ class _StepperComponentState extends State<StepperComponent> {
             child: TextField(
               textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
-              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               controller: _controller,
             ),
           ),

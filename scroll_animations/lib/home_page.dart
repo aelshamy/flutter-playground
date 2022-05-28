@@ -5,7 +5,7 @@ import 'item.dart';
 import 'item_card.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -16,7 +16,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   ScrollController _controller = new ScrollController();
 
-  List<ListCard> get _cards => items.map((Item _item) => ListCard(_item)).toList();
+  List<ListCard> get _cards =>
+      items.map((Item _item) => ListCard(_item)).toList();
 
   @override
   Widget build(BuildContext context) {

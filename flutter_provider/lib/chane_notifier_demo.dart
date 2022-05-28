@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'counter.dart';
 
 class ChangeNotifierDemo extends StatelessWidget {
-  ChangeNotifierDemo({Key key, this.title}) : super(key: key);
+  ChangeNotifierDemo({Key? key, required this.title}) : super(key: key);
 
   final String title;
 

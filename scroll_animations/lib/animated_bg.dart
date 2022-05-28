@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 class AnimatedBackground extends StatefulWidget {
-  AnimatedBackground({Key key, this.controller}) : super(key: key);
+  AnimatedBackground({Key? key, required this.controller}) : super(key: key);
 
   final ScrollController controller;
 
@@ -18,7 +18,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground> {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: widget.controller,
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return OverflowBox(
           maxWidth: double.infinity,
           alignment: Alignment(4, 3),

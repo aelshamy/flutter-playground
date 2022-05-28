@@ -1,17 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:platform_widgets/widgets/platform_widget.dart';
 
 class PlatformToggleTile extends PlatformWidget {
   PlatformToggleTile({
-    this.title,
-    this.onChanged,
-    this.value,
+    required this.title,
+    required this.onChanged,
+    required this.value,
   });
 
   final Widget title;
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool?> onChanged;
   final bool value;
 
   @override

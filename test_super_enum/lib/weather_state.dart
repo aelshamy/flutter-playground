@@ -5,12 +5,12 @@ part "weather_state.g.dart";
 @superEnum
 enum _WeatherState {
   @object
-  Intial,
+  Initial,
   @object
   Loading,
-  @Data(fields: [DataField('weather', Weather)])
+  @Data(fields: [DataField<Weather>('weather')])
   Loaded,
-  @Data(fields: [DataField('message', String)])
+  @Data(fields: [DataField<String>('message')])
   Error,
 }
 

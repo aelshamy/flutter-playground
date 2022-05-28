@@ -7,7 +7,7 @@ class _ClipShadowPainter extends CustomPainter {
   /// A list of shadows cast by this box behind the box.
   final List<BoxShadow> clipShadow;
 
-  _ClipShadowPainter({@required this.clipper, @required this.clipShadow});
+  _ClipShadowPainter({required this.clipper, required this.clipShadow});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -38,8 +38,11 @@ class ClipShadow extends StatelessWidget {
   /// The [Widget] below this widget in the tree.
   final Widget child;
 
-  ClipShadow(
-      {@required this.boxShadow, @required this.clipper, @required this.child});
+  ClipShadow({
+    required this.boxShadow,
+    required this.clipper,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {

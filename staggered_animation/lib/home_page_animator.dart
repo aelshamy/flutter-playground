@@ -6,8 +6,9 @@ class HomePageAnimator extends StatefulWidget {
   _HomePageAnimatorState createState() => _HomePageAnimatorState();
 }
 
-class _HomePageAnimatorState extends State<HomePageAnimator> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+class _HomePageAnimatorState extends State<HomePageAnimator>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
 
   @override
   void initState() {

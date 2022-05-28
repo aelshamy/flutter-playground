@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class MyHomePage extends StatelessWidget {
                     clipper: WaveClipper(),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.orange[700],
+                        color: Colors.orange.shade700,
                         offset: Offset(0, 0),
                       ),
                       BoxShadow(

@@ -19,11 +19,12 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  final StreamController<WeatherState> _resultController = StreamController<WeatherState>();
+  final StreamController<WeatherState> _resultController =
+      StreamController<WeatherState>();
 
   @override
   Widget build(BuildContext context) {
-    _resultController.add(WeatherState.intial());
+    _resultController.add(WeatherState.initial());
     return Scaffold(
       appBar: AppBar(
         title: Text("Supper Enum"),
@@ -34,32 +35,37 @@ class MyHomePage extends StatelessWidget {
           StreamBuilder<WeatherState>(
             stream: _resultController.stream,
             builder: (context, snapshot) {
-              return snapshot.data.when(
-                error: (e) => Text(e.message),
-                intial: (_) => Text('State just initialized'),
-                loaded: (data) => Text(data.weather.toString()),
-                loading: (_) => CircularProgressIndicator(),
-              );
+              if (snapshot.hasData) {
+                return snapshot.data!.when(
+                  error: (e) => Text(e.message),
+                  initial: (_) => Text('State just initialized'),
+                  loaded: (data) => Text(data.weather.toString()),
+                  loading: (_) => CircularProgressIndicator(),
+                );
+              }
+              return CircularProgressIndicator.adaptive();
             },
           ),
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <Widget>[
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   _resultController.add(WeatherState.loading());
                 },
                 child: Text('Add loading to state'),
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
-                  _resultController.add(WeatherState.loaded(weather: Weather()));
+                  _resultController
+                      .add(WeatherState.loaded(weather: Weather()));
                 },
                 child: Text('load data to state'),
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
-                  _resultController.add(WeatherState.error(message: "an error occured"));
+                  _resultController
+                      .add(WeatherState.error(message: "an error occurred"));
                 },
                 child: Text('Add error to state'),
               )

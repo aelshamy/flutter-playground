@@ -7,13 +7,11 @@ import 'package:platform_widgets/widgets/platform_widget.dart';
 
 class PlatformAlertDialog extends PlatformWidget {
   PlatformAlertDialog({
-    @required this.title,
-    @required this.content,
-    this.cancelText,
-    @required this.confirmText,
-  })  : assert(title != null),
-        assert(content != null),
-        assert(confirmText != null);
+    required this.title,
+    required this.content,
+    this.cancelText = '',
+    required this.confirmText,
+  });
 
   final Widget title;
   final Widget content;
@@ -27,7 +25,7 @@ class PlatformAlertDialog extends PlatformWidget {
       content: content,
       actions: _actions(
         context,
-        cancelText?.toUpperCase(),
+        cancelText.toUpperCase(),
         confirmText.toUpperCase(),
       ),
     );
@@ -45,14 +43,12 @@ class PlatformAlertDialog extends PlatformWidget {
   List<Widget> _actions(
       BuildContext context, String cancelText, String confirmText) {
     var actions = <Widget>[];
-    if (cancelText != null) {
-      actions.add(
-        PlatformAlertDialogAction(
-          child: Text(cancelText),
-          onPressed: () => _dismiss(context, false),
-        ),
-      );
-    }
+    actions.add(
+      PlatformAlertDialogAction(
+        child: Text(cancelText),
+        onPressed: () => _dismiss(context, false),
+      ),
+    );
     actions.add(
       PlatformAlertDialogAction(
         child: Text(confirmText),
@@ -77,7 +73,7 @@ class PlatformAlertDialog extends PlatformWidget {
 }
 
 class PlatformAlertDialogAction extends PlatformWidget {
-  PlatformAlertDialogAction({this.child, this.onPressed});
+  PlatformAlertDialogAction({required this.child, required this.onPressed});
   final Widget child;
   final VoidCallback onPressed;
 

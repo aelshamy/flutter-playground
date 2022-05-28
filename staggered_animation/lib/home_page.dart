@@ -3,8 +3,8 @@ import 'package:staggered_animation/home_page_enter_animation.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({
-    Key key,
-    @required AnimationController controller,
+    Key? key,
+    required AnimationController controller,
   })  : animation = HomePageEnterAnimation(controller),
         super(key: key);
 
@@ -16,18 +16,19 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: AnimatedBuilder(
         animation: animation.controller,
-        builder: (BuildContext context, Widget child) => _buildAnimation(context, child, size),
+        builder: (BuildContext context, Widget? child) =>
+            _buildAnimation(context, child, size),
       ),
     );
   }
 
-  Widget _buildAnimation(BuildContext context, Widget child, Size size) {
+  Widget _buildAnimation(BuildContext context, Widget? child, Size size) {
     return Column(
       children: <Widget>[
         SizedBox(
           height: 250,
           child: Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
             children: <Widget>[
               _topBar(animation.barHight.value),
               _circle(size, animation.avatarSize.value),

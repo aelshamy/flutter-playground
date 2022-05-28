@@ -32,7 +32,7 @@ class Upload extends StatelessWidget {
         Icon(
           Icons.add_a_photo,
           size: 150,
-          color: Theme.of(context).accentColor.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
         ),
         // SvgPicture.asset(
         //   'assets/images/upload.svg',
@@ -46,7 +46,7 @@ class Upload extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.secondary,
           onPressed: () {
             _showSelectImageDialog(context);
           },
@@ -61,13 +61,14 @@ class Upload extends StatelessWidget {
 
   Widget _buildUploadForm(BuildContext context, File image) {
     final UploadBloc uploadBloc = BlocProvider.of<UploadBloc>(context);
-    final User user = (BlocProvider.of<UserBloc>(context).state as UserAuthenticated).user;
+    final User user =
+        (BlocProvider.of<UserBloc>(context).state as UserAuthenticated).user;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white70,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,
           ),
@@ -91,7 +92,7 @@ class Upload extends StatelessWidget {
                 ),
               );
             },
-            child: Text(
+            child: const Text(
               "Post",
               style: TextStyle(
                 color: Colors.blueAccent,
@@ -137,7 +138,7 @@ class Upload extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.pin_drop,
               color: Colors.orange,
               size: 35,
@@ -167,7 +168,7 @@ class Upload extends StatelessWidget {
               ),
               color: Colors.blue,
               onPressed: getUserLocation,
-              icon: Icon(
+              icon: const Icon(
                 Icons.my_location,
                 color: Colors.white,
               ),
@@ -211,10 +212,10 @@ class Upload extends StatelessWidget {
   }
 
   Future<void> getUserLocation() async {
-    final Position position =
-        await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    final List<Placemark> placemarks =
-        await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
+    final Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    final List<Placemark> placemarks = await Geolocator()
+        .placemarkFromCoordinates(position.latitude, position.longitude);
     final placemark = placemarks[0];
 
     final formatedAddress = '${placemark.locality}, ${placemark.country}';

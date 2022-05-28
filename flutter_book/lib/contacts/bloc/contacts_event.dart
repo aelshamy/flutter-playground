@@ -12,7 +12,7 @@ class LoadContacts extends ContactsEvent {
 class DeleteContact extends ContactsEvent {
   final int contactId;
 
-  DeleteContact({this.contactId});
+  const DeleteContact({required this.contactId});
 
   @override
   List<Object> get props => [contactId];
@@ -21,7 +21,7 @@ class DeleteContact extends ContactsEvent {
 class AddContact extends ContactsEvent {
   final Contact contact;
 
-  AddContact({this.contact});
+  const AddContact({required this.contact});
 
   @override
   List<Object> get props => [contact];
@@ -30,7 +30,7 @@ class AddContact extends ContactsEvent {
 class UpdateContact extends ContactsEvent {
   final Contact contact;
 
-  UpdateContact({this.contact});
+  const UpdateContact({required this.contact});
 
   @override
   List<Object> get props => [contact];

@@ -10,14 +10,17 @@ import 'package:flutter_book/tasks/bloc/tasks_bloc.dart';
 import 'package:flutter_book/tasks/ui/tasks_list.dart';
 
 class FlutterBook extends StatelessWidget {
-  Widget build(BuildContext inContext) {
+  const FlutterBook({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
         length: 4,
         child: Scaffold(
           appBar: AppBar(
-            title: Text("FlutterBook"),
-            bottom: TabBar(
+            title: const Text("FlutterBook"),
+            bottom: const TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.date_range), text: "Appointments"),
                 Tab(icon: Icon(Icons.contacts), text: "Contacts"),
@@ -29,20 +32,21 @@ class FlutterBook extends StatelessWidget {
           body: TabBarView(
             children: [
               BlocProvider<AppointmentsBloc>(
-                create: (context) => AppointmentsBloc()..add(LoadAppointments()),
-                child: AppointmentsList(),
+                create: (context) =>
+                    AppointmentsBloc()..add(LoadAppointments()),
+                child: const AppointmentsList(),
               ),
               BlocProvider<ContactsBloc>(
                 create: (context) => ContactsBloc()..add(LoadContacts()),
-                child: ContactsList(),
+                child: const ContactsList(),
               ),
               BlocProvider<NotesBloc>(
                 create: (context) => NotesBloc()..add(LoadNotes()),
-                child: NotesList(),
+                child: const NotesList(),
               ),
               BlocProvider<TasksBloc>(
                 create: (context) => TasksBloc()..add(LoadTasks()),
-                child: TasksList(),
+                child: const TasksList(),
               ),
               // Tasks(),
             ],

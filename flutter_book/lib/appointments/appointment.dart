@@ -7,12 +7,12 @@ class Appointment extends Equatable {
   final String appointmentDate;
   final String appointmentTime;
 
-  Appointment({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.appointmentDate,
-    required this.appointmentTime,
+  const Appointment({
+    this.id = 0,
+    this.title = "",
+    this.description = "",
+    this.appointmentDate = "",
+    this.appointmentTime = "",
   });
 
   factory Appointment.fromMap(Map inMap) => Appointment(

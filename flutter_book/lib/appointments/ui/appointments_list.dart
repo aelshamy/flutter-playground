@@ -17,29 +17,29 @@ class AppointmentsList extends StatelessWidget {
       body: BlocBuilder<AppointmentsBloc, AppointmentsState>(
         builder: (context, state) {
           if (state is AppointmentsLoaded) {
-            EventList<Event> _markedDateMap = EventList();
-            state.appointments.forEach((appointment) {
+            EventList<Event> markedDateMap = EventList(events: {});
+            for (var appointment in state.appointments) {
               final appDate =
                   DateFormat.yMMMMd("en_US").parse(appointment.appointmentDate);
-              _markedDateMap.add(
+              markedDateMap.add(
                 appDate,
                 Event(
                   date: appDate,
                   icon: Container(
-                    decoration: BoxDecoration(color: Colors.blue),
+                    decoration: const BoxDecoration(color: Colors.blue),
                   ),
                 ),
               );
-            });
+            }
             return Column(
               children: <Widget>[
                 Expanded(
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     child: CalendarCarousel<Event>(
                       thisMonthDayBorderColor: Colors.grey,
                       daysHaveCircularBorder: false,
-                      markedDatesMap: _markedDateMap,
+                      markedDatesMap: markedDateMap,
                       onDayPressed: (DateTime inDate, List<Event> inEvents) {
                         _showAppointments(context, inDate, state.appointments);
                       },
@@ -49,17 +49,17 @@ class AppointmentsList extends StatelessWidget {
               ],
             );
           }
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add, color: Colors.white),
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => BlocProvider.value(
                 value: BlocProvider.of<AppointmentsBloc>(context),
-                child: AppointmentItem(appointment: Appointment()),
+                child: const AppointmentItem(appointment: Appointment()),
               ),
             ),
           );
@@ -85,16 +85,16 @@ class AppointmentsList extends StatelessWidget {
                     fontSize: 24),
               ),
             ),
-            Divider(),
+            const Divider(),
             Expanded(
               child: ListView.separated(
-                padding: EdgeInsets.only(bottom: 15),
+                padding: const EdgeInsets.only(bottom: 15),
                 itemCount: appointments.length,
                 itemBuilder: (BuildContext inBuildContext, int inIndex) {
                   Appointment appointment = appointments[inIndex];
                   if (appointment.appointmentDate !=
                       DateFormat.yMMMMd("en_US").format(inDate.toLocal())) {
-                    return SizedBox();
+                    return const SizedBox();
                   }
 
                   return Dismissible(
@@ -102,9 +102,9 @@ class AppointmentsList extends StatelessWidget {
                     direction: DismissDirection.endToStart,
                     background: Container(
                       color: Colors.red,
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       alignment: Alignment.centerRight,
-                      child: Icon(Icons.delete),
+                      child: const Icon(Icons.delete),
                     ),
                     confirmDismiss: (direction) =>
                         _confirmDismiss(inContext, appointment.description),
@@ -114,17 +114,17 @@ class AppointmentsList extends StatelessWidget {
                       // trailing: Text("${appointment.appointmentTime}"),
                       title: RichText(
                         text: TextSpan(
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                           children: [
                             TextSpan(
                               text: StringUtils.capitalize(
                                   "${appointment.title}\n"),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                             TextSpan(
                               text: "${appointment.appointmentTime}\n",
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.black54,
                                   fontSize: 14,
                                   height: 2),
@@ -132,7 +132,7 @@ class AppointmentsList extends StatelessWidget {
                           ],
                         ),
                       ),
-                      subtitle: Text("${appointment.description}"),
+                      subtitle: Text(appointment.description),
                       onTap: () async {
                         Navigator.of(inContext).push(
                           MaterialPageRoute(
@@ -148,7 +148,7 @@ class AppointmentsList extends StatelessWidget {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) =>
-                    Divider(),
+                    const Divider(),
               ),
             ),
           ],
@@ -160,8 +160,8 @@ class AppointmentsList extends StatelessWidget {
   void _deleteAppointment(BuildContext context, Appointment appointment) async {
     BlocProvider.of<AppointmentsBloc>(context)
         .add(DeleteAppointment(appointmentId: appointment.id));
-    Scaffold.of(context).showSnackBar(
-      SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
         backgroundColor: Colors.red,
         duration: Duration(seconds: 2),
         content: Text("Task deleted"),
@@ -176,28 +176,28 @@ class AppointmentsList extends StatelessWidget {
       barrierDismissible: false,
       builder: (BuildContext inAlertContext) {
         return AlertDialog(
-          title: Text("Delete Task"),
+          title: const Text("Delete Task"),
           content: RichText(
             text: TextSpan(
-              style: TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black),
               children: <TextSpan>[
-                TextSpan(text: 'Are you sure you want to delete "'),
+                const TextSpan(text: 'Are you sure you want to delete "'),
                 TextSpan(
-                    text: "$appointmentDescription",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: '"?'),
+                    text: appointmentDescription,
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                const TextSpan(text: '"?'),
               ],
             ),
           ),
           actions: [
-            FlatButton(
-              child: Text("Cancel"),
+            TextButton(
+              child: const Text("Cancel"),
               onPressed: () {
                 Navigator.of(inAlertContext).pop(false);
               },
             ),
-            FlatButton(
-              child: Text("Delete"),
+            TextButton(
+              child: const Text("Delete"),
               onPressed: () async {
                 Navigator.of(inAlertContext).pop(true);
               },

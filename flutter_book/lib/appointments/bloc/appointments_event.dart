@@ -12,7 +12,7 @@ class LoadAppointments extends AppointmentsEvent {
 class DeleteAppointment extends AppointmentsEvent {
   final int appointmentId;
 
-  DeleteAppointment({required this.appointmentId});
+  const DeleteAppointment({required this.appointmentId});
 
   @override
   List<Object> get props => [appointmentId];
@@ -21,7 +21,7 @@ class DeleteAppointment extends AppointmentsEvent {
 class AddAppointment extends AppointmentsEvent {
   final Appointment appointment;
 
-  AddAppointment({required this.appointment});
+  const AddAppointment({required this.appointment});
 
   @override
   List<Object> get props => [appointment];
@@ -30,7 +30,7 @@ class AddAppointment extends AppointmentsEvent {
 class UpdateAppointment extends AppointmentsEvent {
   final Appointment appointment;
 
-  UpdateAppointment({required this.appointment});
+  const UpdateAppointment({required this.appointment});
 
   @override
   List<Object> get props => [appointment];

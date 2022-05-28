@@ -7,7 +7,13 @@ class Contact extends Equatable {
   final String email;
   final String birthday;
 
-  Contact({this.id, this.name, this.phone, this.email, this.birthday});
+  const Contact({
+    this.id = 0,
+    this.name = '',
+    this.phone = '',
+    this.email = '',
+    this.birthday = '',
+  });
 
   factory Contact.fromMap(Map inMap) => Contact(
         id: inMap["id"],
@@ -27,21 +33,6 @@ class Contact extends Equatable {
     };
   }
 
-  Contact copyWith({
-    int id,
-    String name,
-    String phone,
-    String email,
-    String birthday,
-  }) =>
-      Contact(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        phone: phone ?? this.phone,
-        email: email ?? this.email,
-        birthday: birthday ?? this.birthday,
-      );
-
   @override
   String toString() {
     return "{ id=$id, name=$name, phone=$phone, email=$email, birthday=$birthday }";
@@ -49,4 +40,20 @@ class Contact extends Equatable {
 
   @override
   List<Object> get props => [id, name, phone, email, birthday];
+
+  Contact copyWith({
+    int? id,
+    String? name,
+    String? phone,
+    String? email,
+    String? birthday,
+  }) {
+    return Contact(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      email: email ?? this.email,
+      birthday: birthday ?? this.birthday,
+    );
+  }
 }

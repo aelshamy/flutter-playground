@@ -5,7 +5,7 @@ import 'package:flutter_book/notes/note.dart';
 import 'package:flutter_book/notes/ui/note_item.dart';
 
 class NotesList extends StatelessWidget {
-  const NotesList({Key key}) : super(key: key);
+  const NotesList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +22,12 @@ class NotesList extends StatelessWidget {
                   direction: DismissDirection.endToStart,
                   background: Container(
                     color: Colors.red,
-                    padding: EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.only(right: 10),
                     alignment: Alignment.centerRight,
-                    child: Icon(Icons.delete),
+                    child: const Icon(Icons.delete),
                   ),
-                  confirmDismiss: (direction) => _confirmDismiss(context, note.title),
+                  confirmDismiss: (direction) =>
+                      _confirmDismiss(context, note.title!),
                   onDismissed: (direction) => _deleteNote(context, note),
                   child: Card(
                     elevation: 1,
@@ -34,16 +35,17 @@ class NotesList extends StatelessWidget {
                     child: ListTile(
                       contentPadding: const EdgeInsets.fromLTRB(20, 5, 20, 20),
                       title: Text(
-                        "${note.title}",
-                        style: TextStyle(
+                        note.title ?? "",
+                        style: const TextStyle(
                           height: 2,
                           fontWeight: FontWeight.bold,
                           color: Colors.black45,
                         ),
                       ),
                       subtitle: Text(
-                        "${note.content.trim()}",
-                        style: TextStyle(height: 1.4, color: Colors.white),
+                        note.content?.trim() ?? "",
+                        style:
+                            const TextStyle(height: 1.4, color: Colors.white),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -63,17 +65,17 @@ class NotesList extends StatelessWidget {
               },
             );
           }
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add, color: Colors.white),
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => BlocProvider.value(
                 value: BlocProvider.of<NotesBloc>(context),
-                child: NoteItem(note: Note()),
+                child: const NoteItem(note: Note()),
               ),
             ),
           );
@@ -83,9 +85,9 @@ class NotesList extends StatelessWidget {
   }
 
   void _deleteNote(BuildContext context, Note note) async {
-    BlocProvider.of<NotesBloc>(context).add(DeleteNote(noteId: note.id));
-    Scaffold.of(context).showSnackBar(
-      SnackBar(
+    BlocProvider.of<NotesBloc>(context).add(DeleteNote(noteId: note.id!));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
         backgroundColor: Colors.red,
         duration: Duration(seconds: 2),
         content: Text("Note deleted"),
@@ -99,26 +101,28 @@ class NotesList extends StatelessWidget {
       barrierDismissible: false,
       builder: (BuildContext inAlertContext) {
         return AlertDialog(
-          title: Text("Delete Note"),
+          title: const Text("Delete Note"),
           content: RichText(
             text: TextSpan(
-              style: TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black),
               children: <TextSpan>[
-                TextSpan(text: 'Are you sure you want to delete "'),
-                TextSpan(text: "$noteTitle", style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: '"?'),
+                const TextSpan(text: 'Are you sure you want to delete "'),
+                TextSpan(
+                    text: noteTitle,
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                const TextSpan(text: '"?'),
               ],
             ),
           ),
           actions: [
-            FlatButton(
-              child: Text("Cancel"),
+            TextButton(
+              child: const Text("Cancel"),
               onPressed: () {
                 Navigator.of(inAlertContext).pop(false);
               },
             ),
-            FlatButton(
-              child: Text("Delete"),
+            TextButton(
+              child: const Text("Delete"),
               onPressed: () async {
                 Navigator.of(inAlertContext).pop(true);
               },

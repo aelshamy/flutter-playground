@@ -5,7 +5,7 @@ import 'package:flutter_book/tasks/task.dart';
 import 'package:flutter_book/tasks/ui/task_item.dart';
 
 class TasksList extends StatelessWidget {
-  const TasksList({Key key}) : super(key: key);
+  const TasksList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,38 +23,39 @@ class TasksList extends StatelessWidget {
                   direction: DismissDirection.endToStart,
                   background: Container(
                     color: Colors.red,
-                    padding: EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.only(right: 10),
                     alignment: Alignment.centerRight,
-                    child: Icon(Icons.delete),
+                    child: const Icon(Icons.delete),
                   ),
                   confirmDismiss: (direction) =>
-                      _confirmDismiss(context, task.description),
+                      _confirmDismiss(context, task.description ?? ""),
                   onDismissed: (direction) => _deleteTask(context, task),
                   child: ListTile(
                     leading: Checkbox(
                       value: task.completed,
-                      onChanged: (inValue) async {
+                      onChanged: (bool? inValue) async {
                         BlocProvider.of<TasksBloc>(context).add(
                           UpdateTask(
-                            task: task.copyWith(completed: inValue),
+                            task: task.copyWith(completed: inValue!),
                           ),
                         );
                       },
                     ),
                     title: Text(
-                      "${task.description}",
+                      task.description ?? "",
                       style: task.completed
                           ? TextStyle(
                               color: Theme.of(context).disabledColor,
                               decoration: TextDecoration.lineThrough)
                           : TextStyle(
                               color:
-                                  Theme.of(context).textTheme.headline1.color),
+                                  Theme.of(context).textTheme.headline1?.color,
+                            ),
                     ),
                     subtitle: task.dueDate == null
                         ? null
                         : Text(
-                            task.dueDate,
+                            task.dueDate ?? "",
                             style: task.completed
                                 ? TextStyle(
                                     color: Theme.of(context).disabledColor,
@@ -63,7 +64,8 @@ class TasksList extends StatelessWidget {
                                     color: Theme.of(context)
                                         .textTheme
                                         .headline1
-                                        .color),
+                                        ?.color,
+                                  ),
                           ),
                     onTap: () async {
                       Navigator.of(context).push(
@@ -80,17 +82,17 @@ class TasksList extends StatelessWidget {
               },
             );
           }
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add, color: Colors.white),
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => BlocProvider.value(
                 value: BlocProvider.of<TasksBloc>(context),
-                child: TaskItem(task: Task()),
+                child: const TaskItem(task: Task()),
               ),
             ),
           );
@@ -100,9 +102,9 @@ class TasksList extends StatelessWidget {
   }
 
   void _deleteTask(BuildContext context, Task task) async {
-    BlocProvider.of<TasksBloc>(context).add(DeleteTask(taskId: task.id));
+    BlocProvider.of<TasksBloc>(context).add(DeleteTask(taskId: task.id!));
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         backgroundColor: Colors.red,
         duration: Duration(seconds: 2),
         content: Text("Task deleted"),
@@ -117,28 +119,28 @@ class TasksList extends StatelessWidget {
       barrierDismissible: false,
       builder: (BuildContext inAlertContext) {
         return AlertDialog(
-          title: Text("Delete Task"),
+          title: const Text("Delete Task"),
           content: RichText(
             text: TextSpan(
-              style: TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black),
               children: <TextSpan>[
-                TextSpan(text: 'Are you sure you want to delete "'),
+                const TextSpan(text: 'Are you sure you want to delete "'),
                 TextSpan(
-                    text: "$taskDescription",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: '"?'),
+                    text: taskDescription,
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                const TextSpan(text: '"?'),
               ],
             ),
           ),
           actions: [
             TextButton(
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
               onPressed: () {
                 Navigator.of(inAlertContext).pop(false);
               },
             ),
             TextButton(
-              child: Text("Delete"),
+              child: const Text("Delete"),
               onPressed: () async {
                 Navigator.of(inAlertContext).pop(true);
               },

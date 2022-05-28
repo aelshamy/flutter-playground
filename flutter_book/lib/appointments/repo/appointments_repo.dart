@@ -3,7 +3,7 @@ import 'package:flutter_book/appointments/repo/appointments_provider.dart';
 
 class AppointmentsRepo {
   final AppointmentsProvider _appointmentsProvider;
-  AppointmentsRepo({AppointmentsProvider appointmentsProvider})
+  AppointmentsRepo({AppointmentsProvider? appointmentsProvider})
       : _appointmentsProvider = appointmentsProvider ?? AppointmentsProvider();
 
   Future<List<Appointment>> getAll() {

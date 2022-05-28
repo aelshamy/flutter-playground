@@ -3,7 +3,8 @@ import 'package:flutter_book/tasks/task.dart';
 
 class TasksRepo {
   final TasksProvider _tasksProvider;
-  TasksRepo({TasksProvider tasksProvider}) : _tasksProvider = tasksProvider ?? TasksProvider();
+  TasksRepo({TasksProvider? tasksProvider})
+      : _tasksProvider = tasksProvider ?? TasksProvider();
 
   Future<List<Task>> getAll() {
     return _tasksProvider.getAll();

@@ -4,13 +4,11 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class NotesProvider {
-  Database _db;
-  String _tableName = "notes";
+  late Database? _db;
+  final String _tableName = "notes";
 
   Future get database async {
-    if (_db == null) {
-      _db = await init();
-    }
+    _db ??= await init();
     return _db;
   }
 
@@ -30,11 +28,9 @@ class NotesProvider {
 
   Future<int> create(Note note) async {
     Database db = await database;
-    var val = await db.rawQuery("SELECT MAX(id) + 1 AS id FROM $_tableName");
-    int id = val.first["id"];
-    if (id == null) {
-      id = 1;
-    }
+    final val = await db.rawQuery("SELECT MAX(id) + 1 AS id FROM $_tableName");
+    int? id = val.first["id"] as int?;
+    id ??= 1;
     return await db.rawInsert(
         "INSERT INTO $_tableName (id, title, content, color) "
         "VALUES (?, ?, ?, ?)",
@@ -50,7 +46,8 @@ class NotesProvider {
   Future<List<Note>> getAll() async {
     Database db = await database;
     List<Map<String, dynamic>> notes = await db.query(_tableName);
-    List<Note> list = notes.isNotEmpty ? notes.map((m) => Note.fromMap(m)).toList() : [];
+    List<Note> list =
+        notes.isNotEmpty ? notes.map((m) => Note.fromMap(m)).toList() : [];
     return list;
   }
 

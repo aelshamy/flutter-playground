@@ -4,13 +4,11 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class AppointmentsProvider {
-  Database _db;
-  String _tableName = "appointments";
+  late final Database? _db;
+  final String _tableName = "appointments";
 
   Future get database async {
-    if (_db == null) {
-      _db = await init();
-    }
+    _db ??= await init();
     return _db;
   }
 
@@ -32,10 +30,8 @@ class AppointmentsProvider {
   Future<int> create(Appointment appointment) async {
     Database db = await database;
     var val = await db.rawQuery("SELECT MAX(id) + 1 AS id FROM $_tableName");
-    int id = val.first["id"];
-    if (id == null) {
-      id = 1;
-    }
+    final id = val.first["id"] as int? ?? 1;
+
     return await db.rawInsert(
       "INSERT INTO $_tableName (id, title, description, appointmentDate, appointmentTime) "
       "VALUES (?, ?, ?, ?, ?)",
@@ -51,15 +47,17 @@ class AppointmentsProvider {
 
   Future<Appointment> get(int appointmentId) async {
     Database db = await database;
-    var rec = await db.query(_tableName, where: "id = ?", whereArgs: [appointmentId]);
+    var rec =
+        await db.query(_tableName, where: "id = ?", whereArgs: [appointmentId]);
     return Appointment.fromMap(rec.first);
   }
 
   Future<List<Appointment>> getAll() async {
     Database db = await database;
     List<Map<String, dynamic>> appointments = await db.query(_tableName);
-    List<Appointment> list =
-        appointments.isNotEmpty ? appointments.map((m) => Appointment.fromMap(m)).toList() : [];
+    List<Appointment> list = appointments.isNotEmpty
+        ? appointments.map((m) => Appointment.fromMap(m)).toList()
+        : [];
     return list;
   }
 

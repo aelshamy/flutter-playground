@@ -12,7 +12,7 @@ class AppointmentsInitial extends AppointmentsState {
 class AppointmentsLoaded extends AppointmentsState {
   final List<Appointment> appointments;
 
-  AppointmentsLoaded({required this.appointments});
+  const AppointmentsLoaded({required this.appointments});
 
   @override
   List<Object> get props => [appointments];

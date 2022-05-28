@@ -7,22 +7,24 @@ import 'package:intl/intl.dart';
 class TaskItem extends StatefulWidget {
   final Task task;
 
-  TaskItem({Key key, this.task}) : super(key: key);
+  const TaskItem({Key? key, required this.task}) : super(key: key);
 
   @override
-  _TaskItemState createState() => _TaskItemState();
+  TaskItemState createState() => TaskItemState();
 }
 
-class _TaskItemState extends State<TaskItem> {
-  TextEditingController _descriptionEditingController;
-  TextEditingController _dueDateEditingController;
+class TaskItemState extends State<TaskItem> {
+  late final TextEditingController _descriptionEditingController;
+  late final TextEditingController _dueDateEditingController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _descriptionEditingController = TextEditingController(text: widget.task.description);
-    _dueDateEditingController = TextEditingController(text: widget.task.dueDate);
+    _descriptionEditingController =
+        TextEditingController(text: widget.task.description);
+    _dueDateEditingController =
+        TextEditingController(text: widget.task.dueDate);
   }
 
   @override
@@ -33,14 +35,14 @@ class _TaskItemState extends State<TaskItem> {
         child: ListView(
           children: [
             ListTile(
-              leading: Icon(Icons.description),
+              leading: const Icon(Icons.description),
               title: TextFormField(
                 keyboardType: TextInputType.multiline,
                 maxLines: 8,
-                decoration: InputDecoration(hintText: "Description"),
+                decoration: const InputDecoration(hintText: "Description"),
                 controller: _descriptionEditingController,
-                validator: (String inValue) {
-                  if (inValue.length == 0) {
+                validator: (String? inValue) {
+                  if (inValue?.isEmpty == true) {
                     return "Please enter description";
                   }
                   return null;
@@ -48,12 +50,12 @@ class _TaskItemState extends State<TaskItem> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.today),
+              leading: const Icon(Icons.today),
               title: TextFormField(
                 decoration: InputDecoration(
                   hintText: "Due Date",
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     color: Colors.blue,
                     onPressed: () async {
                       String selectedDate = await _selectDate(context);
@@ -68,13 +70,13 @@ class _TaskItemState extends State<TaskItem> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            FlatButton.icon(
-              label: Text("Cancel"),
-              icon: Icon(
+            TextButton.icon(
+              label: const Text("Cancel"),
+              icon: const Icon(
                 Icons.cancel,
                 color: Colors.red,
               ),
@@ -83,9 +85,9 @@ class _TaskItemState extends State<TaskItem> {
               },
             ),
             Builder(
-              builder: (context) => FlatButton.icon(
-                label: Text("Save"),
-                icon: Icon(
+              builder: (context) => TextButton.icon(
+                label: const Text("Save"),
+                icon: const Icon(
                   Icons.save,
                   color: Colors.green,
                 ),
@@ -101,7 +103,7 @@ class _TaskItemState extends State<TaskItem> {
   }
 
   void _save(BuildContext context) async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState?.validate() == true) {
       if (widget.task.id == null) {
         BlocProvider.of<TasksBloc>(context).add(
           AddTask(
@@ -122,33 +124,29 @@ class _TaskItemState extends State<TaskItem> {
         );
       }
 
-      await Scaffold.of(context)
+      await ScaffoldMessenger.of(context)
           .showSnackBar(
-            SnackBar(
+            const SnackBar(
               backgroundColor: Colors.green,
               duration: Duration(seconds: 1),
               content: Text("Task saved"),
             ),
           )
           .closed;
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
     }
   }
 
   Future<String> _selectDate(BuildContext context) async {
     DateTime initialDate = DateTime.now();
-    if (widget.task.dueDate != null) {
-      initialDate = DateFormat.yMMMMd("en_US").parse(widget.task.dueDate);
-    }
-    DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: initialDate,
-        firstDate: DateTime(1900),
-        lastDate: DateTime(2100));
-    if (picked != null) {
-      return DateFormat.yMMMMd("en_US").format(picked.toLocal());
-    }
-    return null;
+    initialDate = DateFormat.yMMMMd("en_US").parse(widget.task.dueDate!);
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+    return DateFormat.yMMMMd("en_US").format(picked!.toLocal());
   }
 
   @override

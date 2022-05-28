@@ -10,10 +10,10 @@ class AppointmentItem extends StatefulWidget {
       : super(key: key);
 
   @override
-  _AppointmentItemState createState() => _AppointmentItemState();
+  AppointmentItemState createState() => AppointmentItemState();
 }
 
-class _AppointmentItemState extends State<AppointmentItem> {
+class AppointmentItemState extends State<AppointmentItem> {
   late final TextEditingController _titleEditingController;
   late final TextEditingController _descriptionEditingController;
   late final TextEditingController _appointmentDateEditingController;
@@ -41,12 +41,12 @@ class _AppointmentItemState extends State<AppointmentItem> {
         child: ListView(
           children: [
             ListTile(
-              leading: Icon(Icons.title),
+              leading: const Icon(Icons.title),
               title: TextFormField(
-                decoration: InputDecoration(hintText: "Title"),
+                decoration: const InputDecoration(hintText: "Title"),
                 controller: _titleEditingController,
                 validator: (String? inValue) {
-                  if (inValue?.length == 0) {
+                  if (inValue?.isEmpty == true) {
                     return "Please enter a title";
                   }
                   return null;
@@ -54,14 +54,14 @@ class _AppointmentItemState extends State<AppointmentItem> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.description),
+              leading: const Icon(Icons.description),
               title: TextFormField(
                 keyboardType: TextInputType.multiline,
                 maxLines: 4,
-                decoration: InputDecoration(hintText: "Description"),
+                decoration: const InputDecoration(hintText: "Description"),
                 controller: _descriptionEditingController,
                 validator: (String? inValue) {
-                  if (inValue?.length == 0) {
+                  if (inValue?.isEmpty == true) {
                     return "Please enter a description";
                   }
                   return null;
@@ -69,12 +69,12 @@ class _AppointmentItemState extends State<AppointmentItem> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.today),
+              leading: const Icon(Icons.today),
               title: TextFormField(
                 decoration: InputDecoration(
                   hintText: "Date",
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     color: Colors.blue,
                     onPressed: () async {
                       String selectedDate = await _selectDate(context);
@@ -86,12 +86,12 @@ class _AppointmentItemState extends State<AppointmentItem> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.alarm),
+              leading: const Icon(Icons.alarm),
               title: TextFormField(
                 decoration: InputDecoration(
                   hintText: "Time",
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     color: Colors.blue,
                     onPressed: () async {
                       String selectedDate = await _selectTime(context);
@@ -106,13 +106,13 @@ class _AppointmentItemState extends State<AppointmentItem> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            FlatButton.icon(
-              label: Text("Cancel"),
-              icon: Icon(
+            TextButton.icon(
+              label: const Text("Cancel"),
+              icon: const Icon(
                 Icons.cancel,
                 color: Colors.red,
               ),
@@ -122,8 +122,8 @@ class _AppointmentItemState extends State<AppointmentItem> {
             ),
             Builder(
               builder: (context) => TextButton.icon(
-                label: Text("Save"),
-                icon: Icon(
+                label: const Text("Save"),
+                icon: const Icon(
                   Icons.save,
                   color: Colors.green,
                 ),
@@ -145,11 +145,11 @@ class _AppointmentItemState extends State<AppointmentItem> {
         DateFormat.jm("en_US").parse(widget.appointment.appointmentTime);
     initialTime = TimeOfDay.fromDateTime(timeDateFormat);
 
-    TimeOfDay picked =
+    TimeOfDay? picked =
         await showTimePicker(context: inContext, initialTime: initialTime);
 
     return DateFormat.jm("en_US").format(
-        DateFormat.Hm("en_US").parse("${picked.hour}:${picked.minute}"));
+        DateFormat.Hm("en_US").parse("${picked!.hour}:${picked.minute}"));
   }
 
   Future<String> _selectDate(BuildContext context) async {
@@ -157,16 +157,17 @@ class _AppointmentItemState extends State<AppointmentItem> {
     initialDate =
         DateFormat.yMMMMd("en_US").parse(widget.appointment.appointmentDate);
     DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: initialDate,
-        firstDate: DateTime(1900),
-        lastDate: DateTime(2100));
-    return DateFormat.yMMMMd("en_US").format(picked?.toLocal() ?? "");
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+    return DateFormat.yMMMMd("en_US").format(picked!.toLocal());
   }
 
   void _save(BuildContext context) async {
-    if (_formKey.currentState.validate()) {
-      if (widget.appointment.id == null) {
+    if (_formKey.currentState?.validate() == true) {
+      if (widget.appointment.id > 0) {
         BlocProvider.of<AppointmentsBloc>(context).add(
           AddAppointment(
             appointment: Appointment(
@@ -190,19 +191,19 @@ class _AppointmentItemState extends State<AppointmentItem> {
         );
       }
 
-      await Scaffold.of(context)
+      await ScaffoldMessenger.of(context)
           .showSnackBar(
-            SnackBar(
+            const SnackBar(
               backgroundColor: Colors.green,
               duration: Duration(seconds: 1),
               content: Text("Appointment saved"),
             ),
           )
           .closed;
-      Navigator.of(context).pop();
     }
   }
 
+  @override
   void dispose() {
     _titleEditingController.dispose();
     _descriptionEditingController.dispose();

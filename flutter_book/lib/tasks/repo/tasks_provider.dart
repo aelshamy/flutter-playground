@@ -4,14 +4,12 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TasksProvider {
-  Database _db;
+  late Database? _db;
 
-  String _tableName = "tasks";
+  final String _tableName = "tasks";
 
   Future get database async {
-    if (_db == null) {
-      _db = await init();
-    }
+    _db ??= await init();
     return _db;
   }
 
@@ -31,11 +29,10 @@ class TasksProvider {
 
   Future<int> create(Task task) async {
     Database db = await database;
-    var val = await db.rawQuery("SELECT MAX(id) + 1 AS id FROM $_tableName");
-    int id = val.first["id"];
-    if (id == null) {
-      id = 1;
-    }
+    List<Map<String, Object?>> val =
+        await db.rawQuery("SELECT MAX(id) + 1 AS id FROM $_tableName");
+    int? id = val.first["id"] as int?;
+    id ??= 1;
     return await db.rawInsert(
         "INSERT INTO $_tableName (id, description, dueDate, completed) "
         "VALUES (?, ?, ?, ?)",
@@ -51,7 +48,8 @@ class TasksProvider {
   Future<List<Task>> getAll() async {
     Database db = await database;
     List<Map<String, dynamic>> tasks = await db.query(_tableName);
-    List<Task> list = tasks.isNotEmpty ? tasks.map((m) => Task.fromMap(m)).toList() : [];
+    List<Task> list =
+        tasks.isNotEmpty ? tasks.map((m) => Task.fromMap(m)).toList() : [];
     return list;
   }
 

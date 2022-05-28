@@ -2,10 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 class Note extends Equatable {
-  final int id;
-  final String title;
-  final String content;
-  final String color;
+  final int? id;
+  final String? title;
+  final String? content;
+  final Color? color;
 
   static const Map<String, Color> colors = {
     "red": Colors.red,
@@ -16,7 +16,12 @@ class Note extends Equatable {
     "purple": Colors.purple,
   };
 
-  Note({this.id, this.title, this.content, this.color});
+  const Note({
+    this.id,
+    this.title,
+    this.content,
+    this.color,
+  });
 
   factory Note.fromMap(Map inMap) => Note(
         id: inMap["id"],
@@ -34,24 +39,30 @@ class Note extends Equatable {
     };
   }
 
-  Note copyWith({
-    int id,
-    String title,
-    String content,
-    String color,
-  }) =>
-      Note(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        content: content ?? this.content,
-        color: color ?? this.color,
-      );
-
   @override
   String toString() {
     return "{ id=$id, title=$title, content=$content, color=$color }";
   }
 
   @override
-  List<Object> get props => [id, title, content, color];
+  List<Object?> get props => [
+        id,
+        title,
+        content,
+        color,
+      ];
+
+  Note copyWith({
+    int? id,
+    String? title,
+    String? content,
+    Color? color,
+  }) {
+    return Note(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      color: color ?? this.color,
+    );
+  }
 }

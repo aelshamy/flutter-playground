@@ -6,24 +6,25 @@ import 'package:flutter_book/notes/note.dart';
 class NoteItem extends StatefulWidget {
   final Note note;
 
-  NoteItem({Key key, this.note}) : super(key: key);
+  const NoteItem({Key? key, required this.note}) : super(key: key);
 
   @override
-  _NoteItemState createState() => _NoteItemState();
+  NoteItemState createState() => NoteItemState();
 }
 
-class _NoteItemState extends State<NoteItem> {
-  TextEditingController _titleEditingController;
-  TextEditingController _contentEditingController;
+class NoteItemState extends State<NoteItem> {
+  late final TextEditingController _titleEditingController;
+  late final TextEditingController _contentEditingController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Color _color;
+  late final Color _color;
 
   @override
   void initState() {
     super.initState();
     _titleEditingController = TextEditingController(text: widget.note.title);
-    _contentEditingController = TextEditingController(text: widget.note.content);
-    _color = Note.colors[widget.note.color];
+    _contentEditingController =
+        TextEditingController(text: widget.note.content);
+    _color = Note.colors[widget.note.color]!;
   }
 
   @override
@@ -34,12 +35,12 @@ class _NoteItemState extends State<NoteItem> {
         child: ListView(
           children: [
             ListTile(
-              leading: Icon(Icons.title),
+              leading: const Icon(Icons.title),
               title: TextFormField(
-                decoration: InputDecoration(hintText: "Title"),
+                decoration: const InputDecoration(hintText: "Title"),
                 controller: _titleEditingController,
-                validator: (String inValue) {
-                  if (inValue.length == 0) {
+                validator: (String? inValue) {
+                  if (inValue?.isEmpty == true) {
                     return "Please enter a title";
                   }
                   return null;
@@ -47,14 +48,14 @@ class _NoteItemState extends State<NoteItem> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.content_paste),
+              leading: const Icon(Icons.content_paste),
               title: TextFormField(
                 keyboardType: TextInputType.multiline,
                 maxLines: 8,
-                decoration: InputDecoration(hintText: "Content"),
+                decoration: const InputDecoration(hintText: "Content"),
                 controller: _contentEditingController,
-                validator: (String inValue) {
-                  if (inValue.length == 0) {
+                validator: (String? inValue) {
+                  if (inValue?.isEmpty == true) {
                     return "Please enter content";
                   }
                   return null;
@@ -62,24 +63,26 @@ class _NoteItemState extends State<NoteItem> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.color_lens),
+              leading: const Icon(Icons.color_lens),
               title: ButtonBar(
-                buttonPadding: EdgeInsets.all(2),
+                buttonPadding: const EdgeInsets.all(2),
                 alignment: MainAxisAlignment.spaceBetween,
-                children: Note.colors.values.map((Color value) => _colorButton(value)).toList(),
+                children: Note.colors.values
+                    .map((Color value) => _colorButton(value))
+                    .toList(),
               ),
             ),
           ],
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            FlatButton.icon(
-              label: Text("Cancel"),
-              icon: Icon(
+            TextButton.icon(
+              label: const Text("Cancel"),
+              icon: const Icon(
                 Icons.cancel,
                 color: Colors.red,
               ),
@@ -88,9 +91,9 @@ class _NoteItemState extends State<NoteItem> {
               },
             ),
             Builder(
-              builder: (context) => FlatButton.icon(
-                label: Text("Save"),
-                icon: Icon(
+              builder: (context) => TextButton.icon(
+                label: const Text("Save"),
+                icon: const Icon(
                   Icons.save,
                   color: Colors.green,
                 ),
@@ -129,9 +132,8 @@ class _NoteItemState extends State<NoteItem> {
   }
 
   void _save(BuildContext context) async {
-    if (_formKey.currentState.validate()) {
-      final currentColor =
-          Note.colors.keys.firstWhere((k) => Note.colors[k] == _color, orElse: () => null);
+    if (_formKey.currentState?.validate() == true) {
+      final currentColor = Note.colors[_color];
       if (widget.note.id == null) {
         BlocProvider.of<NotesBloc>(context).add(
           AddNote(
@@ -154,19 +156,19 @@ class _NoteItemState extends State<NoteItem> {
         );
       }
 
-      await Scaffold.of(context)
+      await ScaffoldMessenger.of(context)
           .showSnackBar(
-            SnackBar(
+            const SnackBar(
               backgroundColor: Colors.green,
               duration: Duration(seconds: 1),
               content: Text("Note saved"),
             ),
           )
           .closed;
-      Navigator.of(context).pop();
     }
   }
 
+  @override
   void dispose() {
     _contentEditingController.dispose();
     _titleEditingController.dispose();

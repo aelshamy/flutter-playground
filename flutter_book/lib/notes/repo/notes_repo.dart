@@ -3,7 +3,8 @@ import 'package:flutter_book/notes/repo/notes_provider.dart';
 
 class NotesRepo {
   final NotesProvider _notesProvider;
-  NotesRepo({NotesProvider notesProvider}) : _notesProvider = notesProvider ?? NotesProvider();
+  NotesRepo({NotesProvider? notesProvider})
+      : _notesProvider = notesProvider ?? NotesProvider();
 
   Future<List<Note>> getAll() {
     return _notesProvider.getAll();

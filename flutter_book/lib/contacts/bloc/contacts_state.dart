@@ -12,7 +12,7 @@ class ContactsInitial extends ContactsState {
 class ContactsLoaded extends ContactsState {
   final List<Contact> contacts;
 
-  ContactsLoaded({this.contacts});
+  const ContactsLoaded({required this.contacts});
 
   @override
   List<Object> get props => [contacts];

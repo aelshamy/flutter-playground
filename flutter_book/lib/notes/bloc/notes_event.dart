@@ -7,7 +7,7 @@ abstract class NotesEvent extends Equatable {
 class NotesSetColor extends NotesEvent {
   final String color;
 
-  NotesSetColor({this.color});
+  const NotesSetColor({required this.color});
 
   @override
   List<Object> get props => [color];
@@ -21,7 +21,7 @@ class LoadNotes extends NotesEvent {
 class DeleteNote extends NotesEvent {
   final int noteId;
 
-  DeleteNote({this.noteId});
+  const DeleteNote({required this.noteId});
 
   @override
   List<Object> get props => [noteId];
@@ -30,7 +30,7 @@ class DeleteNote extends NotesEvent {
 class AddNote extends NotesEvent {
   final Note note;
 
-  AddNote({this.note});
+  const AddNote({required this.note});
 
   @override
   List<Object> get props => [note];
@@ -39,7 +39,7 @@ class AddNote extends NotesEvent {
 class UpdateNote extends NotesEvent {
   final Note note;
 
-  UpdateNote({this.note});
+  const UpdateNote({required this.note});
 
   @override
   List<Object> get props => [note];

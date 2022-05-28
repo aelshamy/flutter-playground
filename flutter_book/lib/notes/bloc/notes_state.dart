@@ -12,7 +12,7 @@ class NotesInitial extends NotesState {
 class NotesLoaded extends NotesState {
   final List<Note> notes;
 
-  NotesLoaded({this.notes});
+  const NotesLoaded({required this.notes});
 
   @override
   List<Object> get props => [notes];

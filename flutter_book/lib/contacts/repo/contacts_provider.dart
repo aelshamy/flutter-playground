@@ -4,13 +4,11 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ContactsProvider {
-  Database _db;
-  String _tableName = "contacts";
+  late final Database? _db;
+  final String _tableName = "contacts";
 
   Future get database async {
-    if (_db == null) {
-      _db = await init();
-    }
+    _db ??= await init();
     return _db;
   }
 
@@ -32,11 +30,9 @@ class ContactsProvider {
 
   Future<int> create(Contact contact) async {
     Database db = await database;
-    var val = await db.rawQuery("SELECT MAX(id) + 1 AS id FROM $_tableName");
-    int id = val.first["id"];
-    if (id == null) {
-      id = 1;
-    }
+    final val = await db.rawQuery("SELECT MAX(id) + 1 AS id FROM $_tableName");
+    final id = val.first["id"] as int? ?? 1;
+
     return await db.rawInsert(
       "INSERT INTO $_tableName (id, name, email, phone, birthday) "
       "VALUES (?, ?, ?, ?, ?)",
@@ -52,15 +48,17 @@ class ContactsProvider {
 
   Future<Contact> get(int contactId) async {
     Database db = await database;
-    var rec = await db.query(_tableName, where: "id = ?", whereArgs: [contactId]);
+    var rec =
+        await db.query(_tableName, where: "id = ?", whereArgs: [contactId]);
     return Contact.fromMap(rec.first);
   }
 
   Future<List<Contact>> getAll() async {
     Database db = await database;
     List<Map<String, dynamic>> contacts = await db.query(_tableName);
-    List<Contact> list =
-        contacts.isNotEmpty ? contacts.map((m) => Contact.fromMap(m)).toList() : [];
+    List<Contact> list = contacts.isNotEmpty
+        ? contacts.map((m) => Contact.fromMap(m)).toList()
+        : [];
     return list;
   }
 

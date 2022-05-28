@@ -9,7 +9,7 @@ import 'package:flutter_book/contacts/ui/contact_item.dart';
 import 'package:path/path.dart';
 
 class ContactsList extends StatelessWidget {
-  const ContactsList({Key key}) : super(key: key);
+  const ContactsList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,8 @@ class ContactsList extends StatelessWidget {
               itemBuilder: (BuildContext inBuildContext, int inIndex) {
                 Contact contact = state.contacts[inIndex];
 
-                File avatarFile = File(join(AppConfig.docsDir.path, contact.id.toString()));
+                File avatarFile =
+                    File(join(AppConfig.docsDir.path, contact.id.toString()));
                 bool avatarFileExists = avatarFile.existsSync();
 
                 return Dismissible(
@@ -30,24 +31,27 @@ class ContactsList extends StatelessWidget {
                   direction: DismissDirection.endToStart,
                   background: Container(
                     color: Colors.red,
-                    padding: EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.only(right: 10),
                     alignment: Alignment.centerRight,
-                    child: Icon(Icons.delete),
+                    child: const Icon(Icons.delete),
                   ),
-                  confirmDismiss: (direction) => _confirmDismiss(context, contact.name),
+                  confirmDismiss: (direction) =>
+                      _confirmDismiss(context, contact.name),
                   onDismissed: (direction) => _deleteContact(context, contact),
                   child: ListTile(
                     leading: CircleAvatar(
                         backgroundColor: Colors.indigoAccent,
                         foregroundColor: Colors.white,
-                        backgroundImage: avatarFileExists ? FileImage(avatarFile) : null,
+                        backgroundImage:
+                            avatarFileExists ? FileImage(avatarFile) : null,
                         child: avatarFileExists
                             ? null
                             : Text(contact.name.substring(0, 1).toUpperCase())),
-                    title: Text("${contact.name}"),
-                    subtitle: contact.phone == null ? null : Text("${contact.phone}"),
+                    title: Text(contact.name),
+                    subtitle: Text(contact.phone),
                     onTap: () async {
-                      File avatarFile = File(join(AppConfig.docsDir.path, "avatar"));
+                      File avatarFile =
+                          File(join(AppConfig.docsDir.path, "avatar"));
                       if (avatarFile.existsSync()) {
                         avatarFile.deleteSync();
                       }
@@ -66,20 +70,20 @@ class ContactsList extends StatelessWidget {
                 );
               },
               separatorBuilder: (BuildContext context, int index) =>
-                  Divider(), /* End itemBuilder. */
+                  const Divider(), /* End itemBuilder. */
             );
           }
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add, color: Colors.white),
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => BlocProvider.value(
                 value: BlocProvider.of<ContactsBloc>(context),
-                child: ContactItem(contact: Contact()),
+                child: const ContactItem(contact: Contact()),
               ),
             ),
           );
@@ -89,9 +93,10 @@ class ContactsList extends StatelessWidget {
   }
 
   void _deleteContact(BuildContext context, Contact contact) async {
-    BlocProvider.of<ContactsBloc>(context).add(DeleteContact(contactId: contact.id));
-    Scaffold.of(context).showSnackBar(
-      SnackBar(
+    BlocProvider.of<ContactsBloc>(context)
+        .add(DeleteContact(contactId: contact.id));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
         backgroundColor: Colors.red,
         duration: Duration(seconds: 2),
         content: Text("Task deleted"),
@@ -105,26 +110,28 @@ class ContactsList extends StatelessWidget {
       barrierDismissible: false,
       builder: (BuildContext inAlertContext) {
         return AlertDialog(
-          title: Text("Delete Task"),
+          title: const Text("Delete Task"),
           content: RichText(
             text: TextSpan(
-              style: TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black),
               children: <TextSpan>[
-                TextSpan(text: 'Are you sure you want to delete "'),
-                TextSpan(text: "$contactName", style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: '"?'),
+                const TextSpan(text: 'Are you sure you want to delete "'),
+                TextSpan(
+                    text: contactName,
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                const TextSpan(text: '"?'),
               ],
             ),
           ),
           actions: [
-            FlatButton(
-              child: Text("Cancel"),
+            TextButton(
+              child: const Text("Cancel"),
               onPressed: () {
                 Navigator.of(inAlertContext).pop(false);
               },
             ),
-            FlatButton(
-              child: Text("Delete"),
+            TextButton(
+              child: const Text("Delete"),
               onPressed: () async {
                 Navigator.of(inAlertContext).pop(true);
               },

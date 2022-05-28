@@ -3,7 +3,7 @@ import 'package:flutter_book/contacts/repo/contacts_provider.dart';
 
 class ContactsRepo {
   final ContactsProvider _contactsProvider;
-  ContactsRepo({ContactsProvider contactsProvider})
+  ContactsRepo({ContactsProvider? contactsProvider})
       : _contactsProvider = contactsProvider ?? ContactsProvider();
 
   Future<List<Contact>> getAll() {

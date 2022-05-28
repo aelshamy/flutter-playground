@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_example/bloc/bloc.dart';
-import 'package:flutter_bloc_example/bloc/weather_bloc.dart';
-import 'package:flutter_bloc_example/bloc/weather_state.dart';
 import 'package:flutter_bloc_example/data/model/weather.dart';
 import 'package:flutter_bloc_example/data/pages/weather_detailed_page.dart';
 
@@ -19,7 +17,7 @@ class WeatherSearchPage extends StatelessWidget {
         child: BlocListener<WeatherBloc, WeatherState>(
           listener: (context, state) {
             if (state is WeatherError) {
-              Scaffold.of(context).showSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
                 ),
@@ -37,7 +35,7 @@ class WeatherSearchPage extends StatelessWidget {
               } else if (state is WeatherError) {
                 return buildInitialInput();
               }
-              return null;
+              return SizedBox();
             },
           ),
         ),
@@ -66,12 +64,14 @@ class WeatherSearchPage extends StatelessWidget {
           style: TextStyle(fontSize: 40, fontWeight: FontWeight.w700),
         ),
         Text(
-          "${weather.tempreatureCelsius.toStringAsFixed(1)} C",
+          "${weather.temperatureCelsius.toStringAsFixed(1)} C",
           style: TextStyle(fontSize: 80),
         ),
-        RaisedButton(
+        ElevatedButton(
           child: Text("See details"),
-          color: Colors.lightBlue[100],
+          style: ElevatedButton.styleFrom(
+            primary: Colors.lightBlue[100],
+          ),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (_) => BlocProvider.value(
@@ -88,7 +88,7 @@ class WeatherSearchPage extends StatelessWidget {
 }
 
 class CityInputField extends StatelessWidget {
-  const CityInputField({Key key}) : super(key: key);
+  const CityInputField({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +107,7 @@ class CityInputField extends StatelessWidget {
   }
 
   void submitCityName(BuildContext context, String value) {
-    final WeatherBloc weathrBloc = BlocProvider.of<WeatherBloc>(context);
-    weathrBloc.add(GetWeather(value));
+    final WeatherBloc weatherBloc = BlocProvider.of<WeatherBloc>(context);
+    weatherBloc.add(GetWeather(value));
   }
 }

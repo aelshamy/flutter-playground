@@ -9,12 +9,29 @@ part 'stories_event.dart';
 part 'stories_state.dart';
 
 class StoriesBloc extends Bloc<StoriesEvent, StoriesState> {
-  final Repository _repository;
+  late final Repository _repository;
+  StoriesBloc({Repository? repository})
+      : _repository = repository ?? Repository(),
+        super(StoriesState()) {
+    on<LoadStories>((event, emit) async {
+      await getStories(emit);
+    });
 
-  StoriesBloc({Repository repository}) : _repository = repository ?? Repository();
+    on<RefreshStories>((event, emit) async {
+      await _repository.clearCache();
+      await getStories(emit);
+    });
+  }
 
-  @override
-  StoriesState get initialState => StoriesState();
+  Future<void> getStories(Emitter<StoriesState> emit) async {
+    try {
+      final ids = await _repository.fetchTopIds();
+
+      emit(StoriesState(data: ids));
+    } catch (e) {
+      print(e);
+    }
+  }
 
   // @override
   // Stream<Transition<StoriesEvent, StoriesState>> transformTransitions(
@@ -30,28 +47,4 @@ class StoriesBloc extends Bloc<StoriesEvent, StoriesState> {
   //   }, <int, Future<ItemModel>>{});
   // }
 
-  @override
-  Stream<StoriesState> mapEventToState(StoriesEvent event) async* {
-    if (event is LoadStories) {
-      yield* _mapLoadStoriesToState();
-    } else if (event is RefreshStories) {
-      yield* _mapRefreshStoriesToState();
-    }
-  }
-
-  Stream<StoriesState> _mapLoadStoriesToState() async* {
-    // yield StoriesState(loading: true);
-    try {
-      final ids = await _repository.fetchTopIds();
-      // final futureList = ids.map((id) => _repository.fetchItem(id)).toList();
-      yield StoriesState(data: ids);
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Stream<StoriesState> _mapRefreshStoriesToState() async* {
-    await _repository.clearCache();
-    yield* _mapLoadStoriesToState();
-  }
 }

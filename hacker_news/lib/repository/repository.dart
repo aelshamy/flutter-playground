@@ -8,37 +8,33 @@ class Repository {
   final List<Source> _sources;
   final List<Cache> _caches;
 
-  Repository({List<Source> sources, List<Cache> caches})
+  Repository({List<Source>? sources, List<Cache>? caches})
       : _sources = sources ?? [DbProvider.instance, ApiProvider()],
         _caches = caches ?? [DbProvider.instance];
 
   Future<List<int>> fetchTopIds() async {
-    List<int> items;
+    List<int> items = [];
     for (final source in _sources) {
       items = await source.fetchTopIds();
-      if (items != null) {
-        break;
-      }
+      break;
     }
     return items;
   }
 
   Future<ItemModel> fetchItem(int id) async {
-    ItemModel item;
+    ItemModel? item;
     Source source;
 
     for (source in _sources) {
       item = await source.fetchItem(id);
-      if (item != null) {
-        break;
-      }
+      break;
     }
 
     for (var cache in _caches) {
-      cache.addItem(item);
+      cache.addItem(item!);
     }
 
-    return item;
+    return item!;
   }
 
   Future<void> clearCache() async {

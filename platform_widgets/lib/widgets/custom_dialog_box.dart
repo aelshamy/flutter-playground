@@ -5,14 +5,14 @@ class CustomDialogBox extends StatefulWidget {
   final String title;
   final String descriptions;
   final String text;
-  final Image img;
+  final Image? img;
 
   const CustomDialogBox({
     Key? key,
     required this.title,
     required this.descriptions,
     required this.text,
-    required this.img,
+    this.img,
   }) : super(key: key);
 
   @override

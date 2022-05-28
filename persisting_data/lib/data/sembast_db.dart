@@ -7,7 +7,7 @@ import 'package:sembast/sembast_io.dart';
 
 class SembastDb {
   DatabaseFactory dbFactory = databaseFactoryIo;
-  Database _db;
+  Database? _db;
 
   final store = intMapStoreFactory.store('passwords');
   var codec = getEncryptSembastCodec(password: 'Password');
@@ -22,7 +22,7 @@ class SembastDb {
     if (_db == null) {
       _db = await openDb();
     }
-    return _db;
+    return _db!;
   }
 
   Future<Database> openDb() async {
@@ -40,12 +40,9 @@ class SembastDb {
     await init();
     final finder = Finder(sortOrders: [SortOrder('name')]);
     final snapshot = await store.find(_db, finder: finder);
-    final list = snapshot.map((item) {
-      final pwd = Password.fromMap(item.value);
-      pwd.id = item.key;
-      return pwd;
-    }).toList();
-    print(list);
+    final list = snapshot
+        .map((item) => Password.fromMap(item.value).copyWith(id: item.key))
+        .toList();
     return list;
   }
 

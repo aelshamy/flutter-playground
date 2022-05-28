@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -57,7 +57,8 @@ class _MyHomePageState extends State<MyHomePage> {
   _MyHomePageState() : super() {
     for (int i = 200; i < 300; i += 10) {
       _cats.add(
-        Cat("http://placekitten.com/200/$i", catNames[next(0, 6)], next(1, 32), 0),
+        Cat("http://placekitten.com/200/$i", catNames[next(0, 6)], next(1, 32),
+            0),
       );
     }
   }
@@ -74,7 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('Cat Voting'),
       ),
-      body: OrientationBuilder(builder: (BuildContext context, Orientation orientation) {
+      body: OrientationBuilder(
+          builder: (BuildContext context, Orientation orientation) {
         return GridView.builder(
           itemCount: _cats.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

@@ -8,7 +8,7 @@ abstract class WeatherRepository {
 }
 
 class FakeWeatherRepository extends WeatherRepository {
-  double cachedTempCelsius;
+  late double cachedTempCelsius;
 
   @override
   Future<Weather> fetchWeather(String cityName) {
@@ -21,7 +21,7 @@ class FakeWeatherRepository extends WeatherRepository {
       cachedTempCelsius = 20 + random.nextInt(15) + random.nextDouble();
       return Weather(
         cityName: cityName,
-        tempreatureCelsius: cachedTempCelsius,
+        temperatureCelsius: cachedTempCelsius,
       );
     });
   }
@@ -31,8 +31,8 @@ class FakeWeatherRepository extends WeatherRepository {
     return Future.delayed(Duration(seconds: 1), () {
       return Weather(
         cityName: cityName,
-        tempreatureCelsius: cachedTempCelsius,
-        tempratureFahrenheit: cachedTempCelsius * 1.8 + 32,
+        temperatureCelsius: cachedTempCelsius,
+        temperatureFahrenheit: cachedTempCelsius * 1.8 + 32,
       );
     });
   }

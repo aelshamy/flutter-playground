@@ -3,9 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SPSettings {
   final String fontSizeKey = 'font_size';
   final String colorKey = 'color';
-  static SharedPreferences _sp;
+  static late SharedPreferences _sp;
 
-  static SPSettings _instance;
+  static late SPSettings _instance;
 
   SPSettings._internal();
 

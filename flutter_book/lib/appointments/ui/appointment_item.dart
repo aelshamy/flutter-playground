@@ -6,24 +6,27 @@ import 'package:intl/intl.dart';
 
 class AppointmentItem extends StatefulWidget {
   final Appointment appointment;
-  const AppointmentItem({Key key, this.appointment}) : super(key: key);
+  const AppointmentItem({Key? key, required this.appointment})
+      : super(key: key);
 
   @override
   _AppointmentItemState createState() => _AppointmentItemState();
 }
 
 class _AppointmentItemState extends State<AppointmentItem> {
-  TextEditingController _titleEditingController;
-  TextEditingController _descriptionEditingController;
-  TextEditingController _appointmentDateEditingController;
-  TextEditingController _appointmentTimeEditingController;
+  late final TextEditingController _titleEditingController;
+  late final TextEditingController _descriptionEditingController;
+  late final TextEditingController _appointmentDateEditingController;
+  late final TextEditingController _appointmentTimeEditingController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _titleEditingController = TextEditingController(text: widget.appointment.title);
-    _descriptionEditingController = TextEditingController(text: widget.appointment.description);
+    _titleEditingController =
+        TextEditingController(text: widget.appointment.title);
+    _descriptionEditingController =
+        TextEditingController(text: widget.appointment.description);
     _appointmentDateEditingController =
         TextEditingController(text: widget.appointment.appointmentDate);
     _appointmentTimeEditingController =
@@ -42,8 +45,8 @@ class _AppointmentItemState extends State<AppointmentItem> {
               title: TextFormField(
                 decoration: InputDecoration(hintText: "Title"),
                 controller: _titleEditingController,
-                validator: (String inValue) {
-                  if (inValue.length == 0) {
+                validator: (String? inValue) {
+                  if (inValue?.length == 0) {
                     return "Please enter a title";
                   }
                   return null;
@@ -57,9 +60,9 @@ class _AppointmentItemState extends State<AppointmentItem> {
                 maxLines: 4,
                 decoration: InputDecoration(hintText: "Description"),
                 controller: _descriptionEditingController,
-                validator: (String inValue) {
-                  if (inValue.length == 0) {
-                    return "Please enter aescription";
+                validator: (String? inValue) {
+                  if (inValue?.length == 0) {
+                    return "Please enter a description";
                   }
                   return null;
                 },
@@ -118,7 +121,7 @@ class _AppointmentItemState extends State<AppointmentItem> {
               },
             ),
             Builder(
-              builder: (context) => FlatButton.icon(
+              builder: (context) => TextButton.icon(
                 label: Text("Save"),
                 icon: Icon(
                   Icons.save,
@@ -138,34 +141,27 @@ class _AppointmentItemState extends State<AppointmentItem> {
   Future _selectTime(BuildContext inContext) async {
     TimeOfDay initialTime = TimeOfDay.now();
 
-    if (widget.appointment.appointmentTime != null) {
-      final timeDateFormat = DateFormat.jm("en_US").parse(widget.appointment.appointmentTime);
-      initialTime = TimeOfDay.fromDateTime(timeDateFormat);
-    }
+    final timeDateFormat =
+        DateFormat.jm("en_US").parse(widget.appointment.appointmentTime);
+    initialTime = TimeOfDay.fromDateTime(timeDateFormat);
 
-    TimeOfDay picked = await showTimePicker(context: inContext, initialTime: initialTime);
+    TimeOfDay picked =
+        await showTimePicker(context: inContext, initialTime: initialTime);
 
-    if (picked != null) {
-      return DateFormat.jm("en_US")
-          .format(DateFormat.Hm("en_US").parse("${picked.hour}:${picked.minute}"));
-    }
-    return null;
+    return DateFormat.jm("en_US").format(
+        DateFormat.Hm("en_US").parse("${picked.hour}:${picked.minute}"));
   }
 
   Future<String> _selectDate(BuildContext context) async {
     DateTime initialDate = DateTime.now();
-    if (widget.appointment.appointmentDate != null) {
-      initialDate = DateFormat.yMMMMd("en_US").parse(widget.appointment.appointmentDate);
-    }
-    DateTime picked = await showDatePicker(
+    initialDate =
+        DateFormat.yMMMMd("en_US").parse(widget.appointment.appointmentDate);
+    DateTime? picked = await showDatePicker(
         context: context,
         initialDate: initialDate,
         firstDate: DateTime(1900),
         lastDate: DateTime(2100));
-    if (picked != null) {
-      return DateFormat.yMMMMd("en_US").format(picked.toLocal());
-    }
-    return null;
+    return DateFormat.yMMMMd("en_US").format(picked?.toLocal() ?? "");
   }
 
   void _save(BuildContext context) async {

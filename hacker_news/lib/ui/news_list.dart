@@ -11,9 +11,9 @@ class NewsList extends StatelessWidget {
         builder: (BuildContext context, StoriesState state) {
           if (state.data != null) {
             return ListView.builder(
-              itemCount: state.data.length,
+              itemCount: state.data?.length,
               itemBuilder: (BuildContext context, int index) {
-                print(state.data[index]);
+                print(state.data?[index]);
                 return SizedBox();
                 // return FutureBuilder(
                 //   future: state.data[index],

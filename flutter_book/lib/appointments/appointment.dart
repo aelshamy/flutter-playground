@@ -7,7 +7,13 @@ class Appointment extends Equatable {
   final String appointmentDate;
   final String appointmentTime;
 
-  Appointment({this.id, this.title, this.description, this.appointmentDate, this.appointmentTime});
+  Appointment({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.appointmentDate,
+    required this.appointmentTime,
+  });
 
   factory Appointment.fromMap(Map inMap) => Appointment(
         id: inMap["id"],
@@ -27,26 +33,28 @@ class Appointment extends Equatable {
     };
   }
 
-  Appointment copyWith({
-    int id,
-    String title,
-    String description,
-    String appointmentDate,
-    String appointmentTime,
-  }) =>
-      Appointment(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        description: description ?? this.description,
-        appointmentDate: appointmentDate ?? this.appointmentDate,
-        appointmentTime: appointmentTime ?? this.appointmentTime,
-      );
-
   @override
   String toString() {
     return "{ id=$id, title=$title, description=$description, appointmentDate=$appointmentDate, appointmentTime=$appointmentTime }";
   }
 
   @override
-  List<Object> get props => [id, title, description, appointmentDate, appointmentTime];
+  List<Object> get props =>
+      [id, title, description, appointmentDate, appointmentTime];
+
+  Appointment copyWith({
+    int? id,
+    String? title,
+    String? description,
+    String? appointmentDate,
+    String? appointmentTime,
+  }) {
+    return Appointment(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      appointmentDate: appointmentDate ?? this.appointmentDate,
+      appointmentTime: appointmentTime ?? this.appointmentTime,
+    );
+  }
 }

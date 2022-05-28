@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key key}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,8 @@ class MyHomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Consumer<PostChangeNotifier>(
-              builder: (BuildContext context, PostChangeNotifier notifier, Widget child) {
+              builder: (BuildContext context, PostChangeNotifier notifier,
+                  Widget? child) {
                 if (notifier.state == NotifierState.initial) {
                   return Text('Press the button 👇');
                 } else if (notifier.state == NotifierState.loading) {
@@ -48,9 +49,10 @@ class MyHomePage extends StatelessWidget {
                 }
               },
             ),
-            RaisedButton(
+            ElevatedButton(
               child: Text('Get Post'),
-              onPressed: () => Provider.of<PostChangeNotifier>(context).getOnePost(),
+              onPressed: () =>
+                  Provider.of<PostChangeNotifier>(context).getOnePost(),
             ),
           ],
         ),

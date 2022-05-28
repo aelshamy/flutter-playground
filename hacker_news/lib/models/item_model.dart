@@ -16,19 +16,19 @@ class ItemModel {
   final int descendants;
 
   ItemModel({
-    this.id,
-    this.deleted,
-    this.type,
-    this.by,
-    this.time,
-    this.text,
-    this.dead,
-    this.parent,
-    this.kids,
-    this.url,
-    this.score,
-    this.title,
-    this.descendants,
+    required this.id,
+    required this.deleted,
+    required this.type,
+    required this.by,
+    required this.time,
+    required this.text,
+    required this.dead,
+    required this.parent,
+    required this.kids,
+    required this.url,
+    required this.score,
+    required this.title,
+    required this.descendants,
   });
 
   static ItemModel fromJson(Map<String, dynamic> map) => ItemModel(

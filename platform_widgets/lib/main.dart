@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
-  HomePage({Key key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -100,9 +100,9 @@ class HomePage extends StatelessWidget {
                     value: e,
                     groupValue: _singleNotifier.currentCountry,
                     selected: _singleNotifier.currentCountry == e,
-                    onChanged: (value) {
+                    onChanged: (String? value) {
                       if (value != _singleNotifier.currentCountry) {
-                        _singleNotifier.updateCountry(value);
+                        _singleNotifier.updateCountry(value!);
                       }
                     },
                   ),
@@ -129,7 +129,7 @@ class HomePage extends StatelessWidget {
                   (e) => PlatformToggleTile(
                     title: Text(e),
                     onChanged: (value) {
-                      value
+                      value == true
                           ? _multipleNotifier.addItem(e)
                           : _multipleNotifier.removeItem(e);
                     },

@@ -15,15 +15,16 @@ class PostChangeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Either<Failure, Post> _post;
+  late final Either<Failure, Post> _post;
   Either<Failure, Post> get post => _post;
   void _setPost(Either<Failure, Post> post) {
     _post = post;
     notifyListeners();
   }
 
-  Failure _failure;
+  late final Failure _failure;
   Failure get failure => _failure;
+
   void _setFailure(Failure failure) {
     _failure = failure;
     notifyListeners();
@@ -31,7 +32,11 @@ class PostChangeNotifier extends ChangeNotifier {
 
   void getOnePost() async {
     _setState(NotifierState.loading);
-    await Task(() => _postService.getOnePost()).attempt().mapLeftToFailure().run().then((value) => _setPost(value));
+    await Task(() => _postService.getOnePost())
+        .attempt()
+        .mapLeftToFailure()
+        .run()
+        .then((value) => _setPost(value));
     _setState(NotifierState.loaded);
   }
 }

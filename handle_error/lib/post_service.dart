@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
 class FakeHttpClient {
   Future<String> getResponseBody() async {
     await Future.delayed(Duration(seconds: 1));
@@ -54,14 +52,13 @@ class Post {
   final String body;
 
   Post({
-    @required this.id,
-    @required this.userId,
-    @required this.title,
-    @required this.body,
+    required this.id,
+    required this.userId,
+    required this.title,
+    required this.body,
   });
 
   static Post fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
     return Post(
       id: map['id'],
       userId: map['userId'],
@@ -73,5 +70,6 @@ class Post {
   static Post fromJson(String source) => fromMap(json.decode(source));
 
   @override
-  String toString() => 'Post id: $id, userId: $userId, title: $title, body: $body';
+  String toString() =>
+      'Post id: $id, userId: $userId, title: $title, body: $body';
 }

@@ -11,10 +11,10 @@ class PasswordsScreen extends StatefulWidget {
 }
 
 class _PasswordsScreenState extends State<PasswordsScreen> {
-  SembastDb db;
+  late final SembastDb db;
   int settingColor = 0xff1976d2;
   double fontSize = 16;
-  SPSettings settings;
+  late final SPSettings settings;
   @override
   void initState() {
     db = SembastDb();
@@ -40,7 +40,7 @@ class _PasswordsScreenState extends State<PasswordsScreen> {
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           List<Password> passwords = snapshot.data;
           return ListView.builder(
-            itemCount: passwords?.length ?? 0,
+            itemCount: passwords.length,
             itemBuilder: (_, index) {
               return Dismissible(
                 key: Key(passwords[index].id.toString()),
@@ -74,7 +74,8 @@ class _PasswordsScreenState extends State<PasswordsScreen> {
           showDialog(
             context: context,
             builder: (context) {
-              return PasswordDetailDialog(Password('', ''), true);
+              return PasswordDetailDialog(
+                  Password(id: 1, name: '', password: ''), true);
             },
           );
         },

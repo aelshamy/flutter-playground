@@ -9,7 +9,7 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart';
 
 class AppointmentsList extends StatelessWidget {
-  const AppointmentsList({Key key}) : super(key: key);
+  const AppointmentsList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,8 @@ class AppointmentsList extends StatelessWidget {
           if (state is AppointmentsLoaded) {
             EventList<Event> _markedDateMap = EventList();
             state.appointments.forEach((appointment) {
-              final appDate = DateFormat.yMMMMd("en_US").parse(appointment.appointmentDate);
+              final appDate =
+                  DateFormat.yMMMMd("en_US").parse(appointment.appointmentDate);
               _markedDateMap.add(
                 appDate,
                 Event(
@@ -67,8 +68,8 @@ class AppointmentsList extends StatelessWidget {
     );
   }
 
-  void _showAppointments(
-      BuildContext inContext, DateTime inDate, List<Appointment> appointments) async {
+  void _showAppointments(BuildContext inContext, DateTime inDate,
+      List<Appointment> appointments) async {
     showModalBottomSheet(
       context: inContext,
       builder: (BuildContext context) {
@@ -79,7 +80,9 @@ class AppointmentsList extends StatelessWidget {
               child: Text(
                 DateFormat.yMMMMd("en_US").format(inDate.toLocal()),
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Theme.of(context).accentColor, fontSize: 24),
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 24),
               ),
             ),
             Divider(),
@@ -105,7 +108,8 @@ class AppointmentsList extends StatelessWidget {
                     ),
                     confirmDismiss: (direction) =>
                         _confirmDismiss(inContext, appointment.description),
-                    onDismissed: (direction) => _deleteAppointment(inContext, appointment),
+                    onDismissed: (direction) =>
+                        _deleteAppointment(inContext, appointment),
                     child: ListTile(
                       // trailing: Text("${appointment.appointmentTime}"),
                       title: RichText(
@@ -113,12 +117,17 @@ class AppointmentsList extends StatelessWidget {
                           style: TextStyle(color: Colors.black),
                           children: [
                             TextSpan(
-                              text: StringUtils.capitalize("${appointment.title}\n"),
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              text: StringUtils.capitalize(
+                                  "${appointment.title}\n"),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                             TextSpan(
                               text: "${appointment.appointmentTime}\n",
-                              style: TextStyle(color: Colors.black54, fontSize: 14, height: 2),
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 14,
+                                  height: 2),
                             )
                           ],
                         ),
@@ -128,7 +137,8 @@ class AppointmentsList extends StatelessWidget {
                         Navigator.of(inContext).push(
                           MaterialPageRoute(
                             builder: (_) => BlocProvider.value(
-                              value: BlocProvider.of<AppointmentsBloc>(inContext),
+                              value:
+                                  BlocProvider.of<AppointmentsBloc>(inContext),
                               child: AppointmentItem(appointment: appointment),
                             ),
                           ),
@@ -137,7 +147,8 @@ class AppointmentsList extends StatelessWidget {
                     ),
                   );
                 },
-                separatorBuilder: (BuildContext context, int index) => Divider(),
+                separatorBuilder: (BuildContext context, int index) =>
+                    Divider(),
               ),
             ),
           ],
@@ -158,7 +169,8 @@ class AppointmentsList extends StatelessWidget {
     );
   }
 
-  Future<bool> _confirmDismiss(BuildContext context, String appointmentDescription) async {
+  Future<bool> _confirmDismiss(
+      BuildContext context, String appointmentDescription) async {
     return await showDialog(
       context: context,
       barrierDismissible: false,
@@ -171,7 +183,8 @@ class AppointmentsList extends StatelessWidget {
               children: <TextSpan>[
                 TextSpan(text: 'Are you sure you want to delete "'),
                 TextSpan(
-                    text: "$appointmentDescription", style: TextStyle(fontWeight: FontWeight.bold)),
+                    text: "$appointmentDescription",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 TextSpan(text: '"?'),
               ],
             ),

@@ -12,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int settingColor = 0xff1976d2;
   double fontSize = 16;
-  SPSettings settings;
+  late final SPSettings settings;
   @override
   void initState() {
     settings = SPSettings();

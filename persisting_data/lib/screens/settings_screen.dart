@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:persisting_data/data/shared_prefs.dart';
 
 class SettingsScreen extends StatefulWidget {
-  SettingsScreen({Key key}) : super(key: key);
+  SettingsScreen({Key? key}) : super(key: key);
 
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
@@ -20,7 +20,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     0xFF795548,
   ];
 
-  SPSettings preferences;
+  late final SPSettings preferences;
 
   @override
   void initState() {
@@ -93,11 +93,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  setFontSize(double size) {
+  void setFontSize(double? size) {
     setState(() {
-      fontSize = size;
+      fontSize = size!;
       preferences.setFontSize(size);
     });
+    return null;
   }
 }
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ValueNotifierDemo extends StatelessWidget {
-  ValueNotifierDemo({Key key, this.title}) : super(key: key);
+  ValueNotifierDemo({Key? key, required this.title}) : super(key: key);
 
   final String title;
 

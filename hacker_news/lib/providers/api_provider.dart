@@ -8,13 +8,13 @@ class ApiProvider implements Source {
   final Client _client;
   final baseUrl = "https://hacker-news.firebaseio.com/v0";
 
-  ApiProvider({Client client}) : _client = client ?? Client();
+  ApiProvider({Client? client}) : _client = client ?? Client();
 
   @override
   Future<List<int>> fetchTopIds() async {
-    List<dynamic> ids;
+    List<dynamic> ids = [];
     try {
-      final response = await _client.get("$baseUrl/topstories.json");
+      final response = await _client.get(Uri(path: "$baseUrl/topstories.json"));
       ids = jsonDecode(response.body);
     } catch (e) {
       print(e);
@@ -25,7 +25,7 @@ class ApiProvider implements Source {
   @override
   Future<ItemModel> fetchItem(int id) async {
     print(id);
-    final response = await _client.get("$baseUrl/item/$id.json");
+    final response = await _client.get(Uri(path: "$baseUrl/item/$id.json"));
     final parsedJson = jsonDecode(response.body);
     return ItemModel.fromJson(parsedJson);
   }

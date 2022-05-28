@@ -16,22 +16,23 @@ class DbProvider implements Source, Cache {
   DbProvider._privateConstructor();
   static final DbProvider instance = DbProvider._privateConstructor();
 
-  static Database _database;
+  static late Database? _database;
 
   Future<Database> get database async {
-    if (_database != null) return _database;
+    if (_database != null) return _database!;
     _database = await _initDatabase();
-    return _database;
+    return _database!;
   }
 
   Future<Database> _initDatabase() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentDirectory.path, _databaseName);
-    return await openDatabase(path, version: _databaseVersion, onCreate: _onCreate);
+    return await openDatabase(path,
+        version: _databaseVersion, onCreate: _onCreate);
   }
 
   FutureOr<void> _onCreate(Database newDb, int version) async {
-    await newDb.execute(""" 
+    await newDb.execute("""
         CREATE TABLE $_tableName
         (
           id INTEGER PRIMARY KEY,
@@ -52,8 +53,8 @@ class DbProvider implements Source, Cache {
   }
 
   @override
-  Future<ItemModel> fetchItem(int id) async {
-    final maps = await _database.query(
+  Future<ItemModel?> fetchItem(int id) async {
+    final maps = await _database!.query(
       _tableName,
       columns: null,
       where: "id = ?",
@@ -65,7 +66,7 @@ class DbProvider implements Source, Cache {
 
   @override
   Future<int> addItem(ItemModel item) {
-    return _database.insert(
+    return _database!.insert(
       _tableName,
       item.toMap(),
       conflictAlgorithm: ConflictAlgorithm.ignore,
@@ -73,12 +74,12 @@ class DbProvider implements Source, Cache {
   }
 
   @override
-  Future<List<int>> fetchTopIds() {
-    return null;
+  Future<List<int>> fetchTopIds() async {
+    return [];
   }
 
   @override
   Future<int> clear() {
-    return _database.delete(_tableName);
+    return _database!.delete(_tableName);
   }
 }

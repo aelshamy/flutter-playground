@@ -53,15 +53,16 @@ class _PasswordDetailDialogState extends State<PasswordDetailDialog> {
         ],
       ),
       actions: [
-        FlatButton(
+        ElevatedButton(
           child: Text('Save'),
           onPressed: () {
-            widget.password.name = txtName.text;
-            widget.password.password = txtPassword.text;
+            final pass = widget.password.copyWith(
+              name: txtName.text,
+              password: txtPassword.text,
+            );
+
             SembastDb db = SembastDb();
-            (widget.isNew)
-                ? db.addPassword(widget.password)
-                : db.updatePassword(widget.password);
+            (widget.isNew) ? db.addPassword(pass) : db.updatePassword(pass);
 
             Navigator.pop(context);
             Navigator.push(

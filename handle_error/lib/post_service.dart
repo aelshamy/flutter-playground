@@ -3,7 +3,7 @@ import 'dart:io';
 
 class FakeHttpClient {
   Future<String> getResponseBody() async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
 
     //! No Internet Connection
     // throw SocketException('No Internet');

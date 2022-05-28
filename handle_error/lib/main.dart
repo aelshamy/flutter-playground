@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:handle_error/post_change_notifier.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -15,20 +17,20 @@ class MyApp extends StatelessWidget {
       ),
       home: ChangeNotifierProvider(
         create: (BuildContext context) => PostChangeNotifier(),
-        child: MyHomePage(),
+        child: const MyHomePage(),
       ),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Error Handling"),
+        title: const Text("Error Handling"),
       ),
       body: Center(
         child: Column(
@@ -38,9 +40,9 @@ class MyHomePage extends StatelessWidget {
               builder: (BuildContext context, PostChangeNotifier notifier,
                   Widget? child) {
                 if (notifier.state == NotifierState.initial) {
-                  return Text('Press the button 👇');
+                  return const Text('Press the button 👇');
                 } else if (notifier.state == NotifierState.loading) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 } else {
                   return notifier.post.fold(
                     (failure) => Text(failure.toString()),
@@ -50,7 +52,7 @@ class MyHomePage extends StatelessWidget {
               },
             ),
             ElevatedButton(
-              child: Text('Get Post'),
+              child: const Text('Get Post'),
               onPressed: () =>
                   Provider.of<PostChangeNotifier>(context).getOnePost(),
             ),

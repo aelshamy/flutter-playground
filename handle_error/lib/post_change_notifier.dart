@@ -25,16 +25,23 @@ class PostChangeNotifier extends ChangeNotifier {
   late final Failure _failure;
   Failure get failure => _failure;
 
-  void _setFailure(Failure failure) {
-    _failure = failure;
-    notifyListeners();
-  }
-
   void getOnePost() async {
     _setState(NotifierState.loading);
     await Task(() => _postService.getOnePost())
         .attempt()
-        .mapLeftToFailure()
+        // .mapLeftToFailure()
+        .map(
+          // Grab only the *left* side of Either<Object, Post>
+          (either) => either.leftMap((obj) {
+            try {
+              // Cast the Object into a Failure
+              return obj as Failure;
+            } catch (e) {
+              // 'rethrow' the original exception
+              throw obj;
+            }
+          }),
+        )
         .run()
         .then((value) => _setPost(value));
     _setState(NotifierState.loaded);
@@ -43,7 +50,7 @@ class PostChangeNotifier extends ChangeNotifier {
 
 extension TaskX<T extends Either<Object, U>, U> on Task<T> {
   Task<Either<Failure, U>> mapLeftToFailure() {
-    return this.map(
+    return map(
       (either) => either.leftMap((obj) {
         try {
           return obj as Failure;

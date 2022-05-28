@@ -11,19 +11,21 @@ import 'package:path/path.dart';
 
 class ContactItem extends StatefulWidget {
   final Contact contact;
-  const ContactItem({Key key, this.contact}) : super(key: key);
+  const ContactItem({Key? key, required this.contact}) : super(key: key);
 
   @override
-  _ContactItemState createState() => _ContactItemState();
+  ContactItemState createState() => ContactItemState();
 }
 
-class _ContactItemState extends State<ContactItem> {
-  TextEditingController _nameEditingController;
-  TextEditingController _phoneEditingController;
-  TextEditingController _emailEditingController;
-  TextEditingController _birthdayEditingController;
+class ContactItemState extends State<ContactItem> {
+  late final TextEditingController _nameEditingController;
+  late final TextEditingController _phoneEditingController;
+  late final TextEditingController _emailEditingController;
+  late final TextEditingController _birthdayEditingController;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final ImagePicker picker = ImagePicker();
 
   @override
   void initState() {
@@ -31,21 +33,23 @@ class _ContactItemState extends State<ContactItem> {
     _nameEditingController = TextEditingController(text: widget.contact.name);
     _phoneEditingController = TextEditingController(text: widget.contact.phone);
     _emailEditingController = TextEditingController(text: widget.contact.email);
-    _birthdayEditingController = TextEditingController(text: widget.contact.birthday);
+    _birthdayEditingController =
+        TextEditingController(text: widget.contact.birthday);
   }
 
   @override
   Widget build(BuildContext context) {
     File avatarFile = File(join(AppConfig.docsDir.path, "avatar"));
     if (avatarFile.existsSync() == false) {
-      avatarFile = File(join(AppConfig.docsDir.path, widget.contact.id.toString()));
+      avatarFile =
+          File(join(AppConfig.docsDir.path, widget.contact.id.toString()));
     }
     return Scaffold(
       body: Form(
         key: _formKey,
         child: ListView(
           children: [
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             Center(
               child: GestureDetector(
                 onTap: () => _selectAvatar(context),
@@ -63,7 +67,7 @@ class _ContactItemState extends State<ContactItem> {
                         : null,
                   ),
                   child: !avatarFile.existsSync()
-                      ? Icon(
+                      ? const Icon(
                           Icons.image,
                           size: 60,
                         )
@@ -71,7 +75,7 @@ class _ContactItemState extends State<ContactItem> {
                 ),
               ),
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             // Center(
             //   child: ListTile(
             //     title:
@@ -84,12 +88,12 @@ class _ContactItemState extends State<ContactItem> {
             //   ),
             // ),
             ListTile(
-              leading: Icon(Icons.person),
+              leading: const Icon(Icons.person),
               title: TextFormField(
-                decoration: InputDecoration(hintText: "Name"),
+                decoration: const InputDecoration(hintText: "Name"),
                 controller: _nameEditingController,
-                validator: (String inValue) {
-                  if (inValue.length == 0) {
+                validator: (String? inValue) {
+                  if (inValue?.isEmpty == true) {
                     return "Please enter a name";
                   }
                   return null;
@@ -97,28 +101,28 @@ class _ContactItemState extends State<ContactItem> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.phone),
+              leading: const Icon(Icons.phone),
               title: TextFormField(
                 keyboardType: TextInputType.phone,
-                decoration: InputDecoration(hintText: "Phone"),
+                decoration: const InputDecoration(hintText: "Phone"),
                 controller: _phoneEditingController,
               ),
             ),
             ListTile(
-              leading: Icon(Icons.email),
+              leading: const Icon(Icons.email),
               title: TextFormField(
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(hintText: "Email"),
+                decoration: const InputDecoration(hintText: "Email"),
                 controller: _emailEditingController,
               ),
             ),
             ListTile(
-              leading: Icon(Icons.today),
+              leading: const Icon(Icons.today),
               title: TextFormField(
                 decoration: InputDecoration(
                   hintText: "Birthday",
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     color: Colors.blue,
                     onPressed: () async {
                       String selectedDate = await _selectDate(context);
@@ -133,13 +137,13 @@ class _ContactItemState extends State<ContactItem> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            FlatButton.icon(
-              label: Text("Cancel"),
-              icon: Icon(
+            TextButton.icon(
+              label: const Text("Cancel"),
+              icon: const Icon(
                 Icons.cancel,
                 color: Colors.red,
               ),
@@ -152,9 +156,9 @@ class _ContactItemState extends State<ContactItem> {
               },
             ),
             Builder(
-              builder: (context) => FlatButton.icon(
-                label: Text("Save"),
-                icon: Icon(
+              builder: (context) => TextButton.icon(
+                label: const Text("Save"),
+                icon: const Icon(
                   Icons.save,
                   color: Colors.green,
                 ),
@@ -170,8 +174,6 @@ class _ContactItemState extends State<ContactItem> {
   }
 
   Future _selectAvatar(BuildContext inContext) {
-    print("ContactsEntry._selectAvatar()");
-
     return showDialog(
       context: inContext,
       builder: (BuildContext inDialogContext) {
@@ -180,23 +182,27 @@ class _ContactItemState extends State<ContactItem> {
             child: ListBody(
               children: [
                 GestureDetector(
-                    child: Text("Take a picture"),
+                    child: const Text("Take a picture"),
                     onTap: () async {
-                      var cameraImage = await ImagePicker.pickImage(source: ImageSource.camera);
+                      var cameraImage = await picker.pickImage(
+                        source: ImageSource.camera,
+                      );
                       if (cameraImage != null) {
-                        cameraImage.copySync(join(AppConfig.docsDir.path, "avatar"));
+                        File(cameraImage.path)
+                            .copySync(join(AppConfig.docsDir.path, "avatar"));
                       }
                       setState(() {});
-
-                      Navigator.of(inDialogContext).pop();
+                      Navigator.of(inContext).pop();
                     }),
-                Padding(padding: EdgeInsets.all(10)),
+                const Padding(padding: EdgeInsets.all(10)),
                 GestureDetector(
-                    child: Text("Select From Gallery"),
+                    child: const Text("Select From Gallery"),
                     onTap: () async {
-                      var galleryImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+                      var galleryImage =
+                          await picker.pickImage(source: ImageSource.gallery);
                       if (galleryImage != null) {
-                        galleryImage.copySync(join(AppConfig.docsDir.path, "avatar"));
+                        File(galleryImage.path)
+                            .copySync(join(AppConfig.docsDir.path, "avatar"));
                       }
                       setState(() {});
                       Navigator.of(inDialogContext).pop();
@@ -211,23 +217,18 @@ class _ContactItemState extends State<ContactItem> {
 
   Future<String> _selectDate(BuildContext context) async {
     DateTime initialDate = DateTime.now();
-    if (widget.contact.birthday != null) {
-      initialDate = DateFormat.yMMMMd("en_US").parse(widget.contact.birthday);
-    }
-    DateTime picked = await showDatePicker(
+    initialDate = DateFormat.yMMMMd("en_US").parse(widget.contact.birthday);
+    DateTime? picked = await showDatePicker(
         context: context,
         initialDate: initialDate,
         firstDate: DateTime(1900),
         lastDate: DateTime(2100));
-    if (picked != null) {
-      return DateFormat.yMMMMd("en_US").format(picked.toLocal());
-    }
-    return null;
+    return DateFormat.yMMMMd("en_US").format(picked!.toLocal());
   }
 
   void _save(BuildContext context) async {
-    if (_formKey.currentState.validate()) {
-      if (widget.contact.id == null) {
+    if (_formKey.currentState?.validate() == true) {
+      if (widget.contact.id > 0) {
         BlocProvider.of<ContactsBloc>(context).add(
           AddContact(
             contact: Contact(
@@ -253,19 +254,19 @@ class _ContactItemState extends State<ContactItem> {
 
       File avatarFile = File(join(AppConfig.docsDir.path, "avatar"));
       if (avatarFile.existsSync()) {
-        avatarFile.renameSync(join(AppConfig.docsDir.path, widget.contact.id.toString()));
+        avatarFile.renameSync(
+            join(AppConfig.docsDir.path, widget.contact.id.toString()));
       }
 
-      await Scaffold.of(context)
+      await ScaffoldMessenger.of(context)
           .showSnackBar(
-            SnackBar(
+            const SnackBar(
               backgroundColor: Colors.green,
               duration: Duration(seconds: 1),
               content: Text("Appointment saved"),
             ),
           )
           .closed;
-      Navigator.of(context).pop();
     }
   }
 

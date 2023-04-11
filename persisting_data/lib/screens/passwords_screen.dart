@@ -6,6 +6,8 @@ import '../data/shared_prefs.dart';
 import '../models/password.dart';
 
 class PasswordsScreen extends StatefulWidget {
+  const PasswordsScreen({super.key});
+
   @override
   _PasswordsScreenState createState() => _PasswordsScreenState();
 }
@@ -32,43 +34,46 @@ class _PasswordsScreenState extends State<PasswordsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Passwords List'),
+        title: const Text('Passwords List'),
         backgroundColor: Color(settingColor),
       ),
       body: FutureBuilder(
         future: getPasswords(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          List<Password> passwords = snapshot.data;
-          return ListView.builder(
-            itemCount: passwords.length,
-            itemBuilder: (_, index) {
-              return Dismissible(
-                key: Key(passwords[index].id.toString()),
-                onDismissed: (_) {
-                  db.deletePassword(passwords[index]);
-                },
-                child: ListTile(
-                  title: Text(
-                    passwords[index].name,
-                    style: TextStyle(fontSize: fontSize),
-                  ),
-                  trailing: Icon(Icons.edit),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return PasswordDetailDialog(passwords[index], false);
-                      },
-                    );
+          if (snapshot.hasData) {
+            List<Password> passwords = snapshot.data;
+            return ListView.builder(
+              itemCount: passwords.length,
+              itemBuilder: (_, index) {
+                return Dismissible(
+                  key: Key(passwords[index].id.toString()),
+                  onDismissed: (_) {
+                    db.deletePassword(passwords[index]);
                   },
-                ),
-              );
-            },
-          );
+                  child: ListTile(
+                    title: Text(
+                      passwords[index].name,
+                      style: TextStyle(fontSize: fontSize),
+                    ),
+                    trailing: const Icon(Icons.edit),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return PasswordDetailDialog(passwords[index], false);
+                        },
+                      );
+                    },
+                  ),
+                );
+              },
+            );
+          } else {
+            return const CircularProgressIndicator.adaptive();
+          }
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
         backgroundColor: Color(settingColor),
         onPressed: () {
           showDialog(
@@ -79,6 +84,7 @@ class _PasswordsScreenState extends State<PasswordsScreen> {
             },
           );
         },
+        child: const Icon(Icons.add),
       ),
     );
   }

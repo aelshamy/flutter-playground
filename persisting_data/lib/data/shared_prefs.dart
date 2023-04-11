@@ -5,15 +5,13 @@ class SPSettings {
   final String colorKey = 'color';
   static late SharedPreferences _sp;
 
-  static late SPSettings _instance;
+  static SPSettings? _instance;
 
   SPSettings._internal();
 
   factory SPSettings() {
-    if (_instance == null) {
-      _instance = SPSettings._internal();
-    }
-    return _instance;
+    _instance ??= SPSettings._internal();
+    return _instance!;
   }
 
   Future<void> init() async {

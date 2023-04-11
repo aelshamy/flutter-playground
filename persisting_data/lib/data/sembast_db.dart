@@ -12,16 +12,14 @@ class SembastDb {
   final store = intMapStoreFactory.store('passwords');
   var codec = getEncryptSembastCodec(password: 'Password');
 
-  static SembastDb _instance = SembastDb._internal();
+  static final SembastDb _instance = SembastDb._internal();
 
   SembastDb._internal();
 
   factory SembastDb() => _instance;
 
   Future<Database> init() async {
-    if (_db == null) {
-      _db = await openDb();
-    }
+    _db ??= await openDb();
     return _db!;
   }
 
@@ -33,13 +31,13 @@ class SembastDb {
   }
 
   Future<int> addPassword(Password password) {
-    return store.add(_db, password.toMap());
+    return store.add(_db!, password.toMap());
   }
 
   Future<List<Password>> getPasswords() async {
     await init();
     final finder = Finder(sortOrders: [SortOrder('name')]);
-    final snapshot = await store.find(_db, finder: finder);
+    final snapshot = await store.find(_db!, finder: finder);
     final list = snapshot
         .map((item) => Password.fromMap(item.value).copyWith(id: item.key))
         .toList();
@@ -48,15 +46,15 @@ class SembastDb {
 
   Future<int> updatePassword(Password password) {
     final finder = Finder(filter: Filter.byKey(password.id));
-    return store.update(_db, password.toMap(), finder: finder);
+    return store.update(_db!, password.toMap(), finder: finder);
   }
 
   Future<int> deletePassword(Password password) {
     final finder = Finder(filter: Filter.byKey(password.id));
-    return store.delete(_db, finder: finder);
+    return store.delete(_db!, finder: finder);
   }
 
   Future<int> deleteAll() {
-    return store.delete(_db);
+    return store.delete(_db!);
   }
 }

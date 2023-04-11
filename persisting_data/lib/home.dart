@@ -5,6 +5,8 @@ import 'screens/passwords_screen.dart';
 import 'screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -12,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int settingColor = 0xff1976d2;
   double fontSize = 16;
-  late final SPSettings settings;
+  late SPSettings settings;
   @override
   void initState() {
     settings = SPSettings();
@@ -28,22 +30,22 @@ class _HomeScreenState extends State<HomeScreen> {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Color(settingColor),
-            title: Text('Persisting Data'),
+            title: const Text('Persisting Data'),
           ),
           drawer: Drawer(
             child: ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
                 DrawerHeader(
-                  child: Text(
+                  decoration: BoxDecoration(
+                    color: Color(settingColor),
+                  ),
+                  child: const Text(
                     'Persisting Data',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 28,
                     ),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Color(settingColor),
                   ),
                 ),
                 ListTile(
@@ -58,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SettingsScreen()));
+                            builder: (context) => const SettingsScreen()));
                   },
                 ),
                 ListTile(
@@ -73,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PasswordsScreen(),
+                        builder: (context) => const PasswordsScreen(),
                       ),
                     );
                   },
@@ -82,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           body: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/travel.jpg'),
                 fit: BoxFit.cover,

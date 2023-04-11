@@ -8,7 +8,7 @@ class PasswordDetailDialog extends StatefulWidget {
   final Password password;
   final bool isNew;
 
-  PasswordDetailDialog(this.password, this.isNew);
+  const PasswordDetailDialog(this.password, this.isNew, {super.key});
 
   @override
   _PasswordDetailDialogState createState() => _PasswordDetailDialogState();
@@ -29,7 +29,7 @@ class _PasswordDetailDialogState extends State<PasswordDetailDialog> {
         children: [
           TextField(
             controller: txtName,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Description',
             ),
           ),
@@ -45,8 +45,8 @@ class _PasswordDetailDialogState extends State<PasswordDetailDialog> {
                   });
                 },
                 icon: hidePassword
-                    ? Icon(Icons.visibility)
-                    : Icon(Icons.visibility_off),
+                    ? const Icon(Icons.visibility)
+                    : const Icon(Icons.visibility_off),
               ),
             ),
           ),
@@ -54,7 +54,7 @@ class _PasswordDetailDialogState extends State<PasswordDetailDialog> {
       ),
       actions: [
         ElevatedButton(
-          child: Text('Save'),
+          child: const Text('Save'),
           onPressed: () {
             final pass = widget.password.copyWith(
               name: txtName.text,
@@ -68,14 +68,14 @@ class _PasswordDetailDialogState extends State<PasswordDetailDialog> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PasswordsScreen(),
+                builder: (context) => const PasswordsScreen(),
               ),
             );
           },
         ),
-        FlatButton(
+        TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
       ],
     );

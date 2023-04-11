@@ -56,15 +56,28 @@ class _MyHomePageState extends State<MyHomePage>
       curve: Curves.easeInOut,
     );
 
-    _rotationAngle = Tween<double>(begin: 1, end: 4).animate(_curvedAnimation);
+    _rotationAngle = Tween<double>(begin: 1, end: 4).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
     _centerIconBackgroundColor =
-        ColorTween(begin: Colors.red, end: Colors.black12)
+        ColorTween(begin: Colors.green, end: Colors.black12)
             .animate(_curvedAnimation);
     _centerIconForegroundColor =
         ColorTween(begin: Colors.white, end: Colors.black)
             .animate(_curvedAnimation);
-    _bottomBarActionMenuHight =
-        Tween<double>(begin: -50, end: 90).animate(_curvedAnimation);
+    _bottomBarActionMenuHight = Tween<double>(begin: -50, end: 90).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+        //     curve: Interval(
+        //   0.125, 0.250,
+        //   curve: Curves.ease,
+        // ),
+      ),
+    );
   }
 
   @override
@@ -147,16 +160,16 @@ class BottomBarActionMenu extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             BottomMenuActionsItem(
-              title: 'Add Places',
-              icon: Icons.location_on,
+              title: 'Payments',
+              icon: Icons.money,
               position: Tween<Offset>(
                 begin: const Offset(0, 2),
                 end: const Offset(0, 0),
               ).animate(controller),
             ),
             BottomMenuActionsItem(
-              title: 'Create List',
-              icon: Icons.view_list_rounded,
+              title: 'Transfers',
+              icon: Icons.transfer_within_a_station,
               position: Tween<Offset>(
                 begin: const Offset(0, 7),
                 end: const Offset(0, 0),
@@ -202,11 +215,11 @@ class BottomMenuActionsItem extends StatelessWidget {
             height: 50,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.black,
+              color: Colors.green,
             ),
             child: Icon(
               icon,
-              size: 30,
+              size: _iconSize,
               color: Colors.white,
             ),
           ),

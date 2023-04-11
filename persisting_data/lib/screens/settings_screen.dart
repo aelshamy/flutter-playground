@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:persisting_data/data/shared_prefs.dart';
 
 class SettingsScreen extends StatefulWidget {
-  SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({Key? key}) : super(key: key);
 
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
@@ -38,7 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings"),
+        title: const Text("Settings"),
         backgroundColor: Color(settingColor),
       ),
       body: Column(
@@ -50,22 +50,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           DropdownButton<double>(
             value: fontSize,
-            items: [
+            items: const [
               DropdownMenuItem(
-                child: Text('Small'),
                 value: 12,
+                child: Text('Small'),
               ),
               DropdownMenuItem(
-                child: Text('Medium'),
                 value: 16,
+                child: Text('Medium'),
               ),
               DropdownMenuItem(
-                child: Text('Large'),
                 value: 20,
+                child: Text('Large'),
               ),
               DropdownMenuItem(
-                child: Text('Extra-Large'),
                 value: 24,
+                child: Text('Extra-Large'),
               ),
             ],
             onChanged: setFontSize,
@@ -98,13 +98,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       fontSize = size!;
       preferences.setFontSize(size);
     });
-    return null;
+    return;
   }
 }
 
 class ColorSquare extends StatelessWidget {
   final int colorCode;
-  const ColorSquare(this.colorCode);
+  const ColorSquare(this.colorCode, {super.key});
 
   @override
   Widget build(BuildContext context) {

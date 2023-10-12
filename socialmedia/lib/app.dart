@@ -11,6 +11,8 @@ import 'package:socialmedia/repo/firestore_repo.dart';
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 class App extends StatelessWidget {
+  const App({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,9 +20,9 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorObservers: [CustomRouteObserver(), routeObserver],
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        accentColor: Colors.redAccent,
         scaffoldBackgroundColor: Colors.white,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple)
+            .copyWith(secondary: Colors.redAccent),
       ),
       home: BlocConsumer<UserBloc, UserState>(
         listener: (BuildContext context, UserState state) {
@@ -34,7 +36,7 @@ class App extends StatelessWidget {
                   content: Text(state.error),
                   actions: <Widget>[
                     // usually buttons at the bottom of the dialog
-                    FlatButton(
+                    TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -51,7 +53,8 @@ class App extends StatelessWidget {
           if (state is UserLoadding) {
             return const SplashScreen();
           } else if (state is UserAuthenticated) {
-            return Home(firestoreRepo: RepositoryProvider.of<FirestoreRepo>(context));
+            return Home(
+                firestoreRepo: RepositoryProvider.of<FirestoreRepo>(context));
           } else if (state is UserNotAuthenticated) {
             return const Login();
           } else if (state is UserDoesNotExists) {
